@@ -15,11 +15,7 @@ return [
     ],
 
     // ----- First admin account (created by setup.php) -----
-    'admin' => [
-        'email'     => 'admin@randyspaintdrywall.com',
-        'password'  => 'changeme123',     // CHANGE after first login
-        'full_name' => 'Randy Peay',
-    ],
+  
 
     // ----- Google Gemini (optional) -----
     // Leave empty to use the built-in scripted bot (no API key needed).
@@ -30,11 +26,7 @@ return [
 
     // ----- Email notifications (Gmail SMTP) -----
     // Leave app_password blank to disable (bookings still work; email is skipped).
-    'email' => [
-        'user'         => 'ranpaintingservices@gmail.com',
-        'app_password' => '',   // 16-char Gmail App Password (no spaces)
-        'to'           => 'ranpaintingservices@gmail.com',
-    ],
+  
 
     // Base URL path the app is served from (e.g. "/randy" under XAMPP htdocs).
     'base_path' => '/randy',
