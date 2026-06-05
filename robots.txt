@@ -1,0 +1,20 @@
+# robots.txt for randyspaintdrywall.com
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /setup
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+Disallow: /bookings
+
+# Google Ads crawler — explicitly allow so ad landing pages are reviewable
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
+Sitemap: https://randyspaintdrywall.com/sitemap.xml

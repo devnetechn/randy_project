@@ -1,0 +1,22 @@
+# Clean URLs for randyspaintdrywall.com
+# /blog -> blog.php, /services -> services.php, etc. The API (/api/*) keeps its
+# .php paths because the front-end JS fetches those endpoints directly.
+
+Options -MultiViews
+RewriteEngine On
+
+# --- 1. Redirect "index.php" (any folder) to its directory root ---
+RewriteCond %{THE_REQUEST} \s/+(.*?)index\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# --- 2. Redirect "/page.php" to the clean "/page" (skip the API) ---
+RewriteCond %{REQUEST_URI} !(^|/)api/ [NC]
+RewriteCond %{THE_REQUEST} \s/+([^.\s?]+)\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# --- 3. Internally map a clean URL back to its .php file when one exists ---
+RewriteCond %{REQUEST_URI} !(^|/)api/ [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+?)/?$ $1.php [L]

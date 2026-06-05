@@ -1,0 +1,10 @@
+/config.php
+/uploads/gallery/*
+!/uploads/gallery/.gitkeep
+/uploads/blog/*
+!/uploads/blog/.gitkeep
+*.log
+
+# Test / tooling artifacts
+/.playwright-mcp/
+
