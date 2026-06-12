@@ -14,7 +14,7 @@ require __DIR__ . '/includes/header.php';
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="<?= e(url('index.php')) ?>">Home</a><span>/</span> Contact</nav>
             <span class="eyebrow">Get in touch</span>
             <h1 style="margin-top:1rem">Contact — Let's get you a <span class="ul-brush">free quote</span>.</h1>
-            <p>Tell us about your painting or drywall project anywhere in Easton, PA or the Lehigh Valley and we'll get back to you — usually within 24 hours.</p>
+            <p>Tell us about your painting or drywall project anywhere in the Lehigh Valley or Bucks County, PA and we'll get back to you — usually within 24 hours.</p>
         </div>
     </section>
 
@@ -24,7 +24,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="contact-card"><span class="contact-card__icon"><?= svg_phone() ?></span><div><h3>Call or text</h3><p><a href="tel:<?= e($b['phoneTel']) ?>"><?= e($b['phone']) ?></a></p></div></div>
                 <div class="contact-card"><span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span><div><h3>Email</h3><p><a href="mailto:<?= e($b['email']) ?>"><?= e($b['email']) ?></a></p></div></div>
                 <div class="contact-card"><span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><h3>Website</h3><p><a href="https://<?= e($b['website']) ?>" target="_blank" rel="noopener noreferrer"><?= e($b['website']) ?></a></p></div></div>
-                <div class="contact-card"><span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><h3>Hours &amp; area</h3><p>Mon–Sat, 8am–5pm<br>Sun: By appointment<br>Easton, PA &amp; the Lehigh Valley (within 25 miles)</p></div></div>
+                <div class="contact-card"><span class="contact-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><h3>Hours &amp; area</h3><p>Mon–Sat, 8am–5pm<br>Sun: By appointment<br>Lehigh Valley &amp; Bucks County, PA (based in Easton)</p></div></div>
             </aside>
 
             <div class="form-card">

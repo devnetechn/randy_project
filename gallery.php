@@ -11,7 +11,7 @@ require __DIR__ . '/includes/header.php';
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="<?= e(url('index.php')) ?>">Home</a><span>/</span> Gallery</nav>
             <span class="eyebrow">Our work</span>
             <h1 style="margin-top:1rem">Proof in every <span class="ul-brush">coat</span>.</h1>
-            <p>A look at recent painting and drywall projects across Easton, PA and everywhere within 25 miles. Real results from real homes and businesses.</p>
+            <p>A look at recent painting and drywall projects across the Lehigh Valley and Bucks County, PA. Real results from real homes and businesses.</p>
         </div>
     </section>
 
@@ -35,7 +35,7 @@ require __DIR__ . '/includes/header.php';
         </div>
     </section>
 
-    <?php mkt_cta_band('Your project next', 'Picture your space, transformed.', "Let's add your home or business to the gallery. Free estimates within 25 miles of Easton, PA."); ?>
+    <?php mkt_cta_band('Your project next', 'Picture your space, transformed.', "Let's add your home or business to the gallery. Free estimates across the Lehigh Valley and Bucks County, PA."); ?>
 </div>
 <script src="<?= e(url('assets/js/gallery.js')) ?>"></script>
 <?php require __DIR__ . '/includes/footer.php'; ?>

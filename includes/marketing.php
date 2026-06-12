@@ -140,6 +140,111 @@ function mkt_faq(): void
     echo '</div></div></section>';
 }
 
+/**
+ * Render a FAQ section from custom [question, answer] items and emit matching
+ * FAQPage structured data. Used by the dedicated service pages. Reuses the same
+ * markup/classes as mkt_faq() so the toggle JS in app.js works automatically.
+ */
+function mkt_faq_custom(array $items, string $heading = 'Frequently asked questions', string $eyebrow = 'Good to know'): void
+{
+    echo '<section class="section"><div class="container">';
+    echo '<div class="section-head center"><span class="eyebrow" style="justify-content:center">' . e($eyebrow) . '</span><h2 style="margin-top:1rem">' . e($heading) . '</h2></div>';
+    echo '<div class="faq">';
+    foreach ($items as [$q, $a]) {
+        echo '<div class="faq-item" data-faq>';
+        echo '<button class="faq-q" type="button" data-faq-q aria-expanded="false"><span>' . e($q) . '</span><span class="icon" aria-hidden="true"></span></button>';
+        echo '<div class="faq-a"><div class="faq-a__inner">' . e($a) . '</div></div>';
+        echo '</div>';
+    }
+    echo '</div></div></section>';
+
+    $ld = ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => []];
+    foreach ($items as [$q, $a]) {
+        $ld['mainEntity'][] = [
+            '@type'          => 'Question',
+            'name'           => $q,
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $a],
+        ];
+    }
+    echo '<script type="application/ld+json">' . json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+}
+
+/**
+ * Emit AggregateRating + Review structured data tied to the LocalBusiness, so
+ * Google can show star ratings in search results. Uses the SAME @id as the
+ * LocalBusiness in header.php so the data merges into one entity.
+ *
+ * Only outputs when genuine admin-managed reviews exist — never fabricates a
+ * rating (fake review markup is a Google policy violation). Call this only on a
+ * page that actually displays the reviews (the homepage testimonials section).
+ */
+function mkt_review_schema(): void
+{
+    $rows = reviews_all();
+    if (!$rows) {
+        return; // no real reviews -> no markup
+    }
+
+    $b      = business_info();
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host   = $_SERVER['HTTP_HOST'] ?? 'randyspaintdrywall.com';
+    $origin = $scheme . '://' . $host;
+
+    $count = count($rows);
+    $sum   = 0;
+    $reviews = [];
+    foreach ($rows as $r) {
+        $rating = max(1, min(5, (int) $r['rating']));
+        $sum   += $rating;
+        $review = [
+            '@type'         => 'Review',
+            'author'        => ['@type' => 'Person', 'name' => (string) $r['author']],
+            'reviewRating'  => ['@type' => 'Rating', 'ratingValue' => (string) $rating, 'bestRating' => '5'],
+            'reviewBody'    => (string) $r['body'],
+        ];
+        if (!empty($r['created_at']) && ($ts = strtotime((string) $r['created_at']))) {
+            $review['datePublished'] = date('Y-m-d', $ts);
+        }
+        $reviews[] = $review;
+    }
+    $avg = round($sum / $count, 1);
+
+    $ld = [
+        '@context'        => 'https://schema.org',
+        '@type'           => ['HousePainter', 'GeneralContractor'],
+        '@id'             => $origin . '/#business',
+        'name'            => $b['name'],
+        'aggregateRating' => [
+            '@type'       => 'AggregateRating',
+            'ratingValue' => (string) $avg,
+            'reviewCount' => (string) $count,
+            'bestRating'  => '5',
+            'worstRating' => '1',
+        ],
+        'review'          => $reviews,
+    ];
+    echo '<script type="application/ld+json">' . json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+}
+
+/** Emit Service structured data for a dedicated service page (SEO rich results). */
+function mkt_service_jsonld(string $name, string $description): void
+{
+    $b = business_info();
+    $ld = [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'Service',
+        'serviceType' => $name,
+        'name'        => $name,
+        'description' => $description,
+        'provider'    => ['@type' => 'HousePainter', 'name' => $b['name'], 'telephone' => $b['phoneTel']],
+        'areaServed'  => [
+            ['@type' => 'AdministrativeArea', 'name' => 'Lehigh Valley'],
+            ['@type' => 'AdministrativeArea', 'name' => 'Bucks County'],
+        ],
+    ];
+    echo '<script type="application/ld+json">' . json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+}
+
 function mkt_before_after(): void
 {
     $before = url('assets/img/gallery/ba-before.webp');

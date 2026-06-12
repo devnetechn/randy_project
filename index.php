@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
-$page_title = 'Local Painter & Drywall Contractor in Easton, PA & the Lehigh Valley';
+$page_title = 'High-End Painting & Level 5 Drywall Finishes | Lehigh Valley & Bucks County, PA';
 $hero = url('assets/img/gallery/gallery-10.webp');
 require __DIR__ . '/includes/header.php';
 ?>
@@ -10,10 +10,10 @@ require __DIR__ . '/includes/header.php';
         <div class="hero__bg" aria-hidden="true"></div>
         <div class="container hero__grid">
             <div class="hero__copy">
-                <span class="eyebrow">Licensed &amp; Insured · Local Painter · Easton, PA &amp; the Lehigh Valley</span>
+                <span class="eyebrow">Licensed &amp; Insured · 35+ Years · Lehigh Valley &amp; Bucks County, PA</span>
                 <h1>Walls done<br>with a <span class="mark mark--ink">flawless</span> finish.</h1>
                 <p class="hero__slogan">&ldquo;We build our reputation, one coat at a time.&rdquo;</p>
-                <p class="hero__lead">Your local painter and drywall contractor near Easton, PA. From fresh coats of paint to seamless drywall, Randy&apos;s Painting &amp; Drywall Services delivers clean, on-time craftsmanship for homes and businesses across Easton, Bethlehem, Allentown, Nazareth and the entire Lehigh Valley, within 25 miles.</p>
+                <p class="hero__lead">Premium painting and drywall craftsmanship for discerning homeowners and businesses &mdash; including Level&nbsp;5 smooth-wall finishes, skim coating, and fine-finish painting. With 35+ years near Easton, PA, Randy&apos;s Painting &amp; Drywall Services delivers meticulous, on-time work across the Lehigh Valley and Bucks County, PA.</p>
                 <div class="hero__cta">
                     <a href="<?= e(url('book.php')) ?>" class="btn btn--lg">Get a Free Quote<?= svg_arrow() ?></a>
                     <a href="<?= e(url('gallery.php')) ?>" class="btn btn--outline btn--lg">See Our Work</a>
@@ -37,8 +37,9 @@ require __DIR__ . '/includes/header.php';
     <div class="marquee" aria-hidden="true">
         <div class="marquee__track">
             <?php for ($i = 0; $i < 2; $i++): ?>
-                <span class="m">Interior Painting</span><span class="m">Exterior Painting</span><span class="m">Drywall Installation</span>
-                <span class="m">Drywall Repair</span><span class="m">Texture &amp; Finishing</span><span class="m">Commercial Projects</span>
+                <span class="m">Interior Painting</span><span class="m">Fine-Finish Painting</span><span class="m">Level 5 Drywall</span>
+                <span class="m">Skim Coating</span><span class="m">Wall Restoration</span><span class="m">Drywall Repair</span>
+                <span class="m">Exterior Painting</span><span class="m">Commercial Projects</span>
             <?php endfor; ?>
         </div>
     </div>
@@ -93,6 +94,7 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
             <div class="section-head center"><span class="eyebrow" style="justify-content:center">Kind words</span><h2 style="margin-top:1rem">Homeowners &amp; businesses who trust us</h2></div>
             <?php mkt_testimonials(); ?>
+            <?php mkt_review_schema(); ?>
         </div>
     </section>
 
@@ -100,20 +102,20 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
             <div class="section-head center">
                 <span class="eyebrow" style="justify-content:center">Areas we serve</span>
-                <h2 style="margin-top:1rem">Your local painter serving Easton &amp; the Lehigh Valley</h2>
-                <p>Based in Easton, PA, Randy&apos;s Painting &amp; Drywall Services brings interior painting, exterior painting, and drywall installation &amp; repair to homeowners and businesses across Northampton County, Lehigh County, and the wider Lehigh Valley &mdash; everywhere within a 25-mile radius.</p>
+                <h2 style="margin-top:1rem">Serving the Lehigh Valley &amp; Bucks County, PA</h2>
+                <p>Based in Easton, PA, Randy&apos;s Painting &amp; Drywall Services brings premium interior &amp; exterior painting, Level&nbsp;5 drywall finishes, and wall restoration to homeowners and businesses across the Lehigh Valley and the affluent communities of Bucks County &mdash; from Northampton and Lehigh County to New Hope, Doylestown, and Upper Makefield.</p>
             </div>
             <ul class="areas">
                 <?php foreach ([
                     'Easton, PA', 'Bethlehem, PA', 'Allentown, PA', 'Nazareth, PA',
-                    'Wilson, PA', 'Palmer Township, PA', 'Forks Township, PA', 'Bushkill Township, PA',
-                    'Tatamy, PA', 'Stockertown, PA', 'Wind Gap, PA', 'Pen Argyl, PA',
-                    'Hellertown, PA', 'Phillipsburg, NJ',
+                    'Wilson, PA', 'Palmer Township, PA', 'Forks Township, PA', 'Hellertown, PA',
+                    'New Hope, PA', 'Doylestown, PA', 'Solebury Township, PA', 'Upper Makefield, PA',
+                    'Newtown, PA', 'Yardley, PA', 'Wind Gap, PA', 'Phillipsburg, NJ',
                 ] as $area): ?>
                     <li class="area"><?= svg_circle_check() ?><?= e($area) ?></li>
                 <?php endforeach; ?>
             </ul>
-            <p class="center" style="margin-top:2rem;color:var(--muted)">Don&apos;t see your town? If you&apos;re within 25 miles of Easton, we&apos;ve got you covered &mdash; <a href="<?= e(url('contact.php')) ?>" class="textlink">just ask<?= svg_arrow() ?></a></p>
+            <p class="center" style="margin-top:2rem;color:var(--muted)">Don&apos;t see your town? If you&apos;re in the Lehigh Valley or Bucks County, we&apos;ve likely got you covered &mdash; <a href="<?= e(url('contact.php')) ?>" class="textlink">just ask<?= svg_arrow() ?></a></p>
         </div>
     </section>
     <style>
@@ -125,6 +127,6 @@ require __DIR__ . '/includes/header.php';
         .mkt .area svg { width:20px; height:20px; flex:none; color:var(--coral); }
     </style>
 
-    <?php mkt_cta_band('Ready when you are', "Let's give your walls a fresh start.", 'Free, no-pressure estimates within 25 miles of Easton, PA. Most quotes returned within 24 hours.'); ?>
+    <?php mkt_cta_band('Ready when you are', "Let's give your walls a flawless finish.", 'Free, no-pressure estimates across the Lehigh Valley and Bucks County, PA. Most quotes returned within 24 hours.'); ?>
 </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

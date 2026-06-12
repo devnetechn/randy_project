@@ -7,7 +7,7 @@ $title = isset($page_title) ? "$page_title — {$b['name']}" : $b['name'];
 // SEO: absolute URLs for canonical, social cards, and structured data.
 $meta_desc = isset($page_description)
     ? $page_description
-    : 'Local painter and drywall contractor near Easton, PA, serving the entire Lehigh Valley including Bethlehem, Allentown, Nazareth, Phillipsburg and within a 25-mile radius. Licensed, insured, free estimates.';
+    : 'High-end painting & drywall contractor serving the Lehigh Valley and Bucks County, PA. Level 5 smooth-wall finishes, skim coating, fine-finish painting and wall restoration for luxury homes and businesses near Easton, Bethlehem, New Hope and Doylestown. Licensed, insured, free estimates.';
 // Note: <meta keywords> is ignored by Google; the real ranking signals are the
 // title, description, visible content, and the areaServed cities in JSON-LD below.
 $meta_keywords = isset($page_keywords)
@@ -25,6 +25,7 @@ $og_image  = $origin . url('assets/img/logo.png');
 $ld = [
     '@context'    => 'https://schema.org',
     '@type'       => ['HousePainter', 'GeneralContractor'],
+    '@id'         => $origin . '/#business',
     'name'        => $b['name'],
     'image'       => $og_image,
     'url'         => $origin . '/',
@@ -52,11 +53,18 @@ $ld = [
         ['@type' => 'City', 'name' => 'Palmer', 'addressRegion' => 'PA'],
         ['@type' => 'City', 'name' => 'Forks Township', 'addressRegion' => 'PA'],
         ['@type' => 'City', 'name' => 'Phillipsburg', 'addressRegion' => 'NJ'],
+        ['@type' => 'City', 'name' => 'New Hope', 'addressRegion' => 'PA'],
+        ['@type' => 'City', 'name' => 'Doylestown', 'addressRegion' => 'PA'],
+        ['@type' => 'City', 'name' => 'Solebury Township', 'addressRegion' => 'PA'],
+        ['@type' => 'City', 'name' => 'Upper Makefield Township', 'addressRegion' => 'PA'],
+        ['@type' => 'City', 'name' => 'Newtown', 'addressRegion' => 'PA'],
+        ['@type' => 'City', 'name' => 'Yardley', 'addressRegion' => 'PA'],
         ['@type' => 'AdministrativeArea', 'name' => 'Lehigh Valley'],
+        ['@type' => 'AdministrativeArea', 'name' => 'Bucks County'],
         [
             '@type'       => 'GeoCircle',
             'geoMidpoint' => ['@type' => 'GeoCoordinates', 'latitude' => 40.6884, 'longitude' => -75.2207],
-            'geoRadius'   => 40234,
+            'geoRadius'   => 64374,
         ],
     ],
 ];

@@ -23,7 +23,7 @@ require __DIR__ . '/includes/header.php';
             <div class="split__body">
                 <span class="eyebrow">Our story</span>
                 <h2 style="margin-top:1rem">Built on word-of-mouth since 2009</h2>
-                <p>What started as one painter — Randy Peay — with a ladder and a reputation for clean work has grown into a trusted crew serving Easton, PA and everywhere within 25 miles. We've stayed small enough to care about every detail and skilled enough to handle any job, from a single patch to a whole-building repaint.</p>
+                <p>What started as one painter — Randy Peay — with a ladder and a reputation for clean work has grown into a trusted crew serving the Lehigh Valley and Bucks County, PA. We've stayed small enough to care about every detail and skilled enough to handle the most demanding work — from Level&nbsp;5 smooth-wall finishes to a full-building repaint.</p>
                 <p style="margin-top:1rem">We believe the best advertising is a job done right, which is why most of our work comes from referrals and repeat customers.</p>
                 <div style="margin-top:2rem"><a href="<?= e(url('contact.php')) ?>" class="btn btn--slate">Work with us<?= svg_arrow() ?></a></div>
             </div>
@@ -87,8 +87,8 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
             <div class="section-head center">
                 <span class="eyebrow" style="justify-content:center">Find us</span>
-                <h2 style="margin-top:1rem">Serving Easton &amp; the Lehigh Valley</h2>
-                <p>Based in Easton, PA, we cover the whole Lehigh Valley within a 25-mile radius. Find us on the map below or get directions.</p>
+                <h2 style="margin-top:1rem">Serving the Lehigh Valley &amp; Bucks County</h2>
+                <p>Based in Easton, PA, we serve the Lehigh Valley and the affluent communities of Bucks County — New Hope, Doylestown, Solebury, and Upper Makefield. Find us on the map below or get directions.</p>
             </div>
             <div class="map-embed">
                 <iframe

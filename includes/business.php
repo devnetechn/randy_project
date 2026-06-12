@@ -6,7 +6,7 @@ function business_info(): array
     return [
         'name'        => "Randy's Painting & Drywall Services",
         'owner'       => 'Randy Peay',
-        'serviceArea' => 'Easton, PA and everywhere within a 25-mile radius',
+        'serviceArea' => 'the Lehigh Valley and Bucks County, PA (based in Easton, PA)',
         'hours'       => 'Monday–Saturday, 8am–5pm',
         'phone'       => '(484) 546-3660',
         'phoneTel'    => '+14845463660',
@@ -14,9 +14,13 @@ function business_info(): array
         'website'     => 'www.randyspaintdrywall.com',
         'services'    => [
             'Interior painting',
+            'Fine-finish & high-end residential painting',
             'Exterior painting',
             'Drywall installation',
             'Drywall repair',
+            'Level 5 drywall finishing (smooth-wall)',
+            'Skim coating',
+            'Wall restoration & plaster repair',
             'Texture and finishing',
             'Commercial projects',
         ],

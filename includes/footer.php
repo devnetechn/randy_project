@@ -14,8 +14,9 @@ $show_widget = !($cu && $cu['role'] === 'admin');
                     <a href="<?= e(url('index.php')) ?>" class="footer-logo" aria-label="<?= e($bf['name']) ?> home"><img src="<?= e(url('assets/img/logo.png')) ?>" alt="<?= e($bf['name']) ?>"></a>
                     <p class="footer-about">
                         <em>&ldquo;We build our reputation, one coat at a time.&rdquo;</em><br>
-                        Professional painting and drywall services for homes and businesses within
-                        25 miles of Easton, PA. Licensed, insured, and proudly local.
+                        High-end painting and drywall services &mdash; including Level&nbsp;5 finishes and
+                        wall restoration &mdash; for homes and businesses across the Lehigh Valley and
+                        Bucks County, PA. Licensed, insured, and based in Easton.
                     </p>
                     <div class="footer-social">
                         <a href="https://www.facebook.com/randys.aesthetics" aria-label="Facebook">
@@ -33,10 +34,10 @@ $show_widget = !($cu && $cu['role'] === 'admin');
                 <div class="footer-col">
                     <h4>Services</h4>
                     <ul>
-                        <li><a href="<?= e(url('services.php')) ?>">Interior Painting</a></li>
-                        <li><a href="<?= e(url('services.php')) ?>">Exterior Painting</a></li>
-                        <li><a href="<?= e(url('services.php')) ?>">Drywall Installation</a></li>
-                        <li><a href="<?= e(url('services.php')) ?>">Drywall Repair</a></li>
+                        <li><a href="<?= e(url('level-5-drywall.php')) ?>">Level 5 Drywall Finish</a></li>
+                        <li><a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a></li>
+                        <li><a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a></li>
+                        <li><a href="<?= e(url('services.php')) ?>">Painting &amp; Drywall</a></li>
                         <li><a href="<?= e(url('services.php')) ?>">Commercial Work</a></li>
                     </ul>
                 </div>
@@ -76,7 +77,7 @@ $show_widget = !($cu && $cu['role'] === 'admin');
 
             <div class="footer-bottom">
                 <p>&copy; 2026 Randy&apos;s Painting &amp; Drywall Services. All rights reserved.</p>
-                <p>Painting &amp; Drywall Services within 25 miles of Easton, PA</p>
+                <p>Painting &amp; Drywall Services · Lehigh Valley &amp; Bucks County, PA</p>
             </div>
         </div>
     </footer>

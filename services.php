@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
-$page_title = 'Painting & Drywall Services in Easton, PA & the Lehigh Valley';
-$page_description = 'Interior & exterior painting, drywall installation, and drywall repair in Easton, PA and across the Lehigh Valley — Bethlehem, Allentown, Nazareth and within 25 miles. Free estimates from a licensed, insured crew.';
-$page_keywords = 'interior painting Easton PA, exterior painting Lehigh Valley, drywall installation Lehigh Valley, drywall repair Easton PA, painting contractor Lehigh Valley, commercial painting Easton';
+$page_title = 'High-End Painting & Level 5 Drywall Services | Lehigh Valley & Bucks County, PA';
+$page_description = 'Premium interior & exterior painting, Level 5 drywall finishes, skim coating, and wall restoration across the Lehigh Valley and Bucks County, PA — Easton, Bethlehem, New Hope, Doylestown and beyond. Free estimates from a licensed, insured crew.';
+$page_keywords = 'high-end residential painting Lehigh Valley, luxury home painter Bucks County, Level 5 drywall finish, skim coating Lehigh Valley, fine finish painting, smooth wall finishing, drywall restoration specialist, premium interior painting Bethlehem PA, luxury painter New Hope PA, painting contractor Doylestown PA';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -13,13 +13,24 @@ require __DIR__ . '/includes/header.php';
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="<?= e(url('index.php')) ?>">Home</a><span>/</span> Services</nav>
             <span class="eyebrow">What we offer</span>
             <h1 style="margin-top:1rem">Painting &amp; drywall services, done <span class="ul-brush">right</span>.</h1>
-            <p>Full-service prep, repair, and finishing for residential and commercial spaces in Easton, PA and across the Lehigh Valley — Bethlehem, Allentown, Nazareth and everywhere within 25 miles. One crew, start to finish.</p>
+            <p>Full-service prep, repair, and high-end finishing for residential and commercial spaces — including Level&nbsp;5 smooth-wall finishes, skim coating, and fine-finish painting. Serving the Lehigh Valley and Bucks County, PA, from Easton and Bethlehem to New Hope and Doylestown. One crew, start to finish.</p>
         </div>
     </section>
 
     <section class="section section--tight"><div class="container"><?php mkt_service_cards(); ?></div></section>
 
     <section class="section section--tight" style="background:var(--plaster-2)">
+        <div class="container">
+            <div class="section-head center"><span class="eyebrow" style="justify-content:center">Signature finishes</span><h2 style="margin-top:1rem">High-end finishing, done by a specialist</h2><p>For luxury homes, the finish is the difference. Explore the premium work that sets our walls apart.</p></div>
+            <div class="services-grid">
+                <a class="service-card service-card--link" href="<?= e(url('level-5-drywall.php')) ?>"><div class="service-card__icon"><?= svg_check() ?></div><h3>Level 5 Drywall Finish</h3><p>A full skim coat for glass-smooth walls that stay flawless under bright light, gloss, and dark paint.</p><span class="textlink">Learn more<?= svg_arrow() ?></span></a>
+                <a class="service-card service-card--link" href="<?= e(url('skim-coating.php')) ?>"><div class="service-card__icon"><?= svg_check() ?></div><h3>Skim Coating</h3><p>Resurface rough, patched, or textured walls into smooth, modern, paint-ready surfaces.</p><span class="textlink">Learn more<?= svg_arrow() ?></span></a>
+                <a class="service-card service-card--link" href="<?= e(url('wall-restoration.php')) ?>"><div class="service-card__icon"><?= svg_check() ?></div><h3>Wall Restoration</h3><p>Plaster and drywall repairs that disappear — ideal for luxury and historic homes.</p><span class="textlink">Learn more<?= svg_arrow() ?></span></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section--tight">
         <div class="container split">
             <div class="split__media"><div class="ph ph--coral"><span class="ph__tag">Painting project</span></div></div>
             <div class="split__body">
@@ -35,7 +46,7 @@ require __DIR__ . '/includes/header.php';
         </div>
     </section>
 
-    <section class="section section--tight">
+    <section class="section section--tight" style="background:var(--plaster-2)">
         <div class="container split split--reverse">
             <div class="split__media"><div class="ph ph--cool"><span class="ph__tag">Drywall project</span></div></div>
             <div class="split__body">
@@ -53,5 +64,11 @@ require __DIR__ . '/includes/header.php';
 
     <?php mkt_faq(); ?>
     <?php mkt_cta_band('No-pressure quote', 'Tell us about your project.', "Share a few details and we'll get back to you with a free estimate."); ?>
+    <style>
+        .mkt .service-card--link { display:flex; flex-direction:column; text-decoration:none; color:inherit;
+            cursor:pointer; transition:transform .15s ease, box-shadow .15s ease; }
+        .mkt .service-card--link:hover { transform:translateY(-3px); box-shadow:0 14px 34px rgba(15,27,51,.12); }
+        .mkt .service-card--link .textlink { margin-top:auto; padding-top:1rem; }
+    </style>
 </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

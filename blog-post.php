@@ -54,6 +54,6 @@ require __DIR__ . '/includes/header.php';
         </div>
     </section>
 
-    <?php mkt_cta_band("Let's talk", 'Ready to start your project?', 'Free estimates in Easton, PA and across the Lehigh Valley, within 25 miles.'); ?>
+    <?php mkt_cta_band("Let's talk", 'Ready to start your project?', 'Free estimates across the Lehigh Valley and Bucks County, PA.'); ?>
 </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>
