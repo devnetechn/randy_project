@@ -14,11 +14,13 @@ if ($category && in_array($category, $valid, true)) {
 
 $images = array_map(function ($img) {
     return [
-        'id'        => (int) $img['id'],
-        'url'       => url('uploads/gallery/' . $img['filename']),
-        'caption'   => $img['caption'],
-        'category'  => $img['category'],
-        'sortOrder' => (int) $img['sort_order'],
+        'id'          => (int) $img['id'],
+        'url'         => url('uploads/gallery/' . $img['filename']),
+        'projectUrl'  => url('project.php?id=' . (int) $img['id']),
+        'caption'     => $img['caption'],
+        'description' => $img['description'] ?? null,
+        'category'    => $img['category'],
+        'sortOrder'   => (int) $img['sort_order'],
     ];
 }, $st->fetchAll());
 
