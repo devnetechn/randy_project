@@ -32,7 +32,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight">
         <div class="container split">
-            <div class="split__media"><div class="ph ph--coral"><span class="ph__tag">Painting project</span></div></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/service-painting.webp')) ?>" alt="Interior painting and trim — crisp white walls with black-finished staircase railings"></div>
             <div class="split__body">
                 <span class="eyebrow">Painting</span>
                 <h2 style="margin-top:1rem">Interior &amp; exterior painting across the Lehigh Valley</h2>
@@ -48,7 +48,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight" style="background:var(--plaster-2)">
         <div class="container split split--reverse">
-            <div class="split__media"><div class="ph ph--cool"><span class="ph__tag">Drywall project</span></div></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/service-drywall.webp')) ?>" alt="Smooth, flawless drywall finish on a freshly painted room"></div>
             <div class="split__body">
                 <span class="eyebrow">Drywall</span>
                 <h2 style="margin-top:1rem">Drywall installation &amp; repair in Easton &amp; the Lehigh Valley</h2>
