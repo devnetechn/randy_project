@@ -6,6 +6,7 @@
  */
 require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/blog.php';
+require_once __DIR__ . '/includes/gallery.php';
 
 // Absolute origin so <loc> values are fully-qualified on whatever host we run.
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -36,6 +37,17 @@ foreach (blog_published() as $post) {
     $ts = strtotime((string) ($post['created_at'] ?? ''));
     $urls[] = [
         'loc'        => $origin . url('blog-post.php?id=' . (int) $post['id']),
+        'lastmod'    => $ts ? date('Y-m-d', $ts) : $today,
+        'changefreq' => 'monthly',
+        'priority'   => '0.6',
+    ];
+}
+
+// Every gallery photo gets a project detail page.
+foreach (gallery_all() as $photo) {
+    $ts = strtotime((string) ($photo['created_at'] ?? ''));
+    $urls[] = [
+        'loc'        => $origin . url('project.php?id=' . (int) $photo['id']),
         'lastmod'    => $ts ? date('Y-m-d', $ts) : $today,
         'changefreq' => 'monthly',
         'priority'   => '0.6',
