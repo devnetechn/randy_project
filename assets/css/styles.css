@@ -554,6 +554,8 @@ button.kpi:hover { box-shadow: var(--shadow-md); }
 .blog-article { max-width: 760px; }
 .blog-article__img { border-radius: 16px; overflow: hidden; margin-bottom: 2rem; }
 .blog-article__img img { width: 100%; height: auto; display: block; }
+.blog-article__img.project-figure { text-align: center; background: var(--plaster-2); }
+.blog-article__img.project-figure img { width: auto; max-width: 100%; max-height: 70vh; margin-inline: auto; }
 .blog-article__body p { margin: 0 0 1.2rem; line-height: 1.75; font-size: 1.05rem; }
 
 /* Admin blog list */
