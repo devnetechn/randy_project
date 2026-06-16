@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight">
         <div class="container split">
-            <div class="split__media"><div class="ph ph--warm"><span class="ph__tag">Wall restoration</span></div></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/service-wall-restoration.webp')) ?>" alt="Wall restoration in progress — old wallpaper stripped and the surface prepped for a smooth finish"></div>
             <div class="split__body">
                 <span class="eyebrow">What it is</span>
                 <h2 style="margin-top:1rem">More than a patch — a proper repair</h2>

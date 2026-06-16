@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight">
         <div class="container split">
-            <div class="split__media"><div class="ph ph--cool"><span class="ph__tag">Level 5 finish</span></div></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/service-level5.webp')) ?>" alt="Level 5 smooth-wall finish — flawless two-story foyer walls"></div>
             <div class="split__body">
                 <span class="eyebrow">What it is</span>
                 <h2 style="margin-top:1rem">Beyond Level 4 — a skim coat over every inch</h2>

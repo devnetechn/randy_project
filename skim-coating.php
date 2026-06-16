@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight">
         <div class="container split">
-            <div class="split__media"><div class="ph ph--coral"><span class="ph__tag">Skim coating</span></div></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/service-skim-coating.webp')) ?>" alt="Smooth, skim-coated walls in a freshly refinished room"></div>
             <div class="split__body">
                 <span class="eyebrow">What it is</span>
                 <h2 style="margin-top:1rem">A thin, even coat that resets the surface</h2>
