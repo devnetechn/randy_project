@@ -42,6 +42,7 @@ $hasBody  = trim((string) ($photo['description'] ?? '')) !== '';
 
 $page_title       = $caption;
 $page_description = $hasBody ? mb_substr(trim($photo['description']), 0, 160) : $caption;
+$page_image       = url('uploads/gallery/' . $photo['filename']); // per-project social/SERP image
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">

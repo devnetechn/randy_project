@@ -19,7 +19,18 @@ $scheme    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https
 $host      = $_SERVER['HTTP_HOST'] ?? 'randyspaintdrywall.com';
 $origin    = $scheme . '://' . $host;
 $canonical = $origin . strtok($_SERVER['REQUEST_URI'] ?? '/', '?');
-$og_image  = $origin . url('assets/img/logo.png');
+// Preserve the meaningful ?id= param on detail pages (project, blog-post) so each
+// canonicalises to its own URL; tracking params (utm_, fbclid, gclid…) drop off.
+if (isset($_GET['id']) && ctype_digit((string) $_GET['id'])) {
+    $canonical .= '?id=' . (int) $_GET['id'];
+}
+// Social/SERP image: a page may set $page_image (root-relative via url() or an
+// absolute URL); otherwise fall back to the logo.
+if (!empty($page_image)) {
+    $og_image = preg_match('#^https?://#', $page_image) ? $page_image : $origin . $page_image;
+} else {
+    $og_image = $origin . url('assets/img/logo.png');
+}
 
 // LocalBusiness structured data (JSON-LD) — helps Google show rich local results.
 $ld = [
