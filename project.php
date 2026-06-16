@@ -56,8 +56,13 @@ require __DIR__ . '/includes/header.php';
     </section>
 
     <section class="section section--tight">
+        <div class="container">
+            <div class="project-figure"><img src="<?= e(url('uploads/gallery/' . $photo['filename'])) ?>" alt="<?= e($caption) ?>"></div>
+        </div>
+    </section>
+
+    <section class="section section--tight project-body">
         <div class="container blog-article">
-            <div class="blog-article__img project-figure"><img src="<?= e(url('uploads/gallery/' . $photo['filename'])) ?>" alt="<?= e($caption) ?>"></div>
             <div class="blog-article__body">
                 <?php if ($hasBody): ?>
                     <?= blog_render_body($photo['description']) ?>
