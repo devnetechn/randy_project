@@ -102,6 +102,7 @@
       '<form class="app-card" data-up>' +
       '<label class="field"><span>Photo (JPEG/PNG/WebP, ≤5MB)</span><input type="file" name="image" accept="image/jpeg,image/png,image/webp" required></label>' +
       '<label class="field"><span>Caption (optional)</span><input type="text" name="caption" maxlength="200"></label>' +
+      '<label class="field"><span>Description (optional)</span><textarea name="description" rows="3"></textarea></label>' +
       '<label class="field"><span>Category</span><select name="category">' + CATS.map((c) => '<option value="' + c + '">' + cap(c) + '</option>').join('') + '</select></label>' +
       '<button class="btn-primary" type="submit">Upload photo</button></form>' +
       '<div class="gallery-admin__grid" data-ga-grid></div>';
@@ -117,18 +118,59 @@
       finally { btn.disabled = false; }
     });
     grid.addEventListener('click', async (e) => {
-      const b = e.target.closest('[data-del]'); if (!b) return;
+      const editBtn = e.target.closest('[data-edit]');
+      if (editBtn) {
+        const f = grid.querySelector('[data-edit-form="' + editBtn.dataset.edit + '"]');
+        if (f) f.hidden = !f.hidden;
+        return;
+      }
+      const cancelBtn = e.target.closest('.gallery-admin__cancel');
+      if (cancelBtn) {
+        const f = cancelBtn.closest('[data-edit-form]');
+        if (f) f.hidden = true;
+        return;
+      }
+      const delBtn = e.target.closest('[data-del]');
+      if (!delBtn) return;
       if (!confirm('Delete this photo?')) return;
-      try { await api.post('api/gallery/delete.php', { id: +b.dataset.del }); await load(); }
+      try { await api.post('api/gallery/delete.php', { id: +delBtn.dataset.del }); await load(); }
       catch (err) { toast(err.message, 'error'); }
+    });
+    grid.addEventListener('submit', async (e) => {
+      const f = e.target.closest('[data-edit-form]');
+      if (!f) return;
+      e.preventDefault();
+      const id = +f.getAttribute('data-edit-form');
+      const body = {
+        id,
+        caption: f.caption.value.trim(),
+        category: f.category.value,
+        description: f.description.value.trim(),
+      };
+      const btn = f.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      try { await api.post('api/gallery/update.php', body); await load(); toast('Photo updated'); }
+      catch (err) { toast(err.message, 'error'); }
+      finally { btn.disabled = false; }
     });
     async function load() {
       try {
         const imgs = (await api.get('api/gallery/list.php')).images || [];
         grid.innerHTML = imgs.length ? imgs.map((img) =>
-          '<div class="gallery-admin__item"><img src="' + escapeHtml(img.url) + '" alt="">' +
-          '<div class="gallery-admin__meta"><div class="cat">' + escapeHtml(img.category) + '</div>' + escapeHtml(img.caption || '') + '</div>' +
-          '<button class="gallery-admin__del" data-del="' + img.id + '">Delete</button></div>').join('')
+          '<div class="gallery-admin__item" data-id="' + img.id + '">' +
+            '<img src="' + escapeHtml(img.url) + '" alt="">' +
+            '<div class="gallery-admin__meta"><div class="cat">' + escapeHtml(img.category) + '</div>' + escapeHtml(img.caption || '') + '</div>' +
+            '<div class="gallery-admin__actions">' +
+              '<button class="gallery-admin__edit" data-edit="' + img.id + '">Edit</button>' +
+              '<button class="gallery-admin__del" data-del="' + img.id + '">Delete</button>' +
+            '</div>' +
+            '<form class="gallery-admin__form" data-edit-form="' + img.id + '" hidden>' +
+              '<label class="field"><span>Caption</span><input type="text" name="caption" maxlength="200" value="' + escapeHtml(img.caption || '') + '"></label>' +
+              '<label class="field"><span>Category</span><select name="category">' + CATS.map((c) => '<option value="' + c + '"' + (c === img.category ? ' selected' : '') + '>' + cap(c) + '</option>').join('') + '</select></label>' +
+              '<label class="field"><span>Description</span><textarea name="description" rows="3">' + escapeHtml(img.description || '') + '</textarea></label>' +
+              '<div><button class="btn-primary" type="submit">Save</button> <button type="button" class="gallery-admin__cancel">Cancel</button></div>' +
+            '</form>' +
+          '</div>').join('')
           : '<p style="color:var(--muted)">No photos yet.</p>';
       } catch (e) { toast(e.message, 'error'); }
     }
