@@ -253,6 +253,7 @@ a { color: inherit; }
 .mkt .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
 .mkt .team-card { border-radius: var(--radius); overflow: hidden; background: var(--paper); border: 1px solid var(--line); }
 .mkt .team-card__photo { aspect-ratio: 1/1; }
+.mkt .team-card__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mkt .team-card__body { padding: 1.25rem; }
 .mkt .team-card h3 { font-size: 1.2rem; }
 .mkt .team-card .role { color: var(--coral-2); font-weight: 700; font-size: .88rem; margin-top: .2rem; }
