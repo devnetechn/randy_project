@@ -212,6 +212,9 @@ a { color: inherit; }
 .mkt .gallery-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 .mkt .gallery-item__cap { position: absolute; inset: auto 0 0 0; padding: 1.5rem 1rem .9rem; background: linear-gradient(transparent, rgba(15,27,51,.78)); color: #fff; font-weight: 600; font-size: .92rem; display: flex; justify-content: space-between; align-items: center; }
 .mkt .gallery-item__cap span { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--coral-soft); }
+.mkt a.gallery-item { display: block; text-decoration: none; color: inherit; cursor: pointer; }
+.mkt .gallery-item__view { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: .4rem; background: rgba(15,27,51,.5); color: #fff; font-weight: 700; letter-spacing: .02em; opacity: 0; transition: opacity .3s var(--ease); }
+.mkt .gallery-item:hover .gallery-item__view { opacity: 1; }
 
 /* Before/After */
 .mkt .ba { max-width: 760px; margin-inline: auto; }

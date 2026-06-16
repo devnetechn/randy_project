@@ -20,10 +20,12 @@
       if (empty) empty.style.display = 'none';
       grid.innerHTML = visible.map(function (img) {
         return (
-          '<figure class="gallery-item">' +
+          '<a class="gallery-item" href="' + escapeHtml(img.projectUrl) + '">' +
           '<img src="' + escapeHtml(img.url) + '" alt="' + escapeHtml(img.caption || 'Project photo') + '" loading="lazy">' +
-          '<figcaption class="gallery-item__cap">' + escapeHtml(img.caption || 'Recent work') +
-          ' <span>' + escapeHtml(img.category) + '</span></figcaption></figure>'
+          '<span class="gallery-item__cap">' + escapeHtml(img.caption || 'Recent work') +
+          ' <span>' + escapeHtml(img.category) + '</span></span>' +
+          '<span class="gallery-item__view">View project &rarr;</span>' +
+          '</a>'
         );
       }).join('') || '<p class="center" style="color:var(--muted)">No photos in this category yet.</p>';
     }
