@@ -18,7 +18,7 @@ require __DIR__ . '/includes/header.php';
     <section class="section section--tight">
         <div class="container">
             <?php mkt_before_after(); ?>
-            <p class="center" style="margin-top:1rem;color:var(--muted);font-size:.92rem">Drag the handle to compare · Kitchen repaint, Easton, PA</p>
+            <p class="center" style="margin-top:1rem;color:var(--muted);font-size:.92rem">Drag the handle to compare · Living room repaint — coffered ceiling, walls &amp; trim</p>
         </div>
     </section>
 
