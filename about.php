@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight">
         <div class="container split">
-            <div class="split__media"><div class="ph ph--warm"><span class="ph__tag">Our team</span></div></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/about-team.jpg')) ?>" alt="Randy Peay and the Randy's Painting &amp; Drywall crew"></div>
             <div class="split__body">
                 <span class="eyebrow">Our story</span>
                 <h2 style="margin-top:1rem">Built on word-of-mouth since 2009</h2>
