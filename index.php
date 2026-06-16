@@ -58,7 +58,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight" style="background:var(--plaster-2)">
         <div class="container split">
-            <div class="split__media"><img src="<?= e(url('assets/img/randy.jpg')) ?>" alt="Randy Peay, founder of Randy's Painting &amp; Drywall Services"></div>
+            <div class="split__media"><img src="<?= e(url('assets/img/front.jpg')) ?>" alt="Covered outdoor lanai with a stained tongue-and-groove wood ceiling and crisp white columns by Randy's Painting &amp; Drywall"></div>
             <div class="split__body">
                 <span class="eyebrow">Why Randy&apos;s</span>
                 <h2 style="margin-top:1rem">Tidy job sites. Honest pricing. Work that lasts.</h2>
