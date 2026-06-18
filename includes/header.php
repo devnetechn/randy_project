@@ -147,7 +147,8 @@ $ld = [
                 <a class="nav__pill" href="<?= e(url('logout.php')) ?>">Log out</a>
             <?php else: ?>
                 <a href="<?= e(url('login.php')) ?>">Log in</a>
-                <a class="nav__pill" href="<?= e(url('register.php')) ?>">Register</a>
+                <a href="<?= e(url('register.php')) ?>">Register</a>
+                <a class="nav__pill" href="<?= e(url('book.php')) ?>">Free Estimate</a>
             <?php endif; ?>
         </div>
 
@@ -171,7 +172,8 @@ $ld = [
                 <a class="nav__pill" href="<?= e(url('logout.php')) ?>">Log out</a>
             <?php else: ?>
                 <a href="<?= e(url('login.php')) ?>">Log in</a>
-                <a class="nav__pill" href="<?= e(url('register.php')) ?>">Register</a>
+                <a href="<?= e(url('register.php')) ?>">Register</a>
+                <a class="nav__pill" href="<?= e(url('book.php')) ?>">Free Estimate</a>
             <?php endif; ?>
         </div>
     </nav>

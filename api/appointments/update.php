@@ -63,9 +63,25 @@ switch ($action) {
         json_error('Unknown action', 422);
 }
 
+// Re-fetch the updated row (LEFT JOIN so guest appointments — customer_id NULL —
+// are returned too, falling back to the guest_* columns for name/email).
 $st = db()->prepare(
-    'SELECT a.*, u.full_name AS customer_name, u.email AS customer_email
-       FROM appointments a JOIN users u ON u.id = a.customer_id WHERE a.id = ?'
+    'SELECT a.*,
+            COALESCE(u.full_name, a.guest_name) AS customer_name,
+            COALESCE(u.email, a.guest_email)    AS customer_email
+       FROM appointments a LEFT JOIN users u ON u.id = a.customer_id WHERE a.id = ?'
 );
 $st->execute([$id]);
-json_out(['appointment' => $st->fetch()]);
+$updated = $st->fetch();
+
+// Best-effort Google Calendar sync — never blocks the admin action.
+require_once __DIR__ . '/../../includes/gcal.php';
+if ($updated) {
+    if (in_array($action, ['confirm', 'reschedule', 'complete'], true)) {
+        gcal_sync_for_appointment($updated);   // create/move the event
+    } elseif ($action === 'decline') {
+        gcal_delete_for_appointment($updated); // remove the event
+    }
+}
+
+json_out(['appointment' => $updated]);

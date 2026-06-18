@@ -45,7 +45,11 @@ CREATE TABLE IF NOT EXISTS messages (
 
 CREATE TABLE IF NOT EXISTS appointments (
   id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  customer_id     BIGINT UNSIGNED NOT NULL,
+  -- customer_id is NULL for guest quote requests (no account required).
+  customer_id     BIGINT UNSIGNED NULL,
+  guest_name      VARCHAR(255) NULL,
+  guest_email     VARCHAR(255) NULL,
+  guest_phone     VARCHAR(64) NULL,
   conversation_id BIGINT UNSIGNED NULL,
   service_type    VARCHAR(120) NOT NULL,
   preferred_at    DATETIME NOT NULL,
@@ -55,9 +59,14 @@ CREATE TABLE IF NOT EXISTS appointments (
   notes           TEXT NULL,
   status          ENUM('pending','confirmed','declined','cancelled','completed') NOT NULL DEFAULT 'pending',
   decline_reason  VARCHAR(500) NULL,
+  -- CRM sales pipeline (separate from the operational `status` above).
+  lead_stage      ENUM('new','contacted','quoted','won','lost') NOT NULL DEFAULT 'new',
+  crm_notes       TEXT NULL,
+  -- Google Calendar event id, so we can update/delete the synced event.
+  gcal_event_id   VARCHAR(255) NULL,
   created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT fk_appt_customer     FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE CASCADE,
+  CONSTRAINT fk_appt_customer     FOREIGN KEY (customer_id) REFERENCES users(id) ON DELETE SET NULL,
   CONSTRAINT fk_appt_conversation FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE SET NULL,
   INDEX idx_appt_customer (customer_id),
   INDEX idx_appt_status (status),

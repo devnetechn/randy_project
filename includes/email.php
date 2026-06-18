@@ -97,9 +97,9 @@ function send_booking_notification(array $appointment): void
     $to = $cfg['to'] ?: $cfg['user'];
 
     try {
-        // Best-effort customer lookup.
-        $name = '';
-        $email = '';
+        // Best-effort contact lookup: registered customer, else guest fields.
+        $name = $appointment['guest_name'] ?? '';
+        $email = $appointment['guest_email'] ?? '';
         if (!empty($appointment['customer_id'])) {
             $st = db()->prepare('SELECT full_name, email FROM users WHERE id = ?');
             $st->execute([$appointment['customer_id']]);

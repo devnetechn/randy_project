@@ -1,4 +1,5 @@
 /config.php
+/credentials/
 /uploads/gallery/*
 !/uploads/gallery/.gitkeep
 /uploads/blog/*

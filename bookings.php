@@ -14,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'cance
     $appt = $st->fetch();
     if ($appt && in_array($appt['status'], ['pending', 'confirmed'], true)) {
         db()->prepare("UPDATE appointments SET status='cancelled' WHERE id=?")->execute([$id]);
+        // Best-effort: remove the synced Google Calendar event.
+        require_once __DIR__ . '/includes/gcal.php';
+        gcal_delete_for_appointment($appt);
     }
     redirect('bookings.php');
 }

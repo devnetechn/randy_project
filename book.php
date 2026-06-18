@@ -1,10 +1,13 @@
 <?php
 require_once __DIR__ . '/includes/app.php';
 
-$u = require_login();
-if ($u['role'] === 'admin') {
+// No login required — anyone can request a quote. Logged-in customers get a
+// booking tied to their account; guests just leave their contact details.
+$u = current_user();
+if ($u && $u['role'] === 'admin') {
     redirect('admin/index.php');
 }
+$is_guest = !$u;
 
 $SERVICES = [
     'Interior painting', 'Exterior painting', 'Drywall installation', 'Drywall repair',
@@ -12,9 +15,15 @@ $SERVICES = [
 ];
 
 $error = null;
-$form = ['serviceType' => $SERVICES[0], 'preferredAt' => '', 'address' => '', 'phone' => '', 'notes' => ''];
+$sent  = isset($_GET['sent']);
+$form = [
+    'name' => '', 'email' => '', 'serviceType' => $SERVICES[0],
+    'preferredAt' => '', 'address' => '', 'phone' => '', 'notes' => '',
+];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $form['name']        = trim($_POST['name'] ?? '');
+    $form['email']       = trim($_POST['email'] ?? '');
     $form['serviceType'] = $_POST['service_type'] ?? $SERVICES[0];
     $form['preferredAt'] = trim($_POST['preferred_at'] ?? '');
     $form['address']     = trim($_POST['address'] ?? '');
@@ -25,6 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please choose a valid service.';
     } elseif ($form['preferredAt'] === '' || $form['address'] === '') {
         $error = 'Service, preferred date/time, and address are required.';
+    } elseif ($is_guest && ($form['name'] === '' || $form['email'] === '' || $form['phone'] === '')) {
+        $error = 'Please provide your name, email, and phone so we can reach you.';
+    } elseif ($is_guest && !filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
     } else {
         // datetime-local "2026-06-01T14:30" -> MySQL DATETIME "2026-06-01 14:30:00"
         $preferred = str_replace('T', ' ', $form['preferredAt']);
@@ -32,22 +45,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $preferred .= ':00';
         }
         db()->prepare(
-            'INSERT INTO appointments (customer_id, service_type, preferred_at, address, phone, notes)
-             VALUES (?, ?, ?, ?, ?, ?)'
+            'INSERT INTO appointments
+                (customer_id, guest_name, guest_email, guest_phone, service_type, preferred_at, address, phone, notes)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
         )->execute([
-            $u['id'], $form['serviceType'], $preferred, $form['address'],
+            $is_guest ? null : $u['id'],
+            $is_guest ? $form['name'] : null,
+            $is_guest ? $form['email'] : null,
+            $is_guest ? $form['phone'] : null,
+            $form['serviceType'], $preferred, $form['address'],
             $form['phone'] ?: null, $form['notes'] ?: null,
         ]);
 
-        // Best-effort email alert to the business — never blocks the booking.
+        // Best-effort notifications — none of these can block or fail the booking.
         require_once __DIR__ . '/includes/email.php';
+        require_once __DIR__ . '/includes/sms.php';
+        require_once __DIR__ . '/includes/gcal.php';
         $st = db()->prepare('SELECT * FROM appointments WHERE id = ?');
         $st->execute([(int) db()->lastInsertId()]);
         if ($appt = $st->fetch()) {
-            send_booking_notification($appt);
+            send_booking_notification($appt);   // email the business
+            notify_owner_sms($appt);            // text Randy
+            gcal_sync_for_appointment($appt);   // add to Google Calendar
         }
 
-        redirect('bookings.php');
+        // Guests have no "My Bookings" page — show a thank-you instead.
+        redirect($is_guest ? 'book.php?sent=1' : 'bookings.php');
     }
 }
 
@@ -55,10 +78,23 @@ $page_title = 'Book an appointment';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="app-wrap">
-    <h1 class="app-title">Book an appointment</h1>
-    <p class="app-sub">Tell us what you need and your preferred time — we'll confirm shortly. Estimates are free.</p>
+    <?php if ($sent): ?>
+        <h1 class="app-title">Thanks — request received!</h1>
+        <p class="app-sub">We've got your details and will reach out shortly to confirm your free estimate. Talk soon!</p>
+        <a class="btn-primary" href="<?= e(url('index.php')) ?>">Back to home</a>
+    <?php else: ?>
+    <h1 class="app-title">Request a free estimate</h1>
+    <p class="app-sub">Tell us what you need and your preferred time — we'll confirm shortly. No account required; estimates are free.</p>
     <form method="post" novalidate>
         <?php if ($error): ?><p class="form-error" role="alert"><?= e($error) ?></p><?php endif; ?>
+        <?php if ($is_guest): ?>
+        <label class="field"><span>Your name</span>
+            <input type="text" name="name" value="<?= e($form['name']) ?>" required>
+        </label>
+        <label class="field"><span>Email</span>
+            <input type="email" name="email" value="<?= e($form['email']) ?>" required>
+        </label>
+        <?php endif; ?>
         <label class="field"><span>Service</span>
             <select name="service_type">
                 <?php foreach ($SERVICES as $s): ?>
@@ -72,13 +108,14 @@ require __DIR__ . '/includes/header.php';
         <label class="field"><span>Service address</span>
             <input type="text" name="address" value="<?= e($form['address']) ?>" required>
         </label>
-        <label class="field"><span>Phone (optional)</span>
-            <input type="tel" name="phone" value="<?= e($form['phone']) ?>">
+        <label class="field"><span>Phone<?= $is_guest ? '' : ' (optional)' ?></span>
+            <input type="tel" name="phone" value="<?= e($form['phone']) ?>"<?= $is_guest ? ' required' : '' ?>>
         </label>
         <label class="field"><span>Notes (optional)</span>
             <textarea name="notes" rows="3"><?= e($form['notes']) ?></textarea>
         </label>
         <button class="btn-primary" type="submit">Request appointment</button>
     </form>
+    <?php endif; ?>
 </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

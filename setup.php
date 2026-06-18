@@ -32,6 +32,58 @@ try {
     $pdo->exec(file_get_contents(__DIR__ . '/sql/tables.sql'));
     $steps[] = 'Tables created (or already present).';
 
+    // 2b) Upgrade existing installs to support guest quote requests (no login).
+    //     CREATE TABLE IF NOT EXISTS above never alters an existing table, so we
+    //     apply these column/FK changes here, guarded so re-running is safe.
+    $colExists = function (string $table, string $col) use ($pdo, $c): bool {
+        $st = $pdo->prepare(
+            'SELECT COUNT(*) FROM information_schema.COLUMNS
+              WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?'
+        );
+        $st->execute([$c['name'], $table, $col]);
+        return (int) $st->fetchColumn() > 0;
+    };
+    if (!$colExists('appointments', 'guest_name')) {
+        $pdo->exec(
+            'ALTER TABLE appointments
+                ADD COLUMN guest_name  VARCHAR(255) NULL AFTER customer_id,
+                ADD COLUMN guest_email VARCHAR(255) NULL AFTER guest_name,
+                ADD COLUMN guest_phone VARCHAR(64)  NULL AFTER guest_email'
+        );
+        // Make customer_id NULL-able and switch its FK to ON DELETE SET NULL.
+        $fk = $pdo->prepare(
+            'SELECT CONSTRAINT_NAME FROM information_schema.KEY_COLUMN_USAGE
+              WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = ?
+                AND REFERENCED_TABLE_NAME = ?'
+        );
+        $fk->execute([$c['name'], 'appointments', 'customer_id', 'users']);
+        if ($name = $fk->fetchColumn()) {
+            $pdo->exec("ALTER TABLE appointments DROP FOREIGN KEY `$name`");
+        }
+        $pdo->exec('ALTER TABLE appointments MODIFY customer_id BIGINT UNSIGNED NULL');
+        $pdo->exec(
+            'ALTER TABLE appointments
+                ADD CONSTRAINT fk_appt_customer FOREIGN KEY (customer_id)
+                REFERENCES users(id) ON DELETE SET NULL'
+        );
+        $steps[] = 'Upgraded appointments table for guest quote requests.';
+    } else {
+        $steps[] = 'Guest quote support already present.';
+    }
+
+    // 2c) Upgrade for the CRM leads pipeline + Google Calendar sync.
+    if (!$colExists('appointments', 'lead_stage')) {
+        $pdo->exec(
+            "ALTER TABLE appointments
+                ADD COLUMN lead_stage    ENUM('new','contacted','quoted','won','lost') NOT NULL DEFAULT 'new' AFTER decline_reason,
+                ADD COLUMN crm_notes     TEXT NULL AFTER lead_stage,
+                ADD COLUMN gcal_event_id VARCHAR(255) NULL AFTER crm_notes"
+        );
+        $steps[] = 'Upgraded appointments table for the CRM pipeline + calendar sync.';
+    } else {
+        $steps[] = 'CRM pipeline support already present.';
+    }
+
     // 3) Seed the admin account.
     $a = config('admin');
     $st = $pdo->prepare('SELECT id FROM users WHERE email = ?');

@@ -496,7 +496,88 @@
     refresh.reviews = load;
   }
 
-  const MODULES = { overview: initOverview, chat: initChat, bookings: initBookings, gallery: initGallery, blog: initBlog, reviews: initReviews };
+  /* ----------  CRM / Leads  ---------- */
+  function initCrm(panel) {
+    const STAGES = ['new', 'contacted', 'quoted', 'won', 'lost'];
+    let leads = [], filter = 'all';
+    panel.innerHTML =
+      '<p class="app-sub" style="margin-top:0">Every quote request is a lead. Move it through the pipeline and keep notes — call or text with one tap.</p>' +
+      '<div class="tabs" data-crm-filter style="margin-top:0">' +
+      ['all'].concat(STAGES).map((s) => '<button class="tab' + (s === 'all' ? ' is-active' : '') + '" data-f="' + s + '">' + cap(s) + '</button>').join('') +
+      '</div><ul class="booking-list" data-crm-list></ul>';
+    const listEl = panel.querySelector('[data-crm-list]');
+
+    panel.querySelector('[data-crm-filter]').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-f]'); if (!b) return;
+      filter = b.dataset.f;
+      panel.querySelectorAll('[data-crm-filter] .tab').forEach((t) => t.classList.toggle('is-active', t === b));
+      render();
+    });
+
+    function phoneOf(l) { return l.phone || l.guest_phone || ''; }
+
+    function item(l) {
+      const phone = phoneOf(l);
+      const tel = phone.replace(/[^+0-9]/g, '');
+      const contactLinks =
+        (l.customer_email ? '<a href="mailto:' + escapeHtml(l.customer_email) + '">' + escapeHtml(l.customer_email) + '</a>' : '') +
+        (phone ? (l.customer_email ? ' · ' : '') +
+          '<a href="tel:' + escapeHtml(tel) + '">📞 ' + escapeHtml(phone) + '</a> ' +
+          '<a href="sms:' + escapeHtml(tel) + '">💬 Text</a>' : '');
+      const stageSel = '<select data-stage data-id="' + l.id + '">' +
+        STAGES.map((s) => '<option value="' + s + '"' + (s === l.lead_stage ? ' selected' : '') + '>' + cap(s) + '</option>').join('') + '</select>';
+      return '<li class="booking-item" data-lead="' + l.id + '"><div class="booking-item__head">' +
+        '<span class="booking-item__title">#' + l.id + ' · ' + escapeHtml(l.service_type) + '</span>' +
+        '<span class="badge badge--' + l.status + '">' + l.status + '</span></div>' +
+        '<p class="booking-item__meta"><strong>' + escapeHtml(l.customer_name || 'Guest') + '</strong></p>' +
+        (contactLinks ? '<p class="booking-item__meta">' + contactLinks + '</p>' : '') +
+        '<p class="booking-item__meta">Preferred: ' + fmt(l.preferred_at) + (l.scheduled_at ? ' · Scheduled: ' + fmt(l.scheduled_at) : '') + '</p>' +
+        '<p class="booking-item__meta">' + escapeHtml(l.address || '') + '</p>' +
+        '<div class="booking-actions" style="align-items:center;gap:.5rem"><span style="color:var(--muted)">Stage:</span> ' + stageSel + '</div>' +
+        '<label class="field" style="margin-top:.5rem"><span>Notes</span>' +
+        '<textarea data-notes rows="2">' + escapeHtml(l.crm_notes || '') + '</textarea></label>' +
+        '<div class="booking-actions"><button class="btn-soft" data-save-notes data-id="' + l.id + '">Save notes</button></div></li>';
+    }
+    function render() {
+      const vis = filter === 'all' ? leads : leads.filter((l) => l.lead_stage === filter);
+      listEl.innerHTML = vis.length ? vis.map(item).join('') : '<li style="color:var(--muted)">No leads in this stage.</li>';
+    }
+
+    listEl.addEventListener('change', async (e) => {
+      const sel = e.target.closest('[data-stage]'); if (!sel) return;
+      const id = +sel.dataset.id;
+      try {
+        const d = await api.post('api/crm/update.php', { id, leadStage: sel.value });
+        const i = leads.findIndex((x) => String(x.id) === String(id));
+        if (i >= 0) leads[i] = d.lead;
+        toast('Stage updated');
+        if (filter !== 'all') render();
+      } catch (err) { toast(err.message, 'error'); }
+    });
+    listEl.addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-save-notes]'); if (!btn) return;
+      const id = +btn.dataset.id;
+      const li = btn.closest('[data-lead]');
+      const notes = li.querySelector('[data-notes]').value;
+      btn.disabled = true;
+      try {
+        const d = await api.post('api/crm/update.php', { id, notes });
+        const i = leads.findIndex((x) => String(x.id) === String(id));
+        if (i >= 0) leads[i] = d.lead;
+        toast('Notes saved');
+      } catch (err) { toast(err.message, 'error'); }
+      finally { btn.disabled = false; }
+    });
+
+    async function load() {
+      try { leads = (await api.get('api/appointments/list.php')).appointments || []; render(); }
+      catch (e) { toast(e.message, 'error'); }
+    }
+    load();
+    refresh.leads = load;
+  }
+
+  const MODULES = { overview: initOverview, chat: initChat, leads: initCrm, bookings: initBookings, gallery: initGallery, blog: initBlog, reviews: initReviews };
 
   document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.querySelector('[data-tabs]');
