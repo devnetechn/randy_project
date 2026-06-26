@@ -22,6 +22,7 @@ if (!$st->fetch()) {
 $sets = [];
 $args = [];
 
+$emailStage = null;
 if (array_key_exists('leadStage', $payload)) {
     $valid = ['new', 'contacted', 'quoted', 'won', 'lost'];
     if (!in_array($payload['leadStage'], $valid, true)) {
@@ -29,6 +30,10 @@ if (array_key_exists('leadStage', $payload)) {
     }
     $sets[] = 'lead_stage = ?';
     $args[] = $payload['leadStage'];
+    if (in_array($payload['leadStage'], ['contacted', 'quoted'], true)) {
+        $sets[] = 'crm_last_email_at = NOW()';
+        $emailStage = $payload['leadStage'];
+    }
 }
 
 if (array_key_exists('notes', $payload)) {
@@ -50,4 +55,11 @@ $st = db()->prepare(
        FROM appointments a LEFT JOIN users u ON u.id = a.customer_id WHERE a.id = ?'
 );
 $st->execute([$id]);
-json_out(['lead' => $st->fetch()]);
+$lead = $st->fetch();
+
+if ($emailStage && $lead) {
+    require_once __DIR__ . '/../../includes/email.php';
+    send_crm_stage_email($lead, $emailStage);
+}
+
+json_out(['lead' => $lead]);

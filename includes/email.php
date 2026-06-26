@@ -130,3 +130,84 @@ function send_booking_notification(array $appointment): void
         error_log('[email] booking notification failed for #' . ($appointment['id'] ?? '?') . ': ' . $e->getMessage());
     }
 }
+
+/**
+ * Email the customer when the admin moves a lead to 'contacted' or 'quoted',
+ * and again 24 hours later if they haven't responded (follow-up).
+ * Best-effort — never throws.
+ */
+function send_crm_stage_email(array $appt, string $stage, bool $isFollowup = false): void
+{
+    if (!email_is_configured()) {
+        return;
+    }
+
+    // Resolve customer name + email from registered user or guest fields.
+    $name  = $appt['customer_name'] ?? $appt['guest_name'] ?? '';
+    $email = $appt['customer_email'] ?? $appt['guest_email'] ?? '';
+    if (!empty($appt['customer_id']) && (!$name || !$email)) {
+        $st = db()->prepare('SELECT full_name, email FROM users WHERE id = ?');
+        $st->execute([$appt['customer_id']]);
+        if ($u = $st->fetch()) { $name = $u['full_name']; $email = $u['email']; }
+    }
+    if (!$email) {
+        error_log('[email] crm stage email skipped #' . ($appt['id'] ?? '?') . ' — no customer email');
+        return;
+    }
+
+    $cfg  = config('email');
+    $b    = business_info();
+    $hi   = $name ? 'Hi ' . $name . ',' : 'Hello,';
+    $svc  = $appt['service_type'] ?? 'your service';
+    $addr = $appt['address'] ?? '';
+    $sig  = implode("\r\n", [
+        '',
+        $b['owner'],
+        $b['name'],
+        $b['phone'],
+        $b['website'],
+    ]);
+
+    try {
+        if ($isFollowup) {
+            $subject = 'Following up — your ' . $svc . ' estimate';
+            $body = implode("\r\n", [
+                $hi,
+                '',
+                'Just following up on your ' . $svc . ' estimate' . ($addr ? ' for ' . $addr : '') . '.',
+                'I want to make sure you have everything you need to move forward.',
+                '',
+                'Feel free to reply here or call/text me at ' . $b['phone'] . ' — no pressure at all!',
+                $sig,
+            ]);
+        } elseif ($stage === 'quoted') {
+            $subject = 'Your estimate is ready — ' . $b['name'];
+            $body = implode("\r\n", [
+                $hi,
+                '',
+                "I've put together your estimate for " . $svc . ($addr ? ' at ' . $addr : '') . '.',
+                'Please reply to this email or call/text me at ' . $b['phone'] . ' to go over the details.',
+                '',
+                'Looking forward to working with you!',
+                $sig,
+            ]);
+        } else {
+            // 'contacted'
+            $subject = 'Re: Your estimate request — ' . $svc;
+            $body = implode("\r\n", [
+                $hi,
+                '',
+                'This is Randy from ' . $b['name'] . '. I saw your request for ' . $svc .
+                    ($addr ? ' at ' . $addr : '') . ' and will be reaching out shortly to schedule your free estimate.',
+                '',
+                'If you\'d like to talk sooner, call or text me at ' . $b['phone'] . ' or just reply to this email.',
+                $sig,
+            ]);
+        }
+
+        smtp_send_mail($cfg, $email, $subject, $body);
+        error_log('[email] crm stage email (' . ($isFollowup ? 'followup' : $stage) . ') sent for #' . $appt['id'] . ' → ' . $email);
+    } catch (Throwable $e) {
+        error_log('[email] crm stage email failed for #' . ($appt['id'] ?? '?') . ': ' . $e->getMessage());
+    }
+}

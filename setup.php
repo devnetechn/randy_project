@@ -91,6 +91,14 @@ try {
         $steps[] = 'CRM pipeline support already present.';
     }
 
+    // 2d) CRM follow-up email tracking.
+    if (!$colExists('appointments', 'crm_last_email_at')) {
+        $pdo->exec('ALTER TABLE appointments ADD COLUMN crm_last_email_at DATETIME NULL AFTER crm_notes');
+        $steps[] = 'Upgraded appointments table for CRM follow-up email tracking.';
+    } else {
+        $steps[] = 'CRM follow-up email tracking already present.';
+    }
+
     // 3) Seed the admin account.
     $a = config('admin');
     $st = $pdo->prepare('SELECT id FROM users WHERE email = ?');
