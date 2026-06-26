@@ -228,8 +228,10 @@ function send_completion_email(array $appt): void
         'name'    => $name,
         'service' => $svc,
     ]));
-    $siteBase  = rtrim((string) (config('base_url') ?? ('https://' . ($_SERVER['HTTP_HOST'] ?? 'randyspaintdrywall.com'))), '/');
-    $reviewUrl = $siteBase . '/' . ltrim($reviewPath, '/');
+    $scheme    = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host      = $_SERVER['HTTP_HOST'] ?? 'randyspaintdrywall.com';
+    $siteBase  = $scheme . '://' . $host . app_base_path();
+    $reviewUrl = rtrim($siteBase, '/') . '/' . $reviewPath;
 
     // Also pull the Google review URL if the admin has set one.
     $googleUrl = setting_get('google_reviews_review_url', '');
