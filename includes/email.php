@@ -196,6 +196,76 @@ function send_appointment_status_email(array $appt, string $action): void
 }
 
 /**
+ * Thank-you + review request email sent when a job is marked complete.
+ * Links the customer to review.php (pre-filled with their name + service).
+ * Best-effort — never throws.
+ */
+function send_completion_email(array $appt): void
+{
+    if (!email_is_configured()) {
+        return;
+    }
+
+    $name  = $appt['customer_name'] ?? $appt['guest_name'] ?? '';
+    $email = $appt['customer_email'] ?? $appt['guest_email'] ?? '';
+    if (!empty($appt['customer_id']) && (!$name || !$email)) {
+        $st = db()->prepare('SELECT full_name, email FROM users WHERE id = ?');
+        $st->execute([$appt['customer_id']]);
+        if ($u = $st->fetch()) { $name = $u['full_name']; $email = $u['email']; }
+    }
+    if (!$email) {
+        return;
+    }
+
+    $cfg  = config('email');
+    $b    = business_info();
+    $hi   = $name ? 'Hi ' . $name . ',' : 'Hello,';
+    $svc  = $appt['service_type'] ?? '';
+    $sig  = implode("\r\n", ['', $b['owner'], $b['name'], $b['phone'], $b['website']]);
+
+    // Build the review URL — pre-fill name + service for a frictionless experience.
+    $reviewPath = 'review.php?' . http_build_query(array_filter([
+        'name'    => $name,
+        'service' => $svc,
+    ]));
+    $siteBase  = rtrim((string) (config('base_url') ?? ('https://' . ($_SERVER['HTTP_HOST'] ?? 'randyspaintdrywall.com'))), '/');
+    $reviewUrl = $siteBase . '/' . ltrim($reviewPath, '/');
+
+    // Also pull the Google review URL if the admin has set one.
+    $googleUrl = setting_get('google_reviews_review_url', '');
+
+    try {
+        $subject = 'Thank you, ' . ($name ?: 'valued customer') . '! — ' . $b['name'];
+        $lines = [
+            $hi,
+            '',
+            'Thank you for choosing ' . $b['name'] . '! It was a pleasure working on your ' .
+                ($svc ? $svc . ' project' : 'project') .
+                ($appt['address'] ? ' at ' . $appt['address'] : '') . '.',
+            '',
+            'If you have a moment, we\'d really appreciate a quick review — it helps us a lot:',
+            '',
+            '  ' . $reviewUrl,
+        ];
+        if ($googleUrl) {
+            $lines[] = '';
+            $lines[] = 'Or leave us a Google review here:';
+            $lines[] = '  ' . $googleUrl;
+        }
+        $lines = array_merge($lines, [
+            '',
+            'Thank you again — we hope to work with you again in the future!',
+            $sig,
+        ]);
+
+        smtp_send_mail($cfg, $email, $subject, implode("\r\n", $lines));
+        error_log('[email] completion email sent for #' . $appt['id'] . ' → ' . $email);
+    } catch (Throwable $e) {
+        error_log('[email] completion email failed for #' . ($appt['id'] ?? '?') . ': ' . $e->getMessage());
+    }
+}
+
+/**
  * Email the customer when the admin moves a lead to 'contacted' or 'quoted',
  * and again 24 hours later if they haven't responded (follow-up).
  * Best-effort — never throws.

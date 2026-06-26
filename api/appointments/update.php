@@ -84,10 +84,14 @@ if ($updated) {
     }
 }
 
-// Notify the customer by email on confirm or decline.
+// Notify the customer by email.
 require_once __DIR__ . '/../../includes/email.php';
-if ($updated && in_array($action, ['confirm', 'decline'], true)) {
-    send_appointment_status_email($updated, $action);
+if ($updated) {
+    if (in_array($action, ['confirm', 'decline'], true)) {
+        send_appointment_status_email($updated, $action);
+    } elseif ($action === 'complete') {
+        send_completion_email($updated);
+    }
 }
 
 json_out(['appointment' => $updated]);
