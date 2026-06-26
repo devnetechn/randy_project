@@ -29,8 +29,15 @@ try {
     }
 
     // 2) Create the tables (no CREATE DATABASE inside — safe on shared hosting).
-    $pdo->exec(file_get_contents(__DIR__ . '/sql/tables.sql'));
-    $steps[] = 'Tables created (or already present).';
+    //    If tables.sql is missing (e.g. not deployed), skip — the tables likely
+    //    already exist and the migration steps below will handle new columns.
+    $tablesSql = __DIR__ . '/sql/tables.sql';
+    if (is_readable($tablesSql) && ($sql = file_get_contents($tablesSql)) !== false && trim($sql) !== '') {
+        $pdo->exec($sql);
+        $steps[] = 'Tables created (or already present).';
+    } else {
+        $steps[] = 'tables.sql not found — skipping CREATE TABLE (assuming tables exist already).';
+    }
 
     // 2b) Upgrade existing installs to support guest quote requests (no login).
     //     CREATE TABLE IF NOT EXISTS above never alters an existing table, so we
