@@ -78,10 +78,16 @@ $updated = $st->fetch();
 require_once __DIR__ . '/../../includes/gcal.php';
 if ($updated) {
     if (in_array($action, ['confirm', 'reschedule', 'complete'], true)) {
-        gcal_sync_for_appointment($updated);   // create/move the event
+        gcal_sync_for_appointment($updated);
     } elseif ($action === 'decline') {
-        gcal_delete_for_appointment($updated); // remove the event
+        gcal_delete_for_appointment($updated);
     }
+}
+
+// Notify the customer by email on confirm or decline.
+require_once __DIR__ . '/../../includes/email.php';
+if ($updated && in_array($action, ['confirm', 'decline'], true)) {
+    send_appointment_status_email($updated, $action);
 }
 
 json_out(['appointment' => $updated]);

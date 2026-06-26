@@ -132,6 +132,70 @@ function send_booking_notification(array $appointment): void
 }
 
 /**
+ * Send appointment confirmed/declined email to the customer. Best-effort.
+ */
+function send_appointment_status_email(array $appt, string $action): void
+{
+    if (!email_is_configured()) {
+        return;
+    }
+
+    $name  = $appt['customer_name'] ?? $appt['guest_name'] ?? '';
+    $email = $appt['customer_email'] ?? $appt['guest_email'] ?? '';
+    if (!empty($appt['customer_id']) && (!$name || !$email)) {
+        $st = db()->prepare('SELECT full_name, email FROM users WHERE id = ?');
+        $st->execute([$appt['customer_id']]);
+        if ($u = $st->fetch()) { $name = $u['full_name']; $email = $u['email']; }
+    }
+    if (!$email) {
+        return;
+    }
+
+    $cfg  = config('email');
+    $b    = business_info();
+    $hi   = $name ? 'Hi ' . $name . ',' : 'Hello,';
+    $svc  = $appt['service_type'] ?? 'your service';
+    $addr = $appt['address'] ?? '';
+    $sig  = implode("\r\n", ['', $b['owner'], $b['name'], $b['phone'], $b['website']]);
+
+    try {
+        if ($action === 'confirm') {
+            $when = $appt['scheduled_at'] ?: $appt['preferred_at'];
+            $subject = 'Your appointment is confirmed — ' . $b['name'];
+            $body = implode("\r\n", [
+                $hi,
+                '',
+                'Great news — your ' . $svc . ' appointment' . ($addr ? ' at ' . $addr : '') . ' is confirmed for:',
+                '',
+                '  ' . date('l, F j, Y \a\t g:i A', strtotime($when)),
+                '',
+                'If you need to reschedule or have any questions, call or text me at ' . $b['phone'] . ' or reply to this email.',
+                '',
+                'Looking forward to it!',
+                $sig,
+            ]);
+        } else {
+            // decline
+            $subject = 'About your estimate request — ' . $b['name'];
+            $reason  = !empty($appt['decline_reason']) ? "\r\n\r\nNote: " . $appt['decline_reason'] : '';
+            $body = implode("\r\n", [
+                $hi,
+                '',
+                "Unfortunately we're unable to accommodate your " . $svc . ' request at this time.' . $reason,
+                '',
+                'Please don\'t hesitate to reach out again — call or text ' . $b['phone'] . ' and we\'ll do our best to find a time that works.',
+                $sig,
+            ]);
+        }
+
+        smtp_send_mail($cfg, $email, $subject, $body);
+        error_log('[email] appointment ' . $action . ' email sent for #' . $appt['id'] . ' → ' . $email);
+    } catch (Throwable $e) {
+        error_log('[email] appointment status email failed for #' . ($appt['id'] ?? '?') . ': ' . $e->getMessage());
+    }
+}
+
+/**
  * Email the customer when the admin moves a lead to 'contacted' or 'quoted',
  * and again 24 hours later if they haven't responded (follow-up).
  * Best-effort — never throws.
