@@ -128,7 +128,34 @@ $ld = [
 
         <div class="nav__links nav__center">
             <a href="<?= e(url('index.php')) ?>"<?= active('index.php') ?>>Home</a>
-            <a href="<?= e(url('services.php')) ?>"<?= active('services.php') ?>>Services</a>
+
+            <div class="nav__drop-wrap">
+                <a class="nav__drop-trigger" href="<?= e(url('services.php')) ?>"<?= active('services.php') ?>>Services<svg class="nav__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
+                <div class="nav__dropdown">
+                    <a href="<?= e(url('services.php')) ?>">Interior Painting</a>
+                    <a href="<?= e(url('services.php')) ?>">Exterior Painting</a>
+                    <a href="<?= e(url('services.php')) ?>">Drywall Installation</a>
+                    <a href="<?= e(url('services.php')) ?>">Drywall Repair</a>
+                    <div class="nav__dropdown-divider"></div>
+                    <a href="<?= e(url('level-5-drywall.php')) ?>">Level 5 Drywall Finish</a>
+                    <a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a>
+                    <a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a>
+                    <div class="nav__dropdown-divider"></div>
+                    <a class="nav__dropdown-cta" href="<?= e(url('services.php')) ?>">All Services &rarr;</a>
+                </div>
+            </div>
+
+            <div class="nav__drop-wrap">
+                <a class="nav__drop-trigger" href="<?= e(url('commercial.php')) ?>"<?= active('commercial.php') ?>>Commercial<svg class="nav__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></a>
+                <div class="nav__dropdown">
+                    <a href="<?= e(url('commercial.php')) ?>">Office &amp; Retail Painting</a>
+                    <a href="<?= e(url('commercial.php')) ?>">Multi-Unit &amp; Condo</a>
+                    <a href="<?= e(url('commercial.php')) ?>">Commercial Drywall</a>
+                    <div class="nav__dropdown-divider"></div>
+                    <a class="nav__dropdown-cta" href="<?= e(url('book.php')) ?>">Get a Commercial Quote &rarr;</a>
+                </div>
+            </div>
+
             <a href="<?= e(url('gallery.php')) ?>"<?= active('gallery.php') ?>>Gallery</a>
             <a href="<?= e(url('about.php')) ?>"<?= active('about.php') ?>>About</a>
             <a href="<?= e(url('contact.php')) ?>"<?= active('contact.php') ?>>Contact</a>
@@ -158,7 +185,36 @@ $ld = [
 
         <div class="nav__panel" data-nav-panel>
             <a href="<?= e(url('index.php')) ?>">Home</a>
-            <a href="<?= e(url('services.php')) ?>">Services</a>
+
+            <div class="nav__accordion" data-accordion>
+                <button class="nav__accordion-toggle" type="button" aria-expanded="false" data-accordion-toggle>
+                    Services
+                    <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="nav__accordion-body" data-accordion-body>
+                    <a href="<?= e(url('services.php')) ?>">Interior Painting</a>
+                    <a href="<?= e(url('services.php')) ?>">Exterior Painting</a>
+                    <a href="<?= e(url('services.php')) ?>">Drywall Installation &amp; Repair</a>
+                    <a href="<?= e(url('level-5-drywall.php')) ?>">Level 5 Drywall Finish</a>
+                    <a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a>
+                    <a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a>
+                    <a class="nav__panel-cta" href="<?= e(url('services.php')) ?>">All Services &rarr;</a>
+                </div>
+            </div>
+
+            <div class="nav__accordion" data-accordion>
+                <button class="nav__accordion-toggle" type="button" aria-expanded="false" data-accordion-toggle>
+                    Commercial
+                    <svg class="nav__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="nav__accordion-body" data-accordion-body>
+                    <a href="<?= e(url('commercial.php')) ?>">Office &amp; Retail Painting</a>
+                    <a href="<?= e(url('commercial.php')) ?>">Multi-Unit &amp; Condo</a>
+                    <a href="<?= e(url('commercial.php')) ?>">Commercial Drywall</a>
+                    <a class="nav__panel-cta" href="<?= e(url('book.php')) ?>">Get a Commercial Quote &rarr;</a>
+                </div>
+            </div>
+
             <a href="<?= e(url('gallery.php')) ?>">Gallery</a>
             <a href="<?= e(url('about.php')) ?>">About</a>
             <a href="<?= e(url('contact.php')) ?>">Contact</a>

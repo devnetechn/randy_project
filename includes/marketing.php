@@ -30,6 +30,10 @@ function mkt_service_cards(): void
         ['/ 05', 'Texture & Finishing', 'Knockdown, orange peel, smooth Level 5 — matched perfectly to your existing walls.', ['Texture matching', 'Skim coating', 'Level 5 smooth finish']],
         ['/ 06', 'Commercial Projects', 'Offices, retail, and rentals painted and repaired on schedule, with minimal disruption.', ['Offices & retail', 'Rental turnovers', 'After-hours scheduling']],
         ['/ 07', 'Level 5 Skim Coating', 'A full skim coat over the entire surface for a glass-smooth, flawless wall — our highest drywall finish.', ['Full-surface skim coat', 'Flawless under raking light', 'Ideal for gloss & dark paints']],
+        ['/ 08', 'Stucco Removal', 'Old, failing, or unwanted stucco removed from interior and exterior surfaces — prepped clean and ready for a modern finish.', ['Exterior stucco removal', 'Interior texture removal', 'Surface prep for repaint or skim coat']],
+        ['/ 09', 'Plaster Repair', 'Cracked, damaged, or crumbling plaster patched and blended so repairs disappear into the surrounding wall.', ['Plaster crack repair', 'Water-damage restoration', 'Matched texture & finish']],
+        ['/ 10', 'Wallcovering Removal', 'Wallpaper and wallcovering stripped cleanly and completely — walls left smooth and ready for paint or skim coat.', ['Wallpaper stripping', 'Adhesive residue removal', 'Wall prep for painting or resurfacing']],
+        ['/ 11', 'Power Washing', 'High-pressure washing for residential and commercial properties — removes dirt, mold, algae, and grime before painting or as standalone maintenance.', ['Building exteriors & siding', 'Driveways & sidewalks', 'Pre-paint surface preparation']],
     ];
     echo '<div class="services-grid">';
     foreach ($cards as [$num, $title, $desc, $features]) {

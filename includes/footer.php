@@ -38,7 +38,7 @@ $show_widget = !($cu && $cu['role'] === 'admin');
                         <li><a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a></li>
                         <li><a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a></li>
                         <li><a href="<?= e(url('services.php')) ?>">Painting &amp; Drywall</a></li>
-                        <li><a href="<?= e(url('services.php')) ?>">Commercial Work</a></li>
+                        <li><a href="<?= e(url('commercial.php')) ?>">Commercial Work</a></li>
                     </ul>
                 </div>
 
@@ -77,7 +77,7 @@ $show_widget = !($cu && $cu['role'] === 'admin');
 
             <div class="footer-bottom">
                 <p>&copy; 2026 Randy&apos;s Painting &amp; Drywall Services. All rights reserved.</p>
-                <p>Painting &amp; Drywall Services · Lehigh Valley &amp; Bucks County, PA</p>
+                <p>Painting &amp; Drywall Services · Lehigh Valley &amp; Bucks County, PA · <a href="<?= e(url('privacy.php')) ?>" style="color:inherit;opacity:.7">Privacy Policy</a></p>
             </div>
         </div>
     </footer>

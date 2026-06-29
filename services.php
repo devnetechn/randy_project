@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
-$page_title = 'High-End Painting & Level 5 Drywall Services | Lehigh Valley & Bucks County, PA';
-$page_description = 'Premium interior & exterior painting, Level 5 drywall finishes, skim coating, and wall restoration across the Lehigh Valley and Bucks County, PA — Easton, Bethlehem, New Hope, Doylestown and beyond. Free estimates from a licensed, insured crew.';
-$page_keywords = 'high-end residential painting Lehigh Valley, luxury home painter Bucks County, Level 5 drywall finish, skim coating Lehigh Valley, fine finish painting, smooth wall finishing, drywall restoration specialist, premium interior painting Bethlehem PA, luxury painter New Hope PA, painting contractor Doylestown PA';
+$page_title = 'Painting, Drywall & Restoration Services | Lehigh Valley & Bucks County, PA';
+$page_description = 'Interior & exterior painting, Level 4 & 5 skim coating, drywall installation & repair, stucco removal, plaster repair, wallcovering removal, and power washing across the Lehigh Valley and Bucks County, PA. Licensed, insured. Free estimates.';
+$page_keywords = 'high-end residential painting Lehigh Valley, luxury home painter Bucks County, Level 5 drywall finish, skim coating Lehigh Valley, stucco removal Easton PA, plaster repair Lehigh Valley, wallcovering removal Bucks County, power washing Lehigh Valley, drywall contractor Easton PA, painter Bethlehem PA';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">

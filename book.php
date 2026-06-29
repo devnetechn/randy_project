@@ -10,14 +10,20 @@ if ($u && $u['role'] === 'admin') {
 $is_guest = !$u;
 
 $SERVICES = [
-    'Interior painting', 'Exterior painting', 'Drywall installation', 'Drywall repair',
-    'Cabinet refinishing', 'Popcorn ceiling removal', 'Pressure washing', 'Free estimate',
+    'Painting'              => ['Interior painting', 'Exterior painting', 'Cabinet refinishing'],
+    'Commercial'            => ['Commercial interior painting', 'Commercial exterior painting'],
+    'Drywall & Finishing'   => ['Drywall installation', 'Drywall repair', 'Level 4 & 5 skim coating', 'Texture & finishing', 'Popcorn ceiling removal'],
+    'Surface Restoration'   => ['Stucco removal', 'Plaster repair', 'Wallcovering removal'],
+    'Exterior Services'     => ['Power washing'],
+    'Other'                 => ['Free estimate / not sure yet'],
 ];
+// Flat list for validation
+$SERVICES_FLAT = array_merge(...array_values($SERVICES));
 
 $error = null;
 $sent  = isset($_GET['sent']);
 $form = [
-    'name' => '', 'email' => '', 'serviceType' => $SERVICES[0],
+    'name' => '', 'email' => '', 'serviceType' => $SERVICES_FLAT[0],
     'preferredAt' => '', 'address' => '', 'phone' => '', 'notes' => '',
 ];
 
@@ -30,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form['phone']       = trim($_POST['phone'] ?? '');
     $form['notes']       = trim($_POST['notes'] ?? '');
 
-    if (!in_array($form['serviceType'], $SERVICES, true)) {
+    if (!in_array($form['serviceType'], $SERVICES_FLAT, true)) {
         $error = 'Please choose a valid service.';
     } elseif ($form['preferredAt'] === '' || $form['address'] === '') {
         $error = 'Service, preferred date/time, and address are required.';
@@ -78,10 +84,13 @@ $page_title = 'Book an appointment';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="app-wrap">
-    <?php if ($sent): ?>
+    <?php if ($sent): $b = business_info(); ?>
         <h1 class="app-title">Thanks — request received!</h1>
-        <p class="app-sub">We've got your details and will reach out shortly to confirm your free estimate. Talk soon!</p>
-        <a class="btn-primary" href="<?= e(url('index.php')) ?>">Back to home</a>
+        <p class="app-sub">We've got your details and will reach out shortly to confirm your free estimate. Want to talk sooner? Call us about your free estimate.</p>
+        <p style="margin:1.25rem 0">
+            <a class="btn-primary" href="tel:<?= e($b['phoneTel']) ?>">📞 Call us now — <?= e($b['phone']) ?></a>
+        </p>
+        <a href="<?= e(url('index.php')) ?>">← Back to home</a>
     <?php else: ?>
     <h1 class="app-title">Request a free estimate</h1>
     <p class="app-sub">Tell us what you need and your preferred time — we'll confirm shortly. No account required; estimates are free.</p>
@@ -97,8 +106,12 @@ require __DIR__ . '/includes/header.php';
         <?php endif; ?>
         <label class="field"><span>Service</span>
             <select name="service_type">
-                <?php foreach ($SERVICES as $s): ?>
-                    <option value="<?= e($s) ?>"<?= $s === $form['serviceType'] ? ' selected' : '' ?>><?= e($s) ?></option>
+                <?php foreach ($SERVICES as $group => $options): ?>
+                    <optgroup label="<?= e($group) ?>">
+                        <?php foreach ($options as $s): ?>
+                            <option value="<?= e($s) ?>"<?= $s === $form['serviceType'] ? ' selected' : '' ?>><?= e($s) ?></option>
+                        <?php endforeach; ?>
+                    </optgroup>
                 <?php endforeach; ?>
             </select>
         </label>

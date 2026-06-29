@@ -63,6 +63,17 @@
       });
     }
 
+    // Mobile nav accordion (Services / Commercial sub-menus)
+    document.querySelectorAll('[data-accordion]').forEach(function (acc) {
+      const btn = acc.querySelector('[data-accordion-toggle]');
+      const body = acc.querySelector('[data-accordion-body]');
+      if (!btn || !body) return;
+      btn.addEventListener('click', function () {
+        const open = body.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    });
+
     // FAQ accordions
     document.querySelectorAll('[data-faq]').forEach(function (item) {
       const btn = item.querySelector('[data-faq-q]');
