@@ -95,6 +95,61 @@
     refresh.bookings = load;
   }
 
+  /* ----------  Reports  ---------- */
+  function initReports(panel) {
+    const VIEWS = ['daily', 'weekly', 'monthly'];
+    const LABELS = { daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly' };
+    const COLS = ['total', 'pending', 'confirmed', 'declined', 'cancelled', 'completed'];
+    let view = 'monthly';
+    panel.innerHTML =
+      '<div class="tabs" data-rp-filter style="margin-top:0">' +
+      VIEWS.map((v) => '<button class="tab' + (v === view ? ' is-active' : '') + '" data-v="' + v + '">' + LABELS[v] + '</button>').join('') +
+      '</div><div class="report-table-wrap" data-rp-table></div>';
+    const tableEl = panel.querySelector('[data-rp-table]');
+
+    panel.querySelector('[data-rp-filter]').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-v]'); if (!b) return;
+      view = b.dataset.v;
+      panel.querySelectorAll('[data-rp-filter] .tab').forEach((t) => t.classList.toggle('is-active', t === b));
+      load();
+    });
+
+    function periodLabel(p) {
+      const d = new Date(p + 'T00:00:00');
+      if (view === 'daily') return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      if (view === 'weekly') {
+        const end = new Date(d);
+        end.setDate(end.getDate() + 6);
+        return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' – ' + end.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      return d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+    }
+
+    function render(rows) {
+      if (!rows.length) {
+        tableEl.innerHTML = '<p style="color:var(--muted)">No bookings in this range.</p>';
+        return;
+      }
+      let html = '<table class="report-table"><thead><tr><th>Period</th><th>Total</th><th>Pending</th><th>Confirmed</th><th>Declined</th><th>Cancelled</th><th>Completed</th></tr></thead><tbody>';
+      rows.forEach((r) => {
+        html += '<tr><td>' + escapeHtml(periodLabel(r.period)) + '</td>' +
+          COLS.map((c) => '<td>' + (r[c] || 0) + '</td>').join('') + '</tr>';
+      });
+      html += '</tbody></table>';
+      tableEl.innerHTML = html;
+    }
+
+    async function load() {
+      tableEl.innerHTML = '<p style="color:var(--muted)">Loading&hellip;</p>';
+      try {
+        const d = await api.get('api/admin/reports.php?period=' + view);
+        render(d.rows || []);
+      } catch (e) { toast(e.message, 'error'); }
+    }
+    load();
+    refresh.reports = load;
+  }
+
   /* ----------  Gallery  ---------- */
   function initGallery(panel) {
     const CATS = ['interior', 'exterior', 'drywall', 'commercial', 'other'];
@@ -577,7 +632,7 @@
     refresh.leads = load;
   }
 
-  const MODULES = { overview: initOverview, chat: initChat, leads: initCrm, bookings: initBookings, gallery: initGallery, blog: initBlog, reviews: initReviews };
+  const MODULES = { overview: initOverview, chat: initChat, leads: initCrm, bookings: initBookings, reports: initReports, gallery: initGallery, blog: initBlog, reviews: initReviews };
 
   document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.querySelector('[data-tabs]');

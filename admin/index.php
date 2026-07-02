@@ -14,6 +14,7 @@ require __DIR__ . '/../includes/header.php';
         <button class="tab" data-tab="chat" role="tab">Live Chat</button>
         <button class="tab" data-tab="leads" role="tab">CRM / Leads</button>
         <button class="tab" data-tab="bookings" role="tab">Bookings</button>
+        <button class="tab" data-tab="reports" role="tab">Reports</button>
         <button class="tab" data-tab="gallery" role="tab">Gallery</button>
         <button class="tab" data-tab="blog" role="tab">Blog</button>
         <button class="tab" data-tab="reviews" role="tab">Reviews</button>
@@ -23,6 +24,7 @@ require __DIR__ . '/../includes/header.php';
     <div data-panel="chat" hidden></div>
     <div data-panel="leads" hidden></div>
     <div data-panel="bookings" hidden></div>
+    <div data-panel="reports" hidden></div>
     <div data-panel="gallery" hidden></div>
     <div data-panel="blog" hidden></div>
     <div data-panel="reviews" hidden></div>
