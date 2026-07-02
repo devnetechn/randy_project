@@ -39,6 +39,7 @@ $show_widget = !($cu && $cu['role'] === 'admin');
                         <li><a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a></li>
                         <li><a href="<?= e(url('services.php')) ?>">Painting &amp; Drywall</a></li>
                         <li><a href="<?= e(url('commercial.php')) ?>">Commercial Work</a></li>
+                        <li><a href="<?= e(url('locations/index.php')) ?>">Service Areas</a></li>
                     </ul>
                 </div>
 
