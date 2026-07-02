@@ -231,7 +231,7 @@ function mkt_review_schema(): void
 }
 
 /** Emit Service structured data for a dedicated service page (SEO rich results). */
-function mkt_service_jsonld(string $name, string $description): void
+function mkt_service_jsonld(string $name, string $description, ?array $areaServed = null): void
 {
     $b = business_info();
     $ld = [
@@ -241,7 +241,7 @@ function mkt_service_jsonld(string $name, string $description): void
         'name'        => $name,
         'description' => $description,
         'provider'    => ['@type' => 'HousePainter', 'name' => $b['name'], 'telephone' => $b['phoneTel']],
-        'areaServed'  => [
+        'areaServed'  => $areaServed ?? [
             ['@type' => 'AdministrativeArea', 'name' => 'Lehigh Valley'],
             ['@type' => 'AdministrativeArea', 'name' => 'Bucks County'],
         ],
