@@ -141,6 +141,8 @@ $ld = [
                     <a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a>
                     <a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a>
                     <div class="nav__dropdown-divider"></div>
+                    <a href="<?= e(url('locations/index.php')) ?>">Service Areas</a>
+                    <div class="nav__dropdown-divider"></div>
                     <a class="nav__dropdown-cta" href="<?= e(url('services.php')) ?>">All Services &rarr;</a>
                 </div>
             </div>
@@ -198,6 +200,7 @@ $ld = [
                     <a href="<?= e(url('level-5-drywall.php')) ?>">Level 5 Drywall Finish</a>
                     <a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a>
                     <a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a>
+                    <a href="<?= e(url('locations/index.php')) ?>">Service Areas</a>
                     <a class="nav__panel-cta" href="<?= e(url('services.php')) ?>">All Services &rarr;</a>
                 </div>
             </div>
