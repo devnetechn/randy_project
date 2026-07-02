@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/app.php';
 require_once __DIR__ . '/../includes/locations.php';
-$page_title = 'Service Areas | Randy\'s Painting & Drywall Services';
+$page_title = 'Service Areas | Lehigh Valley & Bucks County, PA';
 $page_description = 'Painting and drywall repair across the Lehigh Valley: Easton, Bethlehem, and Allentown, PA. Licensed, insured, free estimates.';
 require __DIR__ . '/../includes/header.php';
 ?>

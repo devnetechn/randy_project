@@ -10,7 +10,7 @@ require_once __DIR__ . '/gallery.php';
 
 $LOCATIONS = [
     'easton-painting' => [
-        'title'                => "Painting Contractor in Easton, PA | Randy's Painting & Drywall Services",
+        'title'                => 'Painting Contractor in Easton, PA',
         'meta_description'     => "High-end interior and exterior painting for Easton, PA homes — from College Hill Victorians to new builds in the West Ward. Licensed, insured, free estimates.",
         'meta_keywords'        => 'painting contractor Easton PA, house painter Easton PA, interior painting Easton PA, exterior painting Easton PA, historic home painter Lehigh Valley',
         'city'                 => 'Easton',
@@ -43,7 +43,7 @@ $LOCATIONS = [
     ],
 
     'bethlehem-painting' => [
-        'title'                => "Painting Contractor in Bethlehem, PA | Randy's Painting & Drywall Services",
+        'title'                => 'Painting Contractor in Bethlehem, PA',
         'meta_description'     => "Interior and exterior painting for Bethlehem, PA homes and businesses — from historic rowhomes to South Side lofts. Licensed, insured, free estimates.",
         'meta_keywords'        => 'painting contractor Bethlehem PA, house painter Bethlehem PA, interior painting Bethlehem PA, exterior painting Bethlehem PA, South Side Bethlehem painter',
         'city'                 => 'Bethlehem',
@@ -76,7 +76,7 @@ $LOCATIONS = [
     ],
 
     'allentown-painting' => [
-        'title'                => "Painting Contractor in Allentown, PA | Randy's Painting & Drywall Services",
+        'title'                => 'Painting Contractor in Allentown, PA',
         'meta_description'     => 'Interior and exterior painting for Allentown, PA homes, rentals, and businesses — twins, rowhomes, and downtown properties. Licensed, insured, free estimates.',
         'meta_keywords'        => 'painting contractor Allentown PA, house painter Allentown PA, interior painting Allentown PA, exterior painting Allentown PA, rental painting Allentown',
         'city'                 => 'Allentown',
@@ -109,7 +109,7 @@ $LOCATIONS = [
     ],
 
     'easton-drywall-repair' => [
-        'title'                => "Drywall Repair in Easton, PA | Randy's Painting & Drywall Services",
+        'title'                => 'Drywall Repair in Easton, PA',
         'meta_description'     => 'Seamless drywall and plaster repair for Easton, PA homes — cracks, holes, water damage, and popcorn ceiling removal. Licensed, insured, free estimates.',
         'meta_keywords'        => 'drywall repair Easton PA, plaster repair Easton PA, drywall patch Easton PA, popcorn ceiling removal Easton, water damage repair Easton PA',
         'city'                 => 'Easton',
@@ -142,7 +142,7 @@ $LOCATIONS = [
     ],
 
     'bethlehem-drywall-repair' => [
-        'title'                => "Drywall Repair in Bethlehem, PA | Randy's Painting & Drywall Services",
+        'title'                => 'Drywall Repair in Bethlehem, PA',
         'meta_description'     => 'Seamless drywall and plaster repair for Bethlehem, PA homes and South Side lofts — cracks, holes, water damage, texture matching. Licensed, insured, free estimates.',
         'meta_keywords'        => 'drywall repair Bethlehem PA, plaster repair Bethlehem PA, drywall patch Bethlehem PA, water damage repair Bethlehem, ceiling repair Bethlehem PA',
         'city'                 => 'Bethlehem',
