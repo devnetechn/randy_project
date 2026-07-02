@@ -21,10 +21,17 @@ $pages = [
     ['level-5-drywall.php','monthly', '0.9', $today],
     ['skim-coating.php',   'monthly', '0.9', $today],
     ['wall-restoration.php','monthly','0.9', $today],
+    ['commercial.php',     'monthly', '0.8', $today],
     ['gallery.php',        'weekly',  '0.8', $today],
     ['about.php',          'monthly', '0.7', $today],
     ['blog.php',           'weekly',  '0.7', $today],
     ['contact.php',        'monthly', '0.8', $today],
+    ['locations/index.php',                    'monthly', '0.8', $today],
+    ['locations/easton-painting.php',          'monthly', '0.8', $today],
+    ['locations/bethlehem-painting.php',       'monthly', '0.8', $today],
+    ['locations/allentown-painting.php',       'monthly', '0.8', $today],
+    ['locations/easton-drywall-repair.php',    'monthly', '0.8', $today],
+    ['locations/bethlehem-drywall-repair.php', 'monthly', '0.8', $today],
 ];
 
 $urls = [];
