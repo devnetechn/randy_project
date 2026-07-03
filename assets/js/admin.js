@@ -104,14 +104,22 @@
     panel.innerHTML =
       '<div class="tabs" data-rp-filter style="margin-top:0">' +
       VIEWS.map((v) => '<button class="tab' + (v === view ? ' is-active' : '') + '" data-v="' + v + '">' + LABELS[v] + '</button>').join('') +
-      '</div><div class="report-table-wrap" data-rp-table></div>';
+      '<button type="button" class="btn-soft" data-rp-print style="margin-left:.5rem">Download PDF</button>' +
+      '</div><div class="report-print-heading" data-rp-heading></div><div class="report-table-wrap" data-rp-table></div>';
     const tableEl = panel.querySelector('[data-rp-table]');
+    const headingEl = panel.querySelector('[data-rp-heading]');
 
     panel.querySelector('[data-rp-filter]').addEventListener('click', (e) => {
       const b = e.target.closest('[data-v]'); if (!b) return;
       view = b.dataset.v;
       panel.querySelectorAll('[data-rp-filter] .tab').forEach((t) => t.classList.toggle('is-active', t === b));
       load();
+    });
+
+    panel.querySelector('[data-rp-print]').addEventListener('click', () => {
+      const today = new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      headingEl.textContent = 'Booking Report — ' + LABELS[view] + ' — Generated ' + today;
+      window.print();
     });
 
     function periodLabel(p) {
