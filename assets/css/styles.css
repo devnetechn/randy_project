@@ -456,6 +456,7 @@ a { color: inherit; }
 @media print {
   .site-header, .site-footer, .chat-bubble, .chat-panel, .toast { display: none !important; }
   .admin .tabs, .admin [data-panel]:not([data-panel="reports"]) { display: none !important; }
+  .admin .app-title, .admin .app-sub { display: none !important; }
   .admin { padding: 0; max-width: none; }
   .report-print-heading { display: block; margin-bottom: 1rem; font-weight: 700; font-size: 1.1rem; }
   [data-rp-filter], [data-rp-print] { display: none !important; }
