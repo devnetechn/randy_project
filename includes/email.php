@@ -347,3 +347,41 @@ function send_crm_stage_email(array $appt, string $stage, bool $isFollowup = fal
         error_log('[email] crm stage email failed for #' . ($appt['id'] ?? '?') . ': ' . $e->getMessage());
     }
 }
+
+/**
+ * Send a "new job application" alert. Best-effort: logs and returns on any
+ * problem, never throws, so the application flow is unaffected.
+ */
+function send_job_application_notification(array $application): void
+{
+    if (!email_is_configured()) {
+        error_log('[email] not configured — skipping job application notification for #' . ($application['id'] ?? '?'));
+        return;
+    }
+
+    $cfg = config('email');
+    $to = $cfg['to'] ?: $cfg['user'];
+
+    try {
+        $b = business_info();
+        $subject = 'New job application — ' . $application['position_title_snapshot'];
+        $body = implode("\r\n", [
+            'A new job application was submitted on ' . $b['name'] . '.',
+            '',
+            'Applicant:  ' . $application['name'],
+            'Email:      ' . $application['email'],
+            'Phone:      ' . $application['phone'],
+            'Position:   ' . $application['position_title_snapshot'],
+            'Experience: ' . ($application['years_experience'] ?: '—'),
+            'Available:  ' . ($application['availability'] ?: '—'),
+            'Message:    ' . ($application['message'] ?: '—'),
+            '',
+            'Application #' . $application['id'] . ' — view and download the resume in the admin dashboard (Careers tab).',
+        ]);
+
+        smtp_send_mail($cfg, $to, $subject, $body);
+        error_log('[email] job application notification sent for #' . $application['id']);
+    } catch (Throwable $e) {
+        error_log('[email] job application notification failed for #' . ($application['id'] ?? '?') . ': ' . $e->getMessage());
+    }
+}
