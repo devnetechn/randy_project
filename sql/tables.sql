@@ -109,3 +109,35 @@ CREATE TABLE IF NOT EXISTS settings (
   svalue     TEXT NULL,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS job_positions (
+  id               BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  title            VARCHAR(150) NOT NULL,
+  description      TEXT NOT NULL,
+  requirements     TEXT NULL,
+  employment_type  ENUM('full_time','part_time','contract') NOT NULL DEFAULT 'full_time',
+  pay_range        VARCHAR(100) NULL,
+  status           ENUM('open','closed') NOT NULL DEFAULT 'open',
+  created_at       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_job_positions_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS job_applications (
+  id                       BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  position_id              BIGINT UNSIGNED NULL,
+  position_title_snapshot  VARCHAR(150) NOT NULL,
+  name                     VARCHAR(150) NOT NULL,
+  email                    VARCHAR(190) NOT NULL,
+  phone                    VARCHAR(30) NOT NULL,
+  years_experience         VARCHAR(50) NULL,
+  availability             VARCHAR(150) NULL,
+  message                  TEXT NULL,
+  resume_path              VARCHAR(255) NOT NULL,
+  status                   ENUM('new','reviewed','hired','rejected') NOT NULL DEFAULT 'new',
+  created_at               DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at               DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_job_applications_position FOREIGN KEY (position_id) REFERENCES job_positions(id) ON DELETE SET NULL,
+  INDEX idx_job_applications_status (status),
+  INDEX idx_job_applications_position (position_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
