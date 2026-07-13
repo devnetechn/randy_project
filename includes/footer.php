@@ -50,6 +50,7 @@ $show_widget = !($cu && $cu['role'] === 'admin');
                         <li><a href="<?= e(url('gallery.php')) ?>">Gallery</a></li>
                         <li><a href="<?= e(url('book.php')) ?>">Get a Quote</a></li>
                         <li><a href="<?= e(url('contact.php')) ?>">Contact</a></li>
+                        <li><a href="<?= e(url('careers.php')) ?>">Careers</a></li>
                     </ul>
                 </div>
 
