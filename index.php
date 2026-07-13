@@ -3,6 +3,7 @@ require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
 $page_title = 'High-End Painting & Level 5 Drywall Finishes | Lehigh Valley & Bucks County, PA';
 $hero = url('assets/img/gallery/gallery-10.webp');
+$openPositionsCount = (int) db()->query("SELECT COUNT(*) FROM job_positions WHERE status = 'open'")->fetchColumn();
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -126,6 +127,26 @@ require __DIR__ . '/includes/header.php';
             font-weight:600; color:var(--ink); }
         .mkt .area svg { width:20px; height:20px; flex:none; color:var(--coral); }
     </style>
+
+    <?php if ($openPositionsCount > 0): ?>
+    <section class="section section--tight">
+        <div class="container">
+            <div class="cta-band">
+                <div class="cta-band__bg" aria-hidden="true"></div>
+                <div class="cta-band__inner">
+                    <div>
+                        <span class="eyebrow eyebrow--light">We're hiring</span>
+                        <h2 style="margin-top:1rem">Join our crew.</h2>
+                        <p>We're looking for skilled, reliable people to join our painting and drywall team across the Lehigh Valley and Bucks County, PA.</p>
+                    </div>
+                    <div class="cta-band__actions">
+                        <a href="<?= e(url('careers.php')) ?>" class="btn btn--lg">View open positions<?= svg_arrow() ?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <?php mkt_cta_band('Ready when you are', "Let's give your walls a flawless finish.", 'Free, no-pressure estimates across the Lehigh Valley and Bucks County, PA. Most quotes returned within 24 hours.'); ?>
 </div>
