@@ -640,7 +640,172 @@
     refresh.leads = load;
   }
 
-  const MODULES = { overview: initOverview, chat: initChat, leads: initCrm, bookings: initBookings, reports: initReports, gallery: initGallery, blog: initBlog, reviews: initReviews };
+  /* ----------  Careers  ---------- */
+  function initCareers(panel) {
+    const EMP_TYPES = ['full_time', 'part_time', 'contract'];
+    const EMP_LABELS = { full_time: 'Full-time', part_time: 'Part-time', contract: 'Contract' };
+    const APP_STATUSES = ['new', 'reviewed', 'hired', 'rejected'];
+    let view = 'positions', positions = [], applications = [], appFilter = 'all', applicationsLoaded = false;
+
+    panel.innerHTML =
+      '<div class="tabs" data-cr-view style="margin-top:0">' +
+      '<button class="tab is-active" data-v="positions">Positions</button>' +
+      '<button class="tab" data-v="applicants">Applicants</button>' +
+      '</div><div data-cr-positions></div><div data-cr-applicants hidden></div>';
+
+    const viewTabs = panel.querySelector('[data-cr-view]');
+    const positionsEl = panel.querySelector('[data-cr-positions]');
+    const applicantsEl = panel.querySelector('[data-cr-applicants]');
+
+    viewTabs.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-v]'); if (!b) return;
+      view = b.dataset.v;
+      viewTabs.querySelectorAll('.tab').forEach((t) => t.classList.toggle('is-active', t === b));
+      positionsEl.hidden = view !== 'positions';
+      applicantsEl.hidden = view !== 'applicants';
+      if (view === 'applicants' && !applicationsLoaded) { applicationsLoaded = true; loadApplications(); }
+    });
+
+    /* ---- Positions ---- */
+    positionsEl.innerHTML =
+      '<form class="app-card" data-pos-form>' +
+      '<input type="hidden" name="id" value="">' +
+      '<label class="field"><span>Title</span><input type="text" name="title" maxlength="150" required></label>' +
+      '<label class="field"><span>Description</span><textarea name="description" rows="4" required></textarea></label>' +
+      '<label class="field"><span>Requirements (optional)</span><textarea name="requirements" rows="3"></textarea></label>' +
+      '<label class="field"><span>Employment type</span><select name="employmentType">' + EMP_TYPES.map((t) => '<option value="' + t + '">' + EMP_LABELS[t] + '</option>').join('') + '</select></label>' +
+      '<label class="field"><span>Pay range (optional)</span><input type="text" name="payRange" maxlength="100" placeholder="e.g. $20-25/hr"></label>' +
+      '<label class="field"><span>Status</span><select name="status"><option value="open">Open</option><option value="closed">Closed</option></select></label>' +
+      '<div class="booking-actions"><button class="btn-primary" type="submit" data-pos-submit>Add position</button> ' +
+      '<button class="btn-soft" type="button" data-pos-reset>New / clear</button></div>' +
+      '</form>' +
+      '<ul class="booking-list" data-pos-list></ul>';
+    const posForm = positionsEl.querySelector('[data-pos-form]');
+    const posList = positionsEl.querySelector('[data-pos-list]');
+
+    function clearPosForm() {
+      posForm.reset();
+      posForm.querySelector('[name="id"]').value = '';
+      posForm.querySelector('[data-pos-submit]').textContent = 'Add position';
+    }
+    posForm.querySelector('[data-pos-reset]').addEventListener('click', clearPosForm);
+
+    posForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = posForm.querySelector('[data-pos-submit]');
+      btn.disabled = true;
+      try {
+        await api.post('api/careers/positions-save.php', {
+          id: +posForm.querySelector('[name="id"]').value || 0,
+          title: posForm.title.value.trim(),
+          description: posForm.description.value.trim(),
+          requirements: posForm.requirements.value.trim(),
+          employmentType: posForm.employmentType.value,
+          payRange: posForm.payRange.value.trim(),
+          status: posForm.status.value,
+        });
+        clearPosForm();
+        await loadPositions();
+        toast('Position saved');
+      } catch (err) { toast(err.message, 'error'); }
+      finally { btn.disabled = false; }
+    });
+
+    posList.addEventListener('click', async (e) => {
+      const editBtn = e.target.closest('[data-pos-edit]');
+      if (editBtn) {
+        const p = positions.find((x) => String(x.id) === editBtn.dataset.posEdit);
+        if (!p) return;
+        posForm.querySelector('[name="id"]').value = p.id;
+        posForm.title.value = p.title || '';
+        posForm.description.value = p.description || '';
+        posForm.requirements.value = p.requirements || '';
+        posForm.employmentType.value = p.employment_type;
+        posForm.payRange.value = p.pay_range || '';
+        posForm.status.value = p.status;
+        posForm.querySelector('[data-pos-submit]').textContent = 'Update position';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const delBtn = e.target.closest('[data-pos-del]');
+      if (!delBtn) return;
+      if (!confirm('Delete this position? Existing applications will keep a record of the position title.')) return;
+      try { await api.post('api/careers/positions-delete.php', { id: +delBtn.dataset.posDel }); await loadPositions(); toast('Position deleted'); }
+      catch (err) { toast(err.message, 'error'); }
+    });
+
+    function posItem(p) {
+      return '<li class="booking-item">' +
+        '<div class="booking-item__head"><span class="booking-item__title">' + escapeHtml(p.title) + '</span>' +
+        '<span class="badge badge--' + (p.status === 'open' ? 'confirmed' : 'cancelled') + '">' + p.status + '</span></div>' +
+        '<p class="booking-item__meta">' + EMP_LABELS[p.employment_type] + (p.pay_range ? ' · ' + escapeHtml(p.pay_range) : '') + '</p>' +
+        '<div class="booking-actions">' +
+        '<button class="btn-soft" data-pos-edit="' + p.id + '">Edit</button> ' +
+        '<button class="btn-soft" data-pos-del="' + p.id + '">Delete</button></div></li>';
+    }
+    async function loadPositions() {
+      try {
+        positions = (await api.get('api/careers/positions-list.php')).positions || [];
+        posList.innerHTML = positions.length ? positions.map(posItem).join('') : '<li style="color:var(--muted)">No positions yet.</li>';
+      } catch (e) { toast(e.message, 'error'); }
+    }
+
+    /* ---- Applicants ---- */
+    applicantsEl.innerHTML =
+      '<div class="tabs" data-app-filter style="margin-top:0">' +
+      ['all'].concat(APP_STATUSES).map((s) => '<button class="tab' + (s === 'all' ? ' is-active' : '') + '" data-f="' + s + '">' + cap(s) + '</button>').join('') +
+      '</div><ul class="booking-list" data-app-list></ul>';
+    const appFilterEl = applicantsEl.querySelector('[data-app-filter]');
+    const appList = applicantsEl.querySelector('[data-app-list]');
+
+    appFilterEl.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-f]'); if (!b) return;
+      appFilter = b.dataset.f;
+      appFilterEl.querySelectorAll('.tab').forEach((t) => t.classList.toggle('is-active', t === b));
+      renderApplications();
+    });
+
+    function appItem(a) {
+      const statusSel = '<select data-app-status data-id="' + a.id + '">' +
+        APP_STATUSES.map((s) => '<option value="' + s + '"' + (s === a.status ? ' selected' : '') + '>' + cap(s) + '</option>').join('') + '</select>';
+      return '<li class="booking-item">' +
+        '<div class="booking-item__head"><span class="booking-item__title">' + escapeHtml(a.name) + ' — ' + escapeHtml(a.position_title || '') + '</span>' +
+        '<span class="badge badge--' + a.status + '">' + a.status + '</span></div>' +
+        '<p class="booking-item__meta"><a href="mailto:' + escapeHtml(a.email) + '">' + escapeHtml(a.email) + '</a> · <a href="tel:' + escapeHtml(a.phone) + '">' + escapeHtml(a.phone) + '</a></p>' +
+        '<p class="booking-item__meta">Experience: ' + escapeHtml(a.years_experience || '—') + ' · Availability: ' + escapeHtml(a.availability || '—') + '</p>' +
+        (a.message ? '<p class="booking-item__meta">' + escapeHtml(a.message) + '</p>' : '') +
+        '<p class="booking-item__meta">Submitted: ' + fmt(a.created_at) + '</p>' +
+        '<div class="booking-actions" style="align-items:center;gap:.5rem">' +
+        '<a class="btn-soft" href="' + api.url('api/careers/resume-download.php?id=' + a.id) + '" target="_blank" rel="noopener">Download resume</a>' +
+        '<span style="color:var(--muted)">Status:</span> ' + statusSel + '</div></li>';
+    }
+    function renderApplications() {
+      const vis = appFilter === 'all' ? applications : applications.filter((a) => a.status === appFilter);
+      appList.innerHTML = vis.length ? vis.map(appItem).join('') : '<li style="color:var(--muted)">No applicants in this status.</li>';
+    }
+    appList.addEventListener('change', async (e) => {
+      const sel = e.target.closest('[data-app-status]'); if (!sel) return;
+      const id = +sel.dataset.id;
+      try {
+        const d = await api.post('api/careers/applications-update.php', { id, status: sel.value });
+        const i = applications.findIndex((x) => String(x.id) === String(id));
+        if (i >= 0) applications[i] = d.application;
+        toast('Status updated');
+        renderApplications();
+      } catch (err) { toast(err.message, 'error'); }
+    });
+    async function loadApplications() {
+      try {
+        applications = (await api.get('api/careers/applications-list.php')).applications || [];
+        renderApplications();
+      } catch (e) { toast(e.message, 'error'); }
+    }
+
+    loadPositions();
+    refresh.careers = () => { loadPositions(); if (applicationsLoaded) loadApplications(); };
+  }
+
+  const MODULES = { overview: initOverview, chat: initChat, leads: initCrm, bookings: initBookings, reports: initReports, gallery: initGallery, blog: initBlog, reviews: initReviews, careers: initCareers };
 
   document.addEventListener('DOMContentLoaded', function () {
     const tabs = document.querySelector('[data-tabs]');

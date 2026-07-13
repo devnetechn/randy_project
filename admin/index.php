@@ -18,6 +18,7 @@ require __DIR__ . '/../includes/header.php';
         <button class="tab" data-tab="gallery" role="tab">Gallery</button>
         <button class="tab" data-tab="blog" role="tab">Blog</button>
         <button class="tab" data-tab="reviews" role="tab">Reviews</button>
+        <button class="tab" data-tab="careers" role="tab">Careers</button>
     </div>
 
     <div data-panel="overview"></div>
@@ -28,6 +29,7 @@ require __DIR__ . '/../includes/header.php';
     <div data-panel="gallery" hidden></div>
     <div data-panel="blog" hidden></div>
     <div data-panel="reviews" hidden></div>
+    <div data-panel="careers" hidden></div>
 </div>
 <script src="<?= e(url('assets/js/admin.js')) ?>"></script>
 <?php require __DIR__ . '/../includes/footer.php'; ?>
