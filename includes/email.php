@@ -385,3 +385,72 @@ function send_job_application_notification(array $application): void
         error_log('[email] job application notification failed for #' . ($application['id'] ?? '?') . ': ' . $e->getMessage());
     }
 }
+
+/**
+ * Email the applicant when the admin changes their application status.
+ * Best-effort — never throws.
+ */
+function send_job_application_status_email(array $application, string $status): void
+{
+    if (!email_is_configured()) {
+        return;
+    }
+    $email = $application['email'] ?? '';
+    if (!$email) {
+        error_log('[email] application status email skipped #' . ($application['id'] ?? '?') . ' — no applicant email');
+        return;
+    }
+
+    $cfg  = config('email');
+    $b    = business_info();
+    $name = $application['name'] ?? '';
+    $hi   = $name ? 'Hi ' . $name . ',' : 'Hello,';
+    $position = $application['position_title'] ?? $application['position_title_snapshot'] ?? 'the position';
+    $sig = implode("\r\n", ['', $b['owner'], $b['name'], $b['phone'], $b['website']]);
+
+    try {
+        switch ($status) {
+            case 'hired':
+                $subject = 'Congratulations — ' . $position . ' at ' . $b['name'];
+                $body = implode("\r\n", [
+                    $hi, '',
+                    "Congratulations! We'd like to offer you the " . $position . ' role.',
+                    "We'll be in touch shortly with next steps. Feel free to reply to this email or call/text us at " . $b['phone'] . ' with any questions.',
+                    $sig,
+                ]);
+                break;
+            case 'rejected':
+                $subject = 'Update on your application — ' . $position;
+                $body = implode("\r\n", [
+                    $hi, '',
+                    'Thank you for your interest in ' . $position . '.',
+                    "After careful review, we've decided to move forward with other candidates at this time. We'll keep your application on file for future openings.",
+                    $sig,
+                ]);
+                break;
+            case 'reviewed':
+                $subject = 'Update on your application — ' . $position;
+                $body = implode("\r\n", [
+                    $hi, '',
+                    "We've reviewed your application for " . $position . " and are still considering candidates — we'll follow up soon.",
+                    $sig,
+                ]);
+                break;
+            case 'new':
+                $subject = "We've received your application — " . $position;
+                $body = implode("\r\n", [
+                    $hi, '',
+                    'Thanks for applying' . ($name ? ', ' . $name : '') . "! We've received your application for " . $position . ' and will review it shortly.',
+                    $sig,
+                ]);
+                break;
+            default:
+                return;
+        }
+
+        smtp_send_mail($cfg, $email, $subject, $body);
+        error_log('[email] application status email (' . $status . ') sent for #' . $application['id'] . ' → ' . $email);
+    } catch (Throwable $e) {
+        error_log('[email] application status email failed for #' . ($application['id'] ?? '?') . ': ' . $e->getMessage());
+    }
+}
