@@ -34,4 +34,9 @@ $st = db()->prepare(
       WHERE a.id = ?'
 );
 $st->execute([$id]);
-json_out(['application' => $st->fetch()]);
+$application = $st->fetch();
+
+require_once __DIR__ . '/../../includes/email.php';
+send_job_application_status_email($application, $status);
+
+json_out(['application' => $application]);
