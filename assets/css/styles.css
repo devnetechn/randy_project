@@ -459,9 +459,11 @@ a { color: inherit; }
 
 @media print {
   .site-header, .site-footer, .chat-bubble, .chat-panel, .toast { display: none !important; }
-  .admin .tabs, .admin [data-panel]:not([data-panel="reports"]) { display: none !important; }
-  .admin .app-title, .admin .app-sub { display: none !important; }
-  .admin { padding: 0; max-width: none; }
+  .admin-sidebar { display: none !important; }
+  .admin-content [data-panel]:not([data-panel="reports"]) { display: none !important; }
+  .admin-content .app-title, .admin-content .app-sub { display: none !important; }
+  .admin-shell { display: block; }
+  .admin-content { padding: 0; max-width: none; }
   .report-print-heading { display: block; margin-bottom: 1rem; font-weight: 700; font-size: 1.1rem; }
   [data-rp-filter], [data-rp-print] { display: none !important; }
 }
@@ -505,10 +507,56 @@ a { color: inherit; }
 .chat-page .chat-shell { height: 100%; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; }
 
 /* =====================  ADMIN DASHBOARD  ===================== */
-.admin { max-width: 64rem; margin-inline: auto; padding: 1.5rem var(--gutter) 3rem; }
+.admin-shell {
+  --adm-sidebar: #10182a;
+  --adm-sidebar-text: #cbd5e1;
+  --adm-content-bg: #f7f8fa;
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+.admin-sidebar {
+  width: 15rem;
+  flex: none;
+  background: var(--adm-sidebar);
+  color: var(--adm-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1rem;
+}
+.admin-sidebar__brand { display: flex; align-items: center; gap: .6rem; padding: .5rem .25rem 1.25rem; text-decoration: none; color: #fff; }
+.admin-sidebar__brand img { height: 32px; width: auto; display: block; }
+.admin-sidebar__brand span { font-family: var(--font-display); font-weight: 800; font-size: 1rem; }
+
+.admin-sidebar__foot { margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.12); display: flex; flex-direction: column; gap: .4rem; }
+.admin-sidebar__user { font-size: .78rem; color: var(--adm-sidebar-text); word-break: break-all; }
+.admin-sidebar__foot a { font-size: .85rem; font-weight: 700; color: #fff; text-decoration: none; }
+.admin-sidebar__foot a:hover { text-decoration: underline; }
+
+.admin-content { flex: 1; min-width: 0; background: var(--adm-content-bg); padding: 1.75rem var(--gutter) 3rem; }
+
+/* Base tab-pill look — still used by every in-panel filter group
+   (e.g. [data-bk-filter] .tab, [data-rp-filter] .tab, [data-crm-filter] .tab). */
 .tabs { display: inline-flex; gap: .25rem; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: .25rem; margin: 1rem 0 1.5rem; box-shadow: var(--shadow-sm); flex-wrap: wrap; }
 .tab { border: 0; background: transparent; color: var(--muted); font-weight: 600; font-size: .9rem; padding: .45rem .9rem; border-radius: 7px; cursor: pointer; }
 .tab.is-active { background: var(--slate); color: #fff; }
+
+/* Sidebar nav override — higher specificity than the base .tabs/.tab rules above,
+   so only the sidebar's [data-tabs] list turns into a vertical nav. */
+.admin-sidebar .tabs { flex-direction: column; align-items: stretch; background: transparent; border: 0; box-shadow: none; padding: 0; margin: 0; gap: .15rem; }
+.admin-sidebar .tab { text-align: left; color: var(--adm-sidebar-text); border-radius: 8px; border-left: 3px solid transparent; padding: .6rem .75rem; }
+.admin-sidebar .tab:hover { background: rgba(255,255,255,.06); }
+.admin-sidebar .tab.is-active { background: rgba(255,255,255,.08); color: #fff; border-left-color: var(--slate-2); }
+
+@media (max-width: 900px) {
+  .admin-shell { flex-direction: column; min-height: 0; }
+  .admin-sidebar { width: 100%; padding: 1rem; }
+  .admin-sidebar .tabs { flex-direction: row; overflow-x: auto; }
+  .admin-sidebar .tab { border-left: 0; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .admin-sidebar .tab.is-active { border-left-color: transparent; border-bottom-color: var(--slate-2); }
+  .admin-sidebar__foot { flex-direction: row; align-items: center; justify-content: space-between; margin-top: .75rem; padding-top: .75rem; }
+}
 .kpi-section { margin-bottom: 1.5rem; }
 .kpi-section h2 { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .75rem; }
