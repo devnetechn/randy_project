@@ -141,3 +141,12 @@ CREATE TABLE IF NOT EXISTS job_applications (
   INDEX idx_job_applications_status (status),
   INDEX idx_job_applications_position (position_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS crm_agent_log (
+  id             BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  appointment_id BIGINT UNSIGNED NOT NULL,
+  action         VARCHAR(32) NOT NULL,
+  reasoning      TEXT NULL,
+  created_at     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_crm_agent_log_appt (appointment_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
