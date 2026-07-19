@@ -24,6 +24,14 @@ return [
         'model'   => 'gemini-1.5-flash',
     ],
 
+    // ----- Anthropic Claude (powers the autonomous CRM agent) -----
+    // Leave empty to disable the CRM agent (crm_agent_enabled setting still
+    // gates it, but with no key it can't make any decisions).
+    'anthropic' => [
+        'api_key' => '',
+        'model'   => 'claude-sonnet-5',
+    ],
+
     // ----- Email notifications (Gmail SMTP) -----
     // Leave app_password blank to disable (bookings still work; email is skipped).
   
