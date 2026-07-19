@@ -691,15 +691,13 @@ git commit -m "feat(crm-agent): add pre-filter, shared stage setter, and review 
 
 ```php
 <?php
-/**
- * CRM autonomous agent sweep. Run periodically via cron:
- *
- *   */30 * * * *  php /home/USER/public_html/cron/crm_agent.php
- *
- * Reviews leads needing attention and lets Claude decide + execute the next
- * action for each (see includes/crm_agent.php). Safe to re-run — capped per
- * run and gated by the crm_agent_enabled kill switch.
- */
+// CRM autonomous agent sweep. Run periodically via cron, e.g. every 30 minutes:
+//
+//   */30 * * * *  php /home/USER/public_html/cron/crm_agent.php
+//
+// Reviews leads needing attention and lets Claude decide + execute the next
+// action for each (see includes/crm_agent.php). Safe to re-run — capped per
+// run and gated by the crm_agent_enabled kill switch.
 require_once __DIR__ . '/../includes/app.php';
 require_once __DIR__ . '/../includes/crm_agent.php';
 
