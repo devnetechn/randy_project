@@ -67,12 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         require_once __DIR__ . '/includes/email.php';
         require_once __DIR__ . '/includes/sms.php';
         require_once __DIR__ . '/includes/gcal.php';
+        require_once __DIR__ . '/includes/crm_agent.php';
         $st = db()->prepare('SELECT * FROM appointments WHERE id = ?');
         $st->execute([(int) db()->lastInsertId()]);
         if ($appt = $st->fetch()) {
             send_booking_notification($appt);   // email the business
             notify_owner_sms($appt);            // text Randy
             gcal_sync_for_appointment($appt);   // add to Google Calendar
+            crm_agent_review_lead($appt);       // let the CRM agent take a first look
         }
 
         // Guests have no "My Bookings" page — show a thank-you instead.

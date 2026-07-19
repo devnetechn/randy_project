@@ -94,4 +94,10 @@ if ($updated) {
     }
 }
 
+// Let the CRM agent react to this status change.
+require_once __DIR__ . '/../../includes/crm_agent.php';
+if ($updated) {
+    crm_agent_review_lead($updated);
+}
+
 json_out(['appointment' => $updated]);
