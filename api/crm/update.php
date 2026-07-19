@@ -1,6 +1,7 @@
 <?php
 /** Update a lead's pipeline stage and/or CRM notes. Body: { id, leadStage?, notes? } */
 require_once __DIR__ . '/../../includes/app.php';
+require_once __DIR__ . '/../../includes/crm_agent.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     json_error('Method not allowed', 405);
@@ -19,34 +20,22 @@ if (!$st->fetch()) {
     json_error('Lead not found', 404);
 }
 
-$sets = [];
-$args = [];
-
 $emailStage = null;
 if (array_key_exists('leadStage', $payload)) {
-    $valid = ['new', 'contacted', 'quoted', 'won', 'lost'];
-    if (!in_array($payload['leadStage'], $valid, true)) {
+    try {
+        crm_set_lead_stage($id, $payload['leadStage']);
+    } catch (InvalidArgumentException $e) {
         json_error('Invalid lead stage', 422);
     }
-    $sets[] = 'lead_stage = ?';
-    $args[] = $payload['leadStage'];
     if (in_array($payload['leadStage'], ['contacted', 'quoted'], true)) {
-        $sets[] = 'crm_last_email_at = NOW()';
         $emailStage = $payload['leadStage'];
     }
 }
 
 if (array_key_exists('notes', $payload)) {
-    $sets[] = 'crm_notes = ?';
-    $args[] = trim((string) $payload['notes']) ?: null;
+    db()->prepare('UPDATE appointments SET crm_notes = ? WHERE id = ?')
+        ->execute([trim((string) $payload['notes']) ?: null, $id]);
 }
-
-if (!$sets) {
-    json_error('Nothing to update', 422);
-}
-
-$args[] = $id;
-db()->prepare('UPDATE appointments SET ' . implode(', ', $sets) . ' WHERE id = ?')->execute($args);
 
 $st = db()->prepare(
     'SELECT a.*,
@@ -60,6 +49,11 @@ $lead = $st->fetch();
 if ($emailStage && $lead) {
     require_once __DIR__ . '/../../includes/email.php';
     send_crm_stage_email($lead, $emailStage);
+}
+
+// Let the CRM agent react to this manual stage/notes change.
+if ($lead) {
+    crm_agent_review_lead($lead);
 }
 
 json_out(['lead' => $lead]);
