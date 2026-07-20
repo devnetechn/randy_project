@@ -84,6 +84,38 @@
       });
     });
 
+    // Modals (e.g. careers "Apply now")
+    document.querySelectorAll('[data-modal]').forEach(function (modal) {
+      const name = modal.getAttribute('data-modal');
+      const open = function () {
+        modal.classList.add('is-open');
+        document.body.classList.add('no-scroll');
+      };
+      const close = function () {
+        modal.classList.remove('is-open');
+        document.body.classList.remove('no-scroll');
+      };
+      modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+      modal.querySelectorAll('[data-modal-close]').forEach(function (el) {
+        el.addEventListener('click', close);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
+      });
+      document.querySelectorAll('[data-modal-trigger="' + name + '"]').forEach(function (trigger) {
+        trigger.addEventListener('click', function (e) {
+          e.preventDefault();
+          const posId = trigger.getAttribute('data-position-id');
+          if (posId) {
+            const select = modal.querySelector('select[name="position_id"]');
+            if (select) select.value = posId;
+          }
+          open();
+        });
+      });
+      if (modal.classList.contains('is-open')) document.body.classList.add('no-scroll');
+    });
+
     // Before/after sliders
     document.querySelectorAll('[data-ba]').forEach(function (ba) {
       const range = ba.querySelector('[data-ba-range]');

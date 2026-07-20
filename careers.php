@@ -111,7 +111,7 @@ require __DIR__ . '/includes/header.php';
                     <p style="color:var(--muted);font-size:.85rem;margin-bottom:.5rem"><?= e($EMPLOYMENT_LABELS[$p['employment_type']] ?? $p['employment_type']) ?><?= $p['pay_range'] ? ' · ' . e($p['pay_range']) : '' ?></p>
                     <p><?= nl2br(e($p['description'])) ?></p>
                     <?php if ($p['requirements']): ?><p style="margin-top:.75rem"><strong>Requirements:</strong><br><?= nl2br(e($p['requirements'])) ?></p><?php endif; ?>
-                    <p style="margin-top:1rem"><a class="textlink" href="<?= e(url('careers.php?position=' . $p['id'])) ?>#apply">Apply for this position<?= svg_arrow() ?></a></p>
+                    <p style="margin-top:1rem"><a class="textlink" href="<?= e(url('careers.php?position=' . $p['id'])) ?>#apply" data-modal-trigger="apply" data-position-id="<?= (int) $p['id'] ?>">Apply for this position<?= svg_arrow() ?></a></p>
                 </div>
                 <?php endforeach; ?>
             </div>
@@ -119,10 +119,13 @@ require __DIR__ . '/includes/header.php';
         </div>
     </section>
 
-    <?php if ($positions): ?>
-    <section class="section section--tight" id="apply">
-        <div class="container">
-            <div class="form-card" style="max-width:36rem;margin-inline:auto">
+    <?php if ($positions):
+        $showApplyModal = $error !== null || $selectedPosition > 0;
+    ?>
+    <div class="modal-backdrop<?= $showApplyModal ? ' is-open' : '' ?>" id="apply" data-modal="apply">
+        <div class="modal">
+            <button type="button" class="modal__close" data-modal-close aria-label="Close">&times;</button>
+            <div class="form-card">
                 <h2 style="margin-bottom:1.5rem">Apply now</h2>
                 <form method="post" enctype="multipart/form-data" novalidate>
                     <?php if ($error): ?><p class="form-error" role="alert"><?= e($error) ?></p><?php endif; ?>
@@ -158,7 +161,7 @@ require __DIR__ . '/includes/header.php';
                 </form>
             </div>
         </div>
-    </section>
+    </div>
     <?php endif; ?>
     <?php endif; ?>
 </div>

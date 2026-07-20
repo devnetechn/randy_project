@@ -109,7 +109,7 @@ $show_widget = !($cu && $cu['role'] === 'admin');
 <script>
     window.CURRENT_USER = <?= json_encode($cu ? ['id' => $cu['id'], 'email' => $cu['email'], 'role' => $cu['role']] : null) ?>;
 </script>
-<script src="<?= e(url('assets/js/app.js')) ?>"></script>
+<script src="<?= e(url('assets/js/app.js')) ?>?v=<?= (int) @filemtime(__DIR__ . '/../assets/js/app.js') ?>"></script>
 <script src="<?= e(url('assets/js/chat.js')) ?>"></script>
 </body>
 </html>
