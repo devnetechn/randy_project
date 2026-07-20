@@ -16,6 +16,10 @@ $newConversations = $scalar("SELECT COUNT(*) FROM conversations WHERE DATE(creat
 $newBookings     = $scalar("SELECT COUNT(*) FROM appointments WHERE DATE(created_at)=CURDATE()");
 $newSignups      = $scalar("SELECT COUNT(*) FROM users WHERE role='customer' AND DATE(created_at)=CURDATE()");
 
+$monthBookings = $scalar("SELECT COUNT(*) FROM appointments WHERE created_at >= DATE_FORMAT(CURDATE(), '%Y-%m-01')");
+$monthLeads    = $scalar("SELECT COUNT(*) FROM conversations WHERE created_at >= DATE_FORMAT(CURDATE(), '%Y-%m-01')");
+$monthSignups  = $scalar("SELECT COUNT(*) FROM users WHERE role='customer' AND created_at >= DATE_FORMAT(CURDATE(), '%Y-%m-01')");
+
 $row = $pdo->query(
     "SELECT
         COUNT(*) AS total,
@@ -34,4 +38,5 @@ $aiEscalationPct = $total === 0 ? 0 : (int) round($escalated * 100 / $total);
 json_out([
     'live'  => compact('queueDepth', 'activeChats', 'pendingBookings', 'upcomingToday'),
     'today' => compact('newConversations', 'newBookings', 'newSignups', 'aiEscalationPct'),
+    'month' => compact('monthBookings', 'monthLeads', 'monthSignups'),
 ]);

@@ -16,22 +16,59 @@
   function initOverview(panel) {
     const LIVE = [['queueDepth', 'Queue depth'], ['activeChats', 'Active chats'], ['pendingBookings', 'Pending bookings'], ['upcomingToday', 'Upcoming today']];
     const TODAY = [['newConversations', 'New conversations'], ['newBookings', 'New bookings'], ['newSignups', 'New signups'], ['aiEscalationPct', 'AI escalation %']];
+    const MONTH = [['monthBookings', 'Quotes requested'], ['monthLeads', 'New leads'], ['monthSignups', 'New signups']];
     const card = (k, l, badge) => '<div class="kpi"><div class="kpi__label">' + l + ' <span class="kpi__badge kpi__badge--' + badge + '">' + badge + '</span></div><div class="kpi__value" data-kpi="' + k + '">—</div></div>';
     panel.innerHTML =
       '<div class="kpi-section"><h2>Live now</h2><div class="kpi-grid">' + LIVE.map((c) => card(c[0], c[1], 'live')).join('') + '</div></div>' +
-      '<div class="kpi-section"><h2>Today</h2><div class="kpi-grid">' + TODAY.map((c) => card(c[0], c[1], 'today')).join('') + '</div></div>';
+      '<div class="kpi-section"><h2>Today</h2><div class="kpi-grid">' + TODAY.map((c) => card(c[0], c[1], 'today')).join('') + '</div></div>' +
+      '<div class="kpi-section"><h2>This month</h2><div class="kpi-grid">' + MONTH.map((c) => card(c[0], c[1], 'month')).join('') + '</div></div>' +
+      '<div class="kpi-section"><h2>Last 6 months</h2><div class="chart-card"><canvas data-overview-chart height="90"></canvas></div></div>';
 
     const set = (k, v) => { const el = panel.querySelector('[data-kpi="' + k + '"]'); if (el) el.textContent = v == null ? '—' : v; };
+
+    let chart = null;
+    async function loadChart() {
+      const canvas = panel.querySelector('[data-overview-chart]');
+      if (!canvas || !window.Chart) return;
+      try {
+        const d = await api.get('api/admin/analytics.php');
+        const datasets = [
+          { label: 'Quotes requested', data: d.bookings, borderColor: '#2a66d6', backgroundColor: '#2a66d6' },
+          { label: 'New leads', data: d.leads, borderColor: '#b4241d', backgroundColor: '#b4241d' },
+          { label: 'New signups', data: d.signups, borderColor: '#059669', backgroundColor: '#059669' },
+        ].map((ds) => Object.assign(ds, { borderWidth: 2, pointRadius: 4, pointHoverRadius: 5, tension: 0.25, fill: false }));
+
+        if (chart) {
+          chart.data.labels = d.months;
+          chart.data.datasets = datasets;
+          chart.update();
+          return;
+        }
+        chart = new Chart(canvas.getContext('2d'), {
+          type: 'line',
+          data: { labels: d.months, datasets },
+          options: {
+            responsive: true,
+            interaction: { mode: 'index', intersect: false },
+            plugins: { legend: { position: 'top', labels: { boxWidth: 12, usePointStyle: true } } },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+          },
+        });
+      } catch (_) { /* ignore */ }
+    }
+
     async function load() {
       try {
         const d = await api.get('api/admin/overview.php');
         LIVE.forEach((c) => set(c[0], d.live[c[0]]));
         TODAY.forEach((c) => set(c[0], d.today[c[0]]));
+        MONTH.forEach((c) => set(c[0], d.month[c[0]]));
       } catch (_) { /* ignore */ }
     }
     load();
+    loadChart();
     setInterval(() => { if (!document.hidden) load(); }, 30000);
-    refresh.overview = load;
+    refresh.overview = () => { load(); loadChart(); };
   }
 
   /* ----------  Bookings  ---------- */

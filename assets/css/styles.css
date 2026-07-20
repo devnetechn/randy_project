@@ -586,6 +586,9 @@ body.no-scroll { overflow: hidden; }
 .kpi__badge { font-size: .6rem; font-weight: 700; border-radius: 999px; padding: .1rem .45rem; }
 .kpi__badge--live { background: #d1fae5; color: #065f46; }
 .kpi__badge--today { background: #dbeafe; color: #1e40af; }
+.kpi__badge--month { background: #ede9fe; color: #5b21b6; }
+
+.chart-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.25rem; box-shadow: var(--shadow-sm); }
 .kpi__value { font-family: var(--font-display); font-weight: 800; font-size: 1.9rem; color: var(--slate); margin-top: .4rem; }
 button.kpi { cursor: pointer; text-align: left; transition: box-shadow .2s; }
 button.kpi:hover { box-shadow: var(--shadow-md); }
