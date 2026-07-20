@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
 $page_title = 'High-End Painting & Level 5 Drywall Finishes | Lehigh Valley & Bucks County, PA';
 $hero = url('assets/img/gallery/gallery-10.webp');
-$openPositionsCount = (int) db()->query("SELECT COUNT(*) FROM job_positions WHERE status = 'open'")->fetchColumn();
+$openPositions = db()->query("SELECT id, title FROM job_positions WHERE status = 'open' ORDER BY created_at DESC")->fetchAll();
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -128,21 +128,22 @@ require __DIR__ . '/includes/header.php';
         .mkt .area svg { width:20px; height:20px; flex:none; color:var(--coral); }
     </style>
 
-    <?php if ($openPositionsCount > 0): ?>
+    <?php if ($openPositions): ?>
     <section class="section section--tight">
         <div class="container">
-            <div class="cta-band">
-                <div class="cta-band__bg" aria-hidden="true"></div>
-                <div class="cta-band__inner">
-                    <div>
-                        <span class="eyebrow eyebrow--light">We're hiring</span>
-                        <h2 style="margin-top:1rem">Join our crew.</h2>
-                        <p>We're looking for skilled, reliable people to join our painting and drywall team across the Lehigh Valley and Bucks County, PA.</p>
-                    </div>
-                    <div class="cta-band__actions">
-                        <a href="<?= e(url('careers.php')) ?>" class="btn btn--lg">View open positions<?= svg_arrow() ?></a>
-                    </div>
-                </div>
+            <div class="section-head center">
+                <span class="eyebrow" style="justify-content:center">We're hiring</span>
+                <h2 style="margin-top:1rem">Join our crew.</h2>
+                <p>We're looking for skilled, reliable people to join our painting and drywall team across the Lehigh Valley and Bucks County, PA.</p>
+            </div>
+            <div class="hiring-grid">
+                <?php foreach ($openPositions as $p): ?>
+                    <a href="<?= e(url('careers.php')) ?>" class="hiring-card">
+                        <div class="hiring-card__icon"><?= svg_check() ?></div>
+                        <h3><?= e($p['title']) ?></h3>
+                        <span class="hiring-card__link">View position<?= svg_arrow() ?></span>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>

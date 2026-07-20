@@ -235,6 +235,18 @@ a { color: inherit; }
 .mkt .cta-band h2 { color: #fff; max-width: 18ch; }
 .mkt .cta-band p { color: rgba(255,255,255,.82); margin-top: .75rem; max-width: 42ch; }
 .mkt .cta-band__actions { display: flex; flex-wrap: wrap; gap: .9rem; }
+.mkt .hiring-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; max-width: 56rem; margin-inline: auto; }
+.mkt .hiring-card { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem 1.5rem; transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s; overflow: hidden; }
+.mkt .hiring-card::before { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: var(--coral); transform: scaleY(0); transform-origin: top; transition: transform .4s var(--ease); }
+.mkt .hiring-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: transparent; }
+.mkt .hiring-card:hover::before { transform: scaleY(1); }
+.mkt .hiring-card__icon { width: 54px; height: 54px; border-radius: 12px; background: var(--plaster-2); display: grid; place-items: center; margin-bottom: 1.1rem; transition: background .3s, color .3s; color: var(--slate); }
+.mkt .hiring-card:hover .hiring-card__icon { background: var(--slate); color: #fff; }
+.mkt .hiring-card__icon svg { width: 24px; height: 24px; }
+.mkt .hiring-card h3 { margin: 0; font-size: 1.05rem; }
+.mkt .hiring-card__link { display: inline-flex; align-items: center; gap: .4rem; margin-top: .85rem; font-weight: 700; font-size: .85rem; color: var(--slate-2); }
+.mkt .hiring-card__link svg { width: 14px; height: 14px; transition: transform .25s var(--ease); }
+.mkt .hiring-card:hover .hiring-card__link svg { transform: translateX(3px); }
 
 /* Page hero */
 .mkt .page-hero { position: relative; padding-block: clamp(3rem, 3rem + 3vw, 5.5rem); overflow: hidden; }
