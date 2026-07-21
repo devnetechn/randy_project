@@ -32,7 +32,10 @@ function blog_image_url(?string $filename): ?string
     return $filename ? url('uploads/blog/' . $filename) : null;
 }
 
-/** Render a plain-text body as safe HTML paragraphs (blank line = new paragraph). */
+/**
+ * Render a plain-text body as safe HTML (blank line = new paragraph).
+ * A block starting with "## " renders as a section heading instead of a paragraph.
+ */
 function blog_render_body(string $body): string
 {
     $blocks = preg_split('/\n\s*\n/', trim($body));
@@ -40,6 +43,10 @@ function blog_render_body(string $body): string
     foreach ($blocks as $block) {
         $block = trim($block);
         if ($block === '') {
+            continue;
+        }
+        if (str_starts_with($block, '## ')) {
+            $html .= '<h3>' . e(trim(substr($block, 3))) . '</h3>';
             continue;
         }
         $html .= '<p>' . nl2br(e($block)) . '</p>';
