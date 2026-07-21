@@ -28,6 +28,9 @@ $show_widget = !($cu && $cu['role'] === 'admin');
                         <a href="https://share.google/jOEA4W8Vst9zQkl5u" aria-label="Google reviews">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6 6.6.5-5 4.3 1.5 6.4L12 16.9 6 19.2l1.5-6.4-5-4.3 6.6-.5z"/></svg>
                         </a>
+                        <a href="https://www.linkedin.com/in/randyspaintingsesrvices-4299a562/" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM7.12 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM8.9 20.45H5.34V9H8.9v11.45z"/></svg>
+                        </a>
                     </div>
                 </div>
 
