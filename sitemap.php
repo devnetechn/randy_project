@@ -26,6 +26,7 @@ $pages = [
     ['about.php',          'monthly', '0.7', $today],
     ['blog.php',           'weekly',  '0.7', $today],
     ['contact.php',        'monthly', '0.8', $today],
+    ['careers.php',        'monthly', '0.6', $today],
     ['locations/index.php',                    'monthly', '0.8', $today],
     ['locations/easton-painting.php',          'monthly', '0.8', $today],
     ['locations/bethlehem-painting.php',       'monthly', '0.8', $today],
