@@ -22,16 +22,33 @@
       '<div class="kpi-section"><h2>Live now</h2><div class="kpi-grid">' + LIVE.map((c) => card(c[0], c[1], 'live')).join('') + '</div></div>' +
       '<div class="kpi-section"><h2>Today</h2><div class="kpi-grid">' + TODAY.map((c) => card(c[0], c[1], 'today')).join('') + '</div></div>' +
       '<div class="kpi-section"><h2>This month</h2><div class="kpi-grid">' + MONTH.map((c) => card(c[0], c[1], 'month')).join('') + '</div></div>' +
-      '<div class="kpi-section"><h2>Last 6 months</h2><div class="chart-card"><canvas data-overview-chart height="90"></canvas></div></div>';
+      '<div class="kpi-section">' +
+      '<div class="kpi-section__head"><h2>Daily activity</h2>' +
+      '<select data-overview-month aria-label="Month"></select></div>' +
+      '<div class="chart-card"><canvas data-overview-chart height="90"></canvas></div></div>';
 
     const set = (k, v) => { const el = panel.querySelector('[data-kpi="' + k + '"]'); if (el) el.textContent = v == null ? '—' : v; };
 
     let chart = null;
+    let month = '';                       // '' on first load — the server picks the default
+    const monthEl = panel.querySelector('[data-overview-month]');
+
+    monthEl.addEventListener('change', () => { month = monthEl.value; loadChart(); });
+
     async function loadChart() {
       const canvas = panel.querySelector('[data-overview-chart]');
       if (!canvas || !window.Chart) return;
       try {
-        const d = await api.get('api/admin/analytics.php');
+        const d = await api.get('api/admin/analytics.php' + (month ? '?month=' + encodeURIComponent(month) : ''));
+
+        // The server is the authority on which month is selected: it resolves the
+        // default and may hand back a different month than was asked for.
+        month = d.month;
+        monthEl.innerHTML = (d.months || [])
+          .map((m) => '<option value="' + escapeHtml(m.value) + '">' + escapeHtml(m.label) + '</option>')
+          .join('');
+        monthEl.value = month;
+
         const datasets = [
           { label: 'Quotes requested', data: d.bookings, borderColor: '#2a66d6', backgroundColor: '#2a66d6' },
           { label: 'New leads', data: d.leads, borderColor: '#b4241d', backgroundColor: '#b4241d' },
@@ -39,14 +56,14 @@
         ].map((ds) => Object.assign(ds, { borderWidth: 2, pointRadius: 4, pointHoverRadius: 5, tension: 0.25, fill: false }));
 
         if (chart) {
-          chart.data.labels = d.months;
+          chart.data.labels = d.labels;
           chart.data.datasets = datasets;
           chart.update();
           return;
         }
         chart = new Chart(canvas.getContext('2d'), {
           type: 'line',
-          data: { labels: d.months, datasets },
+          data: { labels: d.labels, datasets },
           options: {
             responsive: true,
             interaction: { mode: 'index', intersect: false },
