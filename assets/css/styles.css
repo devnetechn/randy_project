@@ -589,6 +589,9 @@ body.no-scroll { overflow: hidden; }
 }
 .kpi-section { margin-bottom: 1.5rem; }
 .kpi-section h2 { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: .6rem; }
+.kpi-section__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.kpi-section__head h2 { margin-bottom: 0; }
+[data-overview-month] { padding: .35rem .6rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: #fff; color: var(--ink); font: inherit; font-size: .85rem; cursor: pointer; margin-bottom: .6rem; }
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: .75rem; }
 .kpi { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: .85rem 1rem; box-shadow: var(--shadow-sm); }
 .kpi__label { display: flex; align-items: center; gap: .5rem; font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); }
