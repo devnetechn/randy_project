@@ -470,6 +470,9 @@ body.no-scroll { overflow: hidden; }
 
 /* Report table */
 .report-table-wrap { overflow-x: auto; }
+.report-dates { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; margin: .75rem 0; }
+.report-dates label { display: inline-flex; align-items: center; gap: .4rem; font-size: .85rem; color: var(--muted); }
+.report-dates input { padding: .4rem .6rem; border: 1px solid var(--line); border-radius: var(--radius); font: inherit; }
 .report-table { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .report-table th, .report-table td { padding: .6rem .9rem; text-align: left; border-bottom: 1px solid var(--line); font-size: .9rem; white-space: nowrap; }
 .report-table th { background: var(--plaster-2); color: var(--muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
@@ -486,7 +489,13 @@ body.no-scroll { overflow: hidden; }
   .admin-shell { display: block; }
   .admin-content { padding: 0; max-width: none; }
   .report-print-heading { display: block; margin-bottom: 1rem; font-weight: 700; font-size: 1.1rem; }
-  [data-rp-filter], [data-rp-print] { display: none !important; }
+  [data-rp-filter], [data-rp-print], [data-rp-sub], [data-rp-presets], [data-rp-dates] { display: none !important; }
+  .report-table-wrap { overflow-x: visible; }
+  .report-table { border: 1px solid #999; }
+  .report-table thead { display: table-header-group; }
+  .report-table th, .report-table td { border: 1px solid #999; white-space: normal; font-size: .78rem; padding: .35rem .5rem; }
+  .report-table tbody tr:last-child td { border-bottom: 1px solid #999; }
+  .report-table tr { page-break-inside: avoid; }
 }
 
 /* =====================  CHAT WIDGET + ROOM  ===================== */

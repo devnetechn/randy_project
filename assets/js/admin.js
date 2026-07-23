@@ -218,6 +218,12 @@
       if (!s) return '';
       return new Date(s + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
     }
+    // Booking timestamps carry a time; the contact list only ever shows the day.
+    function dayOf(dt) {
+      if (!dt) return '—';
+      const d = new Date(String(dt).replace(' ', 'T'));
+      return isNaN(d.getTime()) ? dt : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
 
     /* ---- summary ---- */
     function summaryHeading() {
@@ -284,7 +290,7 @@
       let html = '<table class="report-table"><thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Service</th><th>Status</th></tr></thead><tbody>';
       rows.forEach((r) => {
         html += '<tr>' +
-          '<td>' + escapeHtml(fmt(r.createdAt)) + '</td>' +
+          '<td>' + escapeHtml(dayOf(r.createdAt)) + '</td>' +
           '<td>' + escapeHtml(r.name) + '</td>' +
           '<td>' + escapeHtml(r.phone || '—') + '</td>' +
           '<td>' + escapeHtml(r.email || '—') + '</td>' +
