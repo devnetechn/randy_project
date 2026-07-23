@@ -137,28 +137,92 @@
     const VIEWS = ['daily', 'weekly', 'monthly'];
     const LABELS = { daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly' };
     const COLS = ['total', 'pending', 'confirmed', 'declined', 'cancelled', 'completed'];
+    const PRESETS = [
+      ['month', 'This month'],
+      ['30d', 'Last 30 days'],
+      ['year', 'This year'],
+      ['all', 'All time'],
+    ];
     let view = 'monthly';
+    let sub = 'summary';
+
     panel.innerHTML =
-      '<div class="tabs" data-rp-filter style="margin-top:0">' +
-      VIEWS.map((v) => '<button class="tab' + (v === view ? ' is-active' : '') + '" data-v="' + v + '">' + LABELS[v] + '</button>').join('') +
+      '<div class="tabs" data-rp-sub style="margin-top:0">' +
+      '<button class="tab is-active" data-s="summary">Summary</button>' +
+      '<button class="tab" data-s="contacts">Contact list</button>' +
       '<button type="button" class="btn-soft" data-rp-print style="margin-left:.5rem">Download PDF</button>' +
-      '</div><div class="report-print-heading" data-rp-heading></div><div class="report-table-wrap" data-rp-table></div>';
+      '</div>' +
+      '<div class="report-print-heading" data-rp-heading></div>' +
+      '<div data-rp-summary>' +
+      '<div class="tabs" data-rp-filter>' +
+      VIEWS.map((v) => '<button class="tab' + (v === view ? ' is-active' : '') + '" data-v="' + v + '">' + LABELS[v] + '</button>').join('') +
+      '</div><div class="report-table-wrap" data-rp-table></div></div>' +
+      '<div data-rp-contacts hidden>' +
+      '<div class="tabs" data-rp-presets>' +
+      PRESETS.map((p) => '<button class="tab' + (p[0] === 'month' ? ' is-active' : '') + '" data-p="' + p[0] + '">' + p[1] + '</button>').join('') +
+      '</div>' +
+      '<div class="report-dates" data-rp-dates>' +
+      '<label>From <input type="date" data-rp-from></label>' +
+      '<label>To <input type="date" data-rp-to></label>' +
+      '</div><div class="report-table-wrap" data-rp-clist></div></div>';
+
     const tableEl = panel.querySelector('[data-rp-table]');
     const headingEl = panel.querySelector('[data-rp-heading]');
+    const summaryEl = panel.querySelector('[data-rp-summary]');
+    const contactsEl = panel.querySelector('[data-rp-contacts]');
+    const clistEl = panel.querySelector('[data-rp-clist]');
+    const fromEl = panel.querySelector('[data-rp-from]');
+    const toEl = panel.querySelector('[data-rp-to]');
+
+    panel.querySelector('[data-rp-sub]').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-s]'); if (!b) return;
+      sub = b.dataset.s;
+      panel.querySelectorAll('[data-rp-sub] .tab').forEach((t) => t.classList.toggle('is-active', t === b));
+      summaryEl.hidden = sub !== 'summary';
+      contactsEl.hidden = sub !== 'contacts';
+      if (sub === 'contacts') loadContacts();
+    });
 
     panel.querySelector('[data-rp-filter]').addEventListener('click', (e) => {
       const b = e.target.closest('[data-v]'); if (!b) return;
       view = b.dataset.v;
       panel.querySelectorAll('[data-rp-filter] .tab').forEach((t) => t.classList.toggle('is-active', t === b));
-      load();
+      loadSummary();
+    });
+
+    panel.querySelector('[data-rp-presets]').addEventListener('click', (e) => {
+      const b = e.target.closest('[data-p]'); if (!b) return;
+      panel.querySelectorAll('[data-rp-presets] .tab').forEach((t) => t.classList.toggle('is-active', t === b));
+      applyPreset(b.dataset.p);
+      loadContacts();
+    });
+
+    panel.querySelector('[data-rp-dates]').addEventListener('change', () => {
+      panel.querySelectorAll('[data-rp-presets] .tab').forEach((t) => t.classList.remove('is-active'));
+      loadContacts();
     });
 
     panel.querySelector('[data-rp-print]').addEventListener('click', () => {
-      const today = new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-      headingEl.textContent = 'Booking Report — ' + LABELS[view] + ' — Generated ' + today;
+      headingEl.innerHTML = sub === 'summary' ? summaryHeading() : contactsHeading();
       window.print();
     });
 
+    /* ---- shared ---- */
+    function iso(d) {
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+    function today() {
+      return new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function prettyDate(s) {
+      if (!s) return '';
+      return new Date(s + 'T00:00:00').toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    /* ---- summary ---- */
+    function summaryHeading() {
+      return escapeHtml('Booking Report — ' + LABELS[view] + ' — Generated ' + today());
+    }
     function periodLabel(p) {
       const d = new Date(p + 'T00:00:00');
       if (view === 'daily') return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
@@ -169,8 +233,7 @@
       }
       return d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
     }
-
-    function render(rows) {
+    function renderSummary(rows) {
       if (!rows.length) {
         tableEl.innerHTML = '<p style="color:var(--muted)">No bookings in this range.</p>';
         return;
@@ -183,16 +246,75 @@
       html += '</tbody></table>';
       tableEl.innerHTML = html;
     }
-
-    async function load() {
+    async function loadSummary() {
       tableEl.innerHTML = '<p style="color:var(--muted)">Loading&hellip;</p>';
       try {
         const d = await api.get('api/admin/reports.php?period=' + view);
-        render(d.rows || []);
+        renderSummary(d.rows || []);
       } catch (e) { toast(e.message, 'error'); }
     }
-    load();
-    refresh.reports = load;
+
+    /* ---- contact list ---- */
+    let contactRange = { from: null, to: null, count: 0 };
+
+    function applyPreset(p) {
+      const now = new Date();
+      if (p === 'all') { fromEl.value = ''; toEl.value = ''; return; }
+      toEl.value = iso(now);
+      if (p === 'month') fromEl.value = iso(new Date(now.getFullYear(), now.getMonth(), 1));
+      else if (p === 'year') fromEl.value = iso(new Date(now.getFullYear(), 0, 1));
+      else { const s = new Date(now); s.setDate(s.getDate() - 29); fromEl.value = iso(s); }
+    }
+
+    function contactsHeading() {
+      const range = contactRange.from
+        ? prettyDate(contactRange.from) + ' – ' + prettyDate(contactRange.to)
+        : 'All time';
+      return escapeHtml("Randy's Painting & Drywall Services — Booking Contact Report") +
+        '<br><span style="font-weight:400;font-size:.9rem">' +
+        escapeHtml(range + ' · ' + contactRange.count + ' booking' + (contactRange.count === 1 ? '' : 's') +
+          ' · Generated ' + today()) + '</span>';
+    }
+
+    function renderContacts(rows) {
+      if (!rows.length) {
+        clistEl.innerHTML = '<p style="color:var(--muted)">No bookings in this range.</p>';
+        return;
+      }
+      let html = '<table class="report-table"><thead><tr><th>Date</th><th>Name</th><th>Phone</th><th>Email</th><th>Service</th><th>Status</th></tr></thead><tbody>';
+      rows.forEach((r) => {
+        html += '<tr>' +
+          '<td>' + escapeHtml(fmt(r.createdAt)) + '</td>' +
+          '<td>' + escapeHtml(r.name) + '</td>' +
+          '<td>' + escapeHtml(r.phone || '—') + '</td>' +
+          '<td>' + escapeHtml(r.email || '—') + '</td>' +
+          '<td>' + escapeHtml(r.serviceType) + '</td>' +
+          '<td>' + escapeHtml(cap(r.status)) + '</td>' +
+          '</tr>';
+      });
+      html += '</tbody></table>';
+      clistEl.innerHTML = html;
+    }
+
+    async function loadContacts() {
+      clistEl.innerHTML = '<p style="color:var(--muted)">Loading&hellip;</p>';
+      const qs = [];
+      if (fromEl.value) qs.push('from=' + encodeURIComponent(fromEl.value));
+      if (toEl.value) qs.push('to=' + encodeURIComponent(toEl.value));
+      try {
+        const d = await api.get('api/admin/contact-report.php' + (qs.length ? '?' + qs.join('&') : ''));
+        const rows = d.rows || [];
+        contactRange = { from: d.from, to: d.to, count: rows.length };
+        renderContacts(rows);
+      } catch (e) {
+        clistEl.innerHTML = '<p style="color:var(--muted)">Could not load the contact list.</p>';
+        toast(e.message, 'error');
+      }
+    }
+
+    applyPreset('month');
+    loadSummary();
+    refresh.reports = () => (sub === 'summary' ? loadSummary() : loadContacts());
   }
 
   /* ----------  Gallery  ---------- */
