@@ -62,6 +62,8 @@ CREATE TABLE IF NOT EXISTS appointments (
   -- CRM sales pipeline (separate from the operational `status` above).
   lead_stage      ENUM('new','contacted','quoted','won','lost') NOT NULL DEFAULT 'new',
   crm_notes       TEXT NULL,
+  -- When the last CRM stage email went out, so follow-ups only fire once.
+  crm_last_email_at DATETIME NULL,
   -- Google Calendar event id, so we can update/delete the synced event.
   gcal_event_id   VARCHAR(255) NULL,
   created_at      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
