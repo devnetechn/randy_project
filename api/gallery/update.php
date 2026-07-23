@@ -29,8 +29,11 @@ $caption = $caption !== '' ? mb_substr($caption, 0, 200) : null;
 $description = trim((string) ($payload['description'] ?? ''));
 $description = $description !== '' ? $description : null;
 
-db()->prepare('UPDATE gallery_images SET caption = ?, description = ?, category = ? WHERE id = ?')
-    ->execute([$caption, $description, $category, $id]);
+$keywords = trim((string) ($payload['keywords'] ?? ''));
+$keywords = $keywords !== '' ? mb_substr($keywords, 0, 300) : null;
+
+db()->prepare('UPDATE gallery_images SET caption = ?, description = ?, keywords = ?, category = ? WHERE id = ?')
+    ->execute([$caption, $description, $keywords, $category, $id]);
 
 json_out(['image' => [
     'id'          => $id,
@@ -38,5 +41,6 @@ json_out(['image' => [
     'projectUrl'  => url('project.php?id=' . $id),
     'caption'     => $caption,
     'description' => $description,
+    'keywords'    => $keywords,
     'category'    => $category,
 ]]);

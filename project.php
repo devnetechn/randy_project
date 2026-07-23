@@ -39,10 +39,15 @@ if (!$photo) {
 $caption  = $photo['caption'] ?: 'Recent project';
 $catLabel = $CATS[$photo['category']] ?? 'Our work';
 $hasBody  = trim((string) ($photo['description'] ?? '')) !== '';
+$keywords = trim((string) ($photo['keywords'] ?? ''));
+$altText  = $keywords !== '' ? $caption . ' — ' . $keywords : $caption;
 
 $page_title       = $caption;
 $page_description = $hasBody ? mb_substr(trim($photo['description']), 0, 160) : $caption;
 $page_image       = url('uploads/gallery/' . $photo['filename']); // per-project social/SERP image
+if ($keywords !== '') {
+    $page_keywords = $keywords;
+}
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -58,7 +63,7 @@ require __DIR__ . '/includes/header.php';
 
     <section class="section section--tight">
         <div class="container">
-            <div class="project-figure"><img src="<?= e(url('uploads/gallery/' . $photo['filename'])) ?>" alt="<?= e($caption) ?>"></div>
+            <div class="project-figure"><img src="<?= e(url('uploads/gallery/' . $photo['filename'])) ?>" alt="<?= e($altText) ?>"></div>
         </div>
     </section>
 

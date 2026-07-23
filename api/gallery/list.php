@@ -19,6 +19,7 @@ $images = array_map(function ($img) {
         'projectUrl'  => url('project.php?id=' . (int) $img['id']),
         'caption'     => $img['caption'],
         'description' => $img['description'] ?? null,
+        'keywords'    => $img['keywords'] ?? null,
         'category'    => $img['category'],
         'sortOrder'   => (int) $img['sort_order'],
     ];

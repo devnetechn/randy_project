@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS gallery_images (
   filename    VARCHAR(255) NOT NULL,
   caption     VARCHAR(200) NULL,
   description TEXT NULL,
+  keywords    VARCHAR(300) NULL,
   category    ENUM('interior','exterior','drywall','commercial','other') NOT NULL DEFAULT 'other',
   sort_order  INT NOT NULL DEFAULT 0,
   created_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

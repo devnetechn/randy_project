@@ -33,6 +33,9 @@ $caption = $caption !== '' ? mb_substr($caption, 0, 200) : null;
 $description = trim($_POST['description'] ?? '');
 $description = $description !== '' ? $description : null;
 
+$keywords = trim($_POST['keywords'] ?? '');
+$keywords = $keywords !== '' ? mb_substr($keywords, 0, 300) : null;
+
 $dir = __DIR__ . '/../../uploads/gallery';
 if (!is_dir($dir)) {
     @mkdir($dir, 0775, true);
@@ -42,8 +45,8 @@ if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $filename)) {
     json_error('Could not save the uploaded file', 500);
 }
 
-db()->prepare('INSERT INTO gallery_images (filename, caption, description, category) VALUES (?, ?, ?, ?)')
-    ->execute([$filename, $caption, $description, $category]);
+db()->prepare('INSERT INTO gallery_images (filename, caption, description, keywords, category) VALUES (?, ?, ?, ?, ?)')
+    ->execute([$filename, $caption, $description, $keywords, $category]);
 $id = (int) db()->lastInsertId();
 
 json_out([
@@ -53,6 +56,7 @@ json_out([
         'projectUrl'  => url('project.php?id=' . $id),
         'caption'     => $caption,
         'description' => $description,
+        'keywords'    => $keywords,
         'category'    => $category,
     ],
 ], 201);

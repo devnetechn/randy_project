@@ -331,6 +331,7 @@
       '<label class="field"><span>Photo (JPEG/PNG/WebP, ≤5MB)</span><input type="file" name="image" accept="image/jpeg,image/png,image/webp" required></label>' +
       '<label class="field"><span>Caption (optional)</span><input type="text" name="caption" maxlength="200"></label>' +
       '<label class="field"><span>Description (optional)</span><textarea name="description" rows="3"></textarea></label>' +
+      '<label class="field"><span>Keywords (optional, comma-separated — for SEO)</span><input type="text" name="keywords" maxlength="300" placeholder="e.g. Easton drywall repair, Level 5 finish, Lehigh Valley"></label>' +
       '<label class="field"><span>Category</span><select name="category">' + CATS.map((c) => '<option value="' + c + '">' + cap(c) + '</option>').join('') + '</select></label>' +
       '<button class="btn-primary" type="submit">Upload photo</button></form>' +
       '<div class="gallery-admin__grid" data-ga-grid></div>';
@@ -374,6 +375,7 @@
         caption: f.caption.value.trim(),
         category: f.category.value,
         description: f.description.value.trim(),
+        keywords: f.keywords.value.trim(),
       };
       const btn = f.querySelector('button[type="submit"]');
       btn.disabled = true;
@@ -396,6 +398,7 @@
               '<label class="field"><span>Caption</span><input type="text" name="caption" maxlength="200" value="' + escapeHtml(img.caption || '') + '"></label>' +
               '<label class="field"><span>Category</span><select name="category">' + CATS.map((c) => '<option value="' + c + '"' + (c === img.category ? ' selected' : '') + '>' + cap(c) + '</option>').join('') + '</select></label>' +
               '<label class="field"><span>Description</span><textarea name="description" rows="3">' + escapeHtml(img.description || '') + '</textarea></label>' +
+              '<label class="field"><span>Keywords (comma-separated — for SEO)</span><input type="text" name="keywords" maxlength="300" value="' + escapeHtml(img.keywords || '') + '"></label>' +
               '<div><button class="btn-primary" type="submit">Save</button> <button type="button" class="gallery-admin__cancel">Cancel</button></div>' +
             '</form>' +
           '</div>').join('')
