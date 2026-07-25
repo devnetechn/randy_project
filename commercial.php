@@ -2,8 +2,8 @@
 require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
 $page_title = 'Commercial Painting & Skim Coating | Lehigh Valley & Bucks County, PA';
-$page_description = 'Commercial interior and exterior painting, Level 4 & Level 5 skim coating, stucco removal, plaster repair, wallcovering removal, and power washing for properties across the Lehigh Valley and Bucks County, PA. Licensed, insured. Free estimates.';
-$page_keywords = 'commercial painting Lehigh Valley, commercial interior painting Easton PA, commercial exterior painting Bucks County, Level 4 skim coating commercial, Level 5 skim coating commercial, stucco removal Lehigh Valley, plaster repair Easton PA, wallcovering removal Bucks County, power washing commercial Lehigh Valley, office painting Bethlehem PA';
+$page_description = 'Commercial interior and exterior painting, Level 4 & Level 5 skim coating, stucco removal, plaster repair, wallcovering removal, power washing, and painting services for property and facility managers across the Lehigh Valley and Bucks County, PA. Licensed, insured. Free estimates.';
+$page_keywords = 'commercial painting Lehigh Valley, commercial interior painting Easton PA, commercial exterior painting Bucks County, Level 4 skim coating commercial, Level 5 skim coating commercial, stucco removal Lehigh Valley, plaster repair Easton PA, wallcovering removal Bucks County, power washing commercial Lehigh Valley, office painting Bethlehem PA, property management painting Lehigh Valley, facility maintenance painting Bucks County, apartment turnover painting Easton PA';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -13,7 +13,7 @@ require __DIR__ . '/includes/header.php';
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="<?= e(url('index.php')) ?>">Home</a><span>/</span> Commercial</nav>
             <span class="eyebrow">For businesses &amp; property owners</span>
             <h1 style="margin-top:1rem">Commercial painting &amp; skim coating — <span class="ul-brush">built for business</span>.</h1>
-            <p>Interior and exterior painting plus Level 4 and Level 5 skim coating for offices, retail, multi-unit buildings, and commercial properties across the Lehigh Valley and Bucks County, PA. Professional results, on your schedule. Licensed, insured, free estimates.</p>
+            <p>Interior and exterior painting plus Level 4 and Level 5 skim coating for offices, retail, multi-unit buildings, and commercial properties across the Lehigh Valley and Bucks County, PA — including turnover and maintenance work for property and facility managers. Professional results, on your schedule. Licensed, insured, free estimates.</p>
         </div>
     </section>
 
@@ -99,6 +99,26 @@ require __DIR__ . '/includes/header.php';
                         <li><?= svg_check() ?>Pre-paint surface preparation</li>
                     </ul>
                 </article>
+                <article class="service-card">
+                    <div class="service-card__icon"><?= svg_check() ?></div>
+                    <h3>Property Management Services</h3>
+                    <p>A dependable painting partner for property managers and landlords — unit turnovers, common areas, and HOA-managed exteriors handled on your timeline, with one point of contact and consistent finishes across every building in your portfolio.</p>
+                    <ul>
+                        <li><?= svg_check() ?>Tenant turnovers &amp; make-readies</li>
+                        <li><?= svg_check() ?>Hallways, lobbies &amp; common areas</li>
+                        <li><?= svg_check() ?>HOA, condo &amp; multi-unit exteriors</li>
+                    </ul>
+                </article>
+                <article class="service-card">
+                    <div class="service-card__icon"><?= svg_check() ?></div>
+                    <h3>Facility Management Services</h3>
+                    <p>Ongoing painting and wall repair for facilities that can&apos;t shut down — warehouses, schools, medical offices, and industrial buildings. Scheduled maintenance, fast response on damage, and crews that work around your operating hours.</p>
+                    <ul>
+                        <li><?= svg_check() ?>Scheduled maintenance repainting</li>
+                        <li><?= svg_check() ?>On-call drywall &amp; wall damage repair</li>
+                        <li><?= svg_check() ?>After-hours &amp; weekend scheduling</li>
+                    </ul>
+                </article>
             </div>
         </div>
     </section>
@@ -134,6 +154,8 @@ require __DIR__ . '/includes/header.php';
         ['What types of commercial properties do you paint?', 'We work on offices, retail stores, clinics, banks, apartment buildings, condominiums, lobbies, and HOA-managed properties throughout the Lehigh Valley and Bucks County, PA. Interior and exterior — call us and we\'ll tell you honestly if we\'re the right fit.'],
         ['What is the difference between Level 4 and Level 5 skim coating?', 'Level 4 coats only the taped joints and fasteners — the commercial standard for most offices and retail spaces. Level 5 adds a full skim coat over the entire wall surface, eliminating any texture variation so the finish is glass-smooth. Level 5 is ideal for lobbies, showrooms, executive offices, and anywhere high-sheen or dark paint will be used.'],
         ['Can you skim coat existing commercial walls before painting?', 'Yes. If your walls are rough, patched, or uneven, we can apply a skim coat to bring them up to a Level 4 or Level 5 finish before painting — so the final result looks intentional, not like a repaint.'],
+        ['Do you work with property managers and facility managers?', 'Yes — it\'s a regular part of what we do. We handle tenant turnovers, common areas, and HOA exteriors for property managers, and scheduled maintenance repainting plus on-call wall repair for facility managers. You get one point of contact, consistent finishes across every building, and certificates of insurance on file.'],
+        ['Can you handle recurring or scheduled maintenance painting?', 'Yes. For portfolios and facilities we can set up a recurring schedule — turnovers as units come open, common areas on a rotation, or an annual walkthrough where we quote everything at once. It keeps the properties consistent and spreads the cost across the year instead of one large project.'],
         ['Can you work outside of regular business hours?', 'Yes. We regularly schedule commercial jobs in the evenings or on weekends to minimize disruption to tenants and customers. Let us know your constraints when you request a quote and we\'ll build the schedule around you.'],
         ['Do you offer free estimates for commercial projects?', 'Yes, always. We visit the property, assess the scope, and send a clear written quote — no obligation. Most commercial estimates are returned within 24–48 hours.'],
     ], 'Commercial services — common questions'); ?>
