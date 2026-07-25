@@ -112,6 +112,7 @@ require __DIR__ . '/includes/header.php';
                     'Wilson, PA', 'Palmer Township, PA', 'Forks Township, PA', 'Hellertown, PA',
                     'New Hope, PA', 'Doylestown, PA', 'Solebury Township, PA', 'Upper Makefield, PA',
                     'Newtown, PA', 'Yardley, PA', 'Wind Gap, PA', 'Phillipsburg, NJ',
+                    'College Hill, Easton, PA',
                 ] as $area): ?>
                     <li class="area"><?= svg_circle_check() ?><?= e($area) ?></li>
                 <?php endforeach; ?>

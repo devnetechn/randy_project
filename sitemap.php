@@ -33,6 +33,8 @@ $pages = [
     ['locations/allentown-painting.php',       'monthly', '0.8', $today],
     ['locations/easton-drywall-repair.php',    'monthly', '0.8', $today],
     ['locations/bethlehem-drywall-repair.php', 'monthly', '0.8', $today],
+    ['locations/upper-makefield-painting.php', 'monthly', '0.8', $today],
+    ['locations/college-hill-painting.php',    'monthly', '0.8', $today],
 ];
 
 $urls = [];

@@ -70,6 +70,8 @@ $ld = [
         ['@type' => 'City', 'name' => 'Upper Makefield Township', 'addressRegion' => 'PA'],
         ['@type' => 'City', 'name' => 'Newtown', 'addressRegion' => 'PA'],
         ['@type' => 'City', 'name' => 'Yardley', 'addressRegion' => 'PA'],
+        // Neighborhood of Easton, not a municipality — 'Place' is the correct type.
+        ['@type' => 'Place', 'name' => 'College Hill, Easton', 'addressRegion' => 'PA'],
         ['@type' => 'AdministrativeArea', 'name' => 'Lehigh Valley'],
         ['@type' => 'AdministrativeArea', 'name' => 'Bucks County'],
         [

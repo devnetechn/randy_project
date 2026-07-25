@@ -39,7 +39,7 @@ $LOCATIONS = [
         'gallery_categories'   => ['interior', 'exterior'],
         'related_service_slug' => 'services.php',
         'related_service_label'=> 'All Painting Services',
-        'related_slugs'        => ['bethlehem-painting', 'allentown-painting'],
+        'related_slugs'        => ['college-hill-painting', 'bethlehem-painting', 'allentown-painting'],
     ],
 
     'bethlehem-painting' => [
@@ -173,6 +173,77 @@ $LOCATIONS = [
         'related_service_label'=> 'Wall Restoration & Plaster Repair',
         'related_slugs'        => ['easton-drywall-repair', 'bethlehem-painting'],
     ],
+
+    'upper-makefield-painting' => [
+        'title'                => 'Painting Contractor in Upper Makefield, PA',
+        'meta_description'     => 'Fine-finish interior and exterior painting for Upper Makefield Township, PA — estate homes, historic stone farmhouses, and Level 5 smooth walls. Licensed, insured, free estimates.',
+        'meta_keywords'        => 'painting contractor Upper Makefield PA, house painter Upper Makefield, interior painting Bucks County PA, estate home painter Bucks County, Level 5 painting Upper Makefield, Washington Crossing painter',
+        'city'                 => 'Upper Makefield',
+        // Township, not a city — spelled out in headings and structured data.
+        'city_line'            => 'Upper Makefield Township, PA',
+        'service_label'        => 'Painting Contractor',
+        'service_name'         => 'Interior & Exterior Painting',
+        'hero_heading'         => 'Upper Makefield painting at an <span class="ul-brush">estate-level</span> standard.',
+        'hero_intro'           => 'From the stone farmhouses around Washington Crossing to newer estate homes off Eagle and Dolington Roads, we bring fine-finish painting and Level 5 smooth walls to Upper Makefield Township. Free, no-pressure estimates.',
+        'intro_heading'        => 'Finishes that hold up to close inspection',
+        'intro_body'           => "Upper Makefield homes are built and detailed at a level where an average paint job shows immediately — tall foyers with raking light, custom millwork, coffered ceilings, and dark or high-sheen colors that expose every flaw underneath. We prep accordingly: walls skimmed smooth where they need it, trim sanded and caulked properly, and coatings chosen for the surface rather than whatever is quickest to spray.",
+        'feature_cards'        => [
+            ['Estate & custom home experience', 'Tall foyers, custom millwork, and coffered ceilings need patient prep and steady hands. That is the work we do every week.'],
+            ['Level 5 smooth-wall finishes', 'Where dark paint, high sheen, or big windows will show every ripple, we skim the full surface first so the finish stays flawless.'],
+            ['Historic stone farmhouse care', 'Plaster, original trim, and old woodwork near Washington Crossing are prepped to preserve the character, not bury it.'],
+        ],
+        'faq'                  => [
+            ['How much does interior painting cost in Upper Makefield, PA?', 'It comes down to square footage, ceiling height, millwork detail, and how much wall prep is needed — an estate foyer and a spare bedroom are not priced the same way. We give you an exact number after a free, no-obligation walkthrough.'],
+            ['Do you do Level 5 smooth-wall finishes in Bucks County?', 'Yes — Level 5 is one of our specialties. If you have dark or high-sheen paint planned, or big windows throwing raking light across a wall, a full skim coat is what keeps the finish looking flawless.'],
+            ['Can you paint a historic stone farmhouse?', 'Yes. Older Upper Makefield homes often have original plaster and woodwork that need gentler prep and the right primer. We match the approach to what the surface actually is.'],
+            ['Do you offer free estimates in Upper Makefield?', 'Always, with no obligation. We serve Upper Makefield Township and the surrounding Bucks County communities — Washington Crossing, Newtown, and Yardley included — with most quotes returned within 24 hours.'],
+        ],
+        'cta_eyebrow'          => 'Serving Bucks County',
+        'cta_title'            => 'Get a painting estimate in Upper Makefield',
+        'cta_text'             => 'Free, no-pressure quotes for homes throughout Upper Makefield Township and Bucks County, PA. Most returned within 24 hours.',
+        'hero_image'           => 'assets/img/service-level5.webp',
+        'hero_image_alt'       => 'Level 5 smooth-wall paint finish in an Upper Makefield, PA estate home',
+        'gallery_categories'   => ['interior', 'exterior'],
+        'related_service_slug' => 'level-5-drywall.php',
+        'related_service_label'=> 'Level 5 Drywall Finish',
+        'related_slugs'        => ['college-hill-painting', 'easton-painting'],
+    ],
+
+    'college-hill-painting' => [
+        'title'                => 'Painting Contractor in College Hill, Easton, PA',
+        'meta_description'     => 'Interior and exterior painting for College Hill in Easton, PA — Victorians, Colonials, porches, and original trim near Lafayette College. Licensed, insured, free estimates.',
+        'meta_keywords'        => 'painting contractor College Hill Easton PA, College Hill painter, Victorian home painter Easton PA, historic home painting Easton, exterior painting College Hill, Lafayette College area painter',
+        'city'                 => 'College Hill',
+        // Neighborhood of Easton — kept explicit so headings and schema read correctly.
+        'city_line'            => 'College Hill, Easton, PA',
+        'area_type'            => 'Place',
+        'service_label'        => 'Painting Contractor',
+        'service_name'         => 'Interior & Exterior Painting',
+        'hero_heading'         => 'College Hill painting that respects the <span class="ul-brush">original</span> details.',
+        'hero_intro'           => "We're based in Easton, and College Hill is our own backyard — Victorians, Colonials, and Four Squares with plaster walls, deep porches, and trim worth saving. Free, no-pressure estimates for interior and exterior work.",
+        'intro_heading'        => 'A century-old home needs a different approach',
+        'intro_body'           => "Most of College Hill was built well before modern drywall, and it shows: lath-and-plaster walls that crack along the seams, layered old paint on ornate trim, wood porches and railings that take the full brunt of the weather, and window sashes nobody wants replaced. Rushing the prep on a home like that is how you end up with peeling in two years. We take the time — scrape, sand, patch, prime — so the finish lasts and the details still look like themselves.",
+        'feature_cards'        => [
+            ['Victorian & Colonial trim work', 'Ornate trim, brackets, and window sashes get hand prep and careful cut-in — no sprayed-over detail, no filled-in profiles.'],
+            ['Plaster prep before paint', 'Settling cracks and old patchwork are repaired and blended first, so the paint lands on a wall that is actually ready for it.'],
+            ['Porches built for the weather', 'Porch floors, ceilings, columns, and railings take the worst of the Lehigh Valley seasons. We prep and coat them to hold.'],
+        ],
+        'faq'                  => [
+            ['How much does it cost to paint a College Hill Victorian?', 'Older homes with detailed trim take more prep hours than a modern build of the same size, so the range is wider. We walk the house, count what actually needs hand work, and give you an exact written number for free.'],
+            ['Will you damage the original trim or woodwork?', 'No — protecting it is the point. We hand-sand and prep detailed trim rather than blasting or over-filling it, so the profiles and character stay intact under the new finish.'],
+            ['Do you repair plaster cracks before painting?', 'Yes. Painting over a live crack just hides it until next winter. We patch and blend plaster first, and can handle larger restoration work on the same visit.'],
+            ['Do you serve the rest of Easton too?', 'Yes — College Hill, the West Ward, downtown, and South Side Easton. We are based right here, so scheduling a free on-site estimate is easy and most quotes come back within 24 hours.'],
+        ],
+        'cta_eyebrow'          => 'Right here in Easton',
+        'cta_title'            => 'Get a painting estimate on College Hill',
+        'cta_text'             => 'Free, no-pressure quotes for homes throughout College Hill and the rest of Easton, PA. Most returned within 24 hours.',
+        'hero_image'           => 'assets/img/service-painting.webp',
+        'hero_image_alt'       => 'Freshly painted trim and porch on a College Hill Victorian in Easton, PA',
+        'gallery_categories'   => ['interior', 'exterior'],
+        'related_service_slug' => 'wall-restoration.php',
+        'related_service_label'=> 'Wall Restoration & Plaster Repair',
+        'related_slugs'        => ['easton-painting', 'easton-drywall-repair'],
+    ],
 ];
 
 /**
@@ -241,13 +312,17 @@ function location_page(string $slug): void
 {
     global $LOCATIONS;
     $loc = $LOCATIONS[$slug];
+    // Most entries are plain cities ("Easton" → "Easton, PA"); townships and
+    // neighborhoods override the full line and the schema.org type.
+    $city_line = $loc['city_line'] ?? $loc['city'] . ', PA';
+    $area_type = $loc['area_type'] ?? 'City';
     ?>
     <div class="mkt">
         <section class="page-hero">
             <div class="page-hero__bg" aria-hidden="true"></div>
             <div class="container">
                 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="<?= e(url('index.php')) ?>">Home</a><span>/</span> <a href="<?= e(url('locations/index.php')) ?>">Service Areas</a><span>/</span> <?= e($loc['city']) ?> <?= e($loc['service_label']) ?></nav>
-                <span class="eyebrow"><?= e($loc['service_label']) ?> in <?= e($loc['city']) ?>, PA</span>
+                <span class="eyebrow"><?= e($loc['service_label']) ?> in <?= e($city_line) ?></span>
                 <h1 style="margin-top:1rem"><?= $loc['hero_heading'] ?></h1>
                 <p><?= e($loc['hero_intro']) ?></p>
             </div>
@@ -284,7 +359,7 @@ function location_page(string $slug): void
         </section>
 
         <?php mkt_faq_custom($loc['faq'], $loc['service_label'] . ' in ' . $loc['city'] . ' — common questions'); ?>
-        <?php mkt_service_jsonld($loc['service_name'], $loc['meta_description'], [['@type' => 'City', 'name' => $loc['city'] . ', PA']]); ?>
+        <?php mkt_service_jsonld($loc['service_name'], $loc['meta_description'], [['@type' => $area_type, 'name' => $city_line]]); ?>
 
         <section class="section section--tight" style="background:var(--plaster-2)">
             <div class="container">
