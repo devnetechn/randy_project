@@ -18,5 +18,6 @@ json_out(['post' => [
     'body'    => $post['body'],
     'image'   => $post['image'] ? url('uploads/blog/' . $post['image']) : null,
     'status'  => $post['status'],
+    'faqs'    => $post['faqs'] ? json_decode($post['faqs'], true) : [],
     'date'    => $post['created_at'],
 ]]);
