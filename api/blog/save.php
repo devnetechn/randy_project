@@ -12,12 +12,30 @@ $title   = trim($_POST['title'] ?? '');
 $excerpt = trim($_POST['excerpt'] ?? '');
 $body    = trim($_POST['body'] ?? '');
 $status  = $_POST['status'] ?? 'draft';
+$faqsRaw = $_POST['faqs'] ?? '';
 
 if ($title === '') { json_error('Title is required', 400); }
 if ($body === '')  { json_error('Body is required', 400); }
 if (!in_array($status, ['draft', 'published'], true)) { $status = 'draft'; }
 $title   = mb_substr($title, 0, 200);
 $excerpt = $excerpt !== '' ? mb_substr($excerpt, 0, 300) : null;
+
+// FAQs: JSON array of {q, a} pairs from the admin form. Drop blank pairs, cap at 20.
+$faqsJson = null;
+$decodedFaqs = json_decode($faqsRaw, true);
+if (is_array($decodedFaqs)) {
+    $cleanFaqs = [];
+    foreach ($decodedFaqs as $pair) {
+        $q = trim((string) ($pair['q'] ?? ''));
+        $a = trim((string) ($pair['a'] ?? ''));
+        if ($q === '' || $a === '') { continue; }
+        $cleanFaqs[] = ['q' => mb_substr($q, 0, 300), 'a' => mb_substr($a, 0, 2000)];
+        if (count($cleanFaqs) >= 20) { break; }
+    }
+    if ($cleanFaqs) {
+        $faqsJson = json_encode($cleanFaqs, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+}
 
 // Optional featured image (same rules as the gallery).
 $newFilename = null;
@@ -56,12 +74,12 @@ if ($id > 0) {
     } else {
         $image = $existing['image'];
     }
-    db()->prepare('UPDATE blog_posts SET title = ?, excerpt = ?, body = ?, image = ?, status = ? WHERE id = ?')
-        ->execute([$title, $excerpt, $body, $image, $status, $id]);
+    db()->prepare('UPDATE blog_posts SET title = ?, excerpt = ?, body = ?, image = ?, status = ?, faqs = ? WHERE id = ?')
+        ->execute([$title, $excerpt, $body, $image, $status, $faqsJson, $id]);
 } else {
     // Create new post.
-    db()->prepare('INSERT INTO blog_posts (title, excerpt, body, image, status) VALUES (?, ?, ?, ?, ?)')
-        ->execute([$title, $excerpt, $body, $newFilename, $status]);
+    db()->prepare('INSERT INTO blog_posts (title, excerpt, body, image, status, faqs) VALUES (?, ?, ?, ?, ?, ?)')
+        ->execute([$title, $excerpt, $body, $newFilename, $status, $faqsJson]);
     $id = (int) db()->lastInsertId();
 }
 
@@ -76,5 +94,6 @@ json_out(['post' => [
     'body'    => $post['body'],
     'image'   => $post['image'] ? url('uploads/blog/' . $post['image']) : null,
     'status'  => $post['status'],
+    'faqs'    => $post['faqs'] ? json_decode($post['faqs'], true) : [],
     'date'    => $post['created_at'],
 ]], $isNew ? 201 : 200);
