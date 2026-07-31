@@ -32,7 +32,7 @@ $page_description = $post['excerpt'] ?: 'Painting and drywall tips from Randy\'s
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
-    <section class="page-hero">
+    <section class="page-hero page-hero--project">
         <div class="page-hero__bg" aria-hidden="true"></div>
         <div class="container">
             <nav class="breadcrumb" aria-label="Breadcrumb"><a href="<?= e(url('index.php')) ?>">Home</a><span>/</span> <a href="<?= e(url('blog.php')) ?>">Blog</a><span>/</span> <?= e($post['title']) ?></nav>
