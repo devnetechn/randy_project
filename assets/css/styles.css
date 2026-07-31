@@ -748,3 +748,18 @@ button.kpi:hover { box-shadow: var(--shadow-md); }
 .blog-admin__title { font-weight: 700; margin-top: .25rem; }
 .blog-admin__date { font-size: .8rem; color: var(--muted); }
 .blog-admin__actions { white-space: nowrap; }
+
+/* Admin blog FAQ editor */
+.blog-admin__faqs { display: flex; flex-direction: column; gap: .6rem; margin: .5rem 0; }
+.blog-admin__faq-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "q remove" "a a";
+  gap: .4rem .6rem;
+  padding: .6rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.blog-admin__faq-row input[data-faq-q] { grid-area: q; }
+.blog-admin__faq-row textarea[data-faq-a] { grid-area: a; resize: vertical; }
+.blog-admin__faq-row button[data-faq-remove] { grid-area: remove; align-self: start; }

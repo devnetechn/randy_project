@@ -441,6 +441,11 @@
       '<label class="field"><span>Body</span><textarea name="body" rows="8" required></textarea></label>' +
       '<label class="field"><span>Status</span><select name="status"><option value="draft">Draft</option><option value="published">Published</option></select></label>' +
       '<label class="field"><span>Featured image (JPEG/PNG/WebP, ≤5MB — optional)</span><input type="file" name="image" accept="image/jpeg,image/png,image/webp"></label>' +
+      '<input type="hidden" name="faqs" data-blog-faqs-input value="">' +
+      '<div class="field"><span>FAQs (optional — shown on the post page)</span>' +
+      '<div class="blog-admin__faqs" data-blog-faq-list></div>' +
+      '<button class="btn-soft" type="button" data-blog-faq-add>+ Add FAQ</button>' +
+      '</div>' +
       '<div class="booking-actions"><button class="btn-primary" type="submit" data-blog-submit>Save post</button> ' +
       '<button class="btn-soft" type="button" data-blog-reset>New / clear</button></div>' +
       '</form>' +
@@ -448,6 +453,34 @@
     const form = panel.querySelector('[data-blog-form]');
     const listEl = panel.querySelector('[data-blog-list]');
     const urlForm = panel.querySelector('[data-blog-url-form]');
+    const faqList = panel.querySelector('[data-blog-faq-list]');
+    const faqsInput = panel.querySelector('[data-blog-faqs-input]');
+
+    function addFaqRow(q, a) {
+      const row = document.createElement('div');
+      row.className = 'blog-admin__faq-row';
+      row.innerHTML =
+        '<input type="text" placeholder="Question" data-faq-q maxlength="300" value="' + escapeHtml(q || '') + '">' +
+        '<textarea placeholder="Answer" data-faq-a rows="2" maxlength="2000">' + escapeHtml(a || '') + '</textarea>' +
+        '<button class="btn-soft" type="button" data-faq-remove>Remove</button>';
+      faqList.appendChild(row);
+    }
+
+    function collectFaqs() {
+      return Array.from(faqList.querySelectorAll('.blog-admin__faq-row'))
+        .map((row) => ({
+          q: row.querySelector('[data-faq-q]').value.trim(),
+          a: row.querySelector('[data-faq-a]').value.trim(),
+        }))
+        .filter((pair) => pair.q && pair.a);
+    }
+
+    faqList.addEventListener('click', (e) => {
+      const rm = e.target.closest('[data-faq-remove]');
+      if (rm) { rm.closest('.blog-admin__faq-row').remove(); }
+    });
+
+    panel.querySelector('[data-blog-faq-add]').addEventListener('click', () => addFaqRow('', ''));
 
     async function loadUrl() {
       try { urlForm.querySelector('[name="blogUrl"]').value = (await api.get('api/blog/settings.php')).blogUrl || ''; }
@@ -468,6 +501,7 @@
       form.reset();
       form.querySelector('[name="id"]').value = '';
       form.querySelector('[data-blog-submit]').textContent = 'Save post';
+      faqList.innerHTML = '';
     }
 
     form.addEventListener('submit', async (e) => {
@@ -475,6 +509,7 @@
       const btn = form.querySelector('[data-blog-submit]');
       btn.disabled = true;
       try {
+        faqsInput.value = JSON.stringify(collectFaqs());
         await api.upload('api/blog/save.php', new FormData(form));
         clearForm();
         await load();
@@ -497,6 +532,8 @@
           form.querySelector('[name="body"]').value = p.body || '';
           form.querySelector('[name="status"]').value = p.status || 'draft';
           form.querySelector('[name="image"]').value = '';
+          faqList.innerHTML = '';
+          (p.faqs || []).forEach((pair) => addFaqRow(pair.q, pair.a));
           form.querySelector('[data-blog-submit]').textContent = 'Update post';
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) { toast(err.message, 'error'); }
