@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   excerpt      VARCHAR(300) NULL,
   body         MEDIUMTEXT NOT NULL,
   image        VARCHAR(255) NULL,
+  faqs         JSON NULL,
   status       ENUM('draft','published') NOT NULL DEFAULT 'draft',
   created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -99,6 +99,14 @@ try {
         $steps[] = 'CRM follow-up email tracking already present.';
     }
 
+    // 2e) Blog post FAQs (JSON array of {q, a} pairs, optional per post).
+    if (!$colExists('blog_posts', 'faqs')) {
+        $pdo->exec('ALTER TABLE blog_posts ADD COLUMN faqs JSON NULL AFTER image');
+        $steps[] = 'Upgraded blog_posts table for post FAQs.';
+    } else {
+        $steps[] = 'Blog post FAQs already present.';
+    }
+
     // 3) Seed the admin account.
     $a = config('admin');
     $st = $pdo->prepare('SELECT id FROM users WHERE email = ?');
