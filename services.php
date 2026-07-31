@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
 $page_title = 'Painting, Drywall & Restoration Services | Lehigh Valley & Bucks County, PA';
 $page_description = 'Interior & exterior painting, Level 4 & 5 skim coating, drywall installation & repair, stucco removal, plaster repair, wallcovering removal, and power washing across the Lehigh Valley and Bucks County, PA. Licensed, insured. Free estimates.';
-$page_keywords = 'high-end residential painting Lehigh Valley, luxury home painter Bucks County, Level 5 drywall finish, skim coating Lehigh Valley, stucco removal Easton PA, plaster repair Lehigh Valley, wallcovering removal Bucks County, power washing Lehigh Valley, drywall contractor Easton PA, painter Bethlehem PA';
+$page_keywords = 'high-end residential painting Lehigh Valley, luxury home painter Bucks County, Level 5 drywall finish, skim coating Lehigh Valley, stucco removal Easton PA, plaster repair Lehigh Valley, wallcovering removal Bucks County, power washing Lehigh Valley, drywall contractor Easton PA, painter Bethlehem PA, architect painting partner Lehigh Valley, interior designer painting Bucks County, general contractor painting subcontractor, facility management painting services';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -14,6 +14,7 @@ require __DIR__ . '/includes/header.php';
             <span class="eyebrow">What we offer</span>
             <h1 style="margin-top:1rem">Painting &amp; drywall services, done <span class="ul-brush">right</span>.</h1>
             <p>Full-service prep, repair, and high-end finishing for residential and commercial spaces — including Level&nbsp;5 smooth-wall finishes, skim coating, and fine-finish painting. Serving the Lehigh Valley and Bucks County, PA, from Easton and Bethlehem to New Hope and Doylestown. One crew, start to finish.</p>
+            <p>We also partner with architects, interior designers, general contractors, and facility management teams — bringing the same prep, precision, and finish quality to specified projects and ongoing maintenance work.</p>
         </div>
     </section>
 

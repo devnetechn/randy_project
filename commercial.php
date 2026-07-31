@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
 $page_title = 'Commercial Painting & Skim Coating | Lehigh Valley & Bucks County, PA';
 $page_description = 'Commercial interior and exterior painting, Level 4 & Level 5 skim coating, stucco removal, plaster repair, wallcovering removal, power washing, and painting services for property and facility managers across the Lehigh Valley and Bucks County, PA. Licensed, insured. Free estimates.';
-$page_keywords = 'commercial painting Lehigh Valley, commercial interior painting Easton PA, commercial exterior painting Bucks County, Level 4 skim coating commercial, Level 5 skim coating commercial, stucco removal Lehigh Valley, plaster repair Easton PA, wallcovering removal Bucks County, power washing commercial Lehigh Valley, office painting Bethlehem PA, property management painting Lehigh Valley, facility maintenance painting Bucks County, apartment turnover painting Easton PA';
+$page_keywords = 'commercial painting Lehigh Valley, commercial interior painting Easton PA, commercial exterior painting Bucks County, Level 4 skim coating commercial, Level 5 skim coating commercial, stucco removal Lehigh Valley, plaster repair Easton PA, wallcovering removal Bucks County, power washing commercial Lehigh Valley, office painting Bethlehem PA, property management painting Lehigh Valley, facility maintenance painting Bucks County, apartment turnover painting Easton PA, architect painting partner Lehigh Valley, interior designer painting Bucks County, general contractor painting subcontractor Lehigh Valley, facility management painting services';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="mkt">
@@ -14,6 +14,7 @@ require __DIR__ . '/includes/header.php';
             <span class="eyebrow">For businesses &amp; property owners</span>
             <h1 style="margin-top:1rem">Commercial painting &amp; skim coating — <span class="ul-brush">built for business</span>.</h1>
             <p>Interior and exterior painting plus Level 4 and Level 5 skim coating for offices, retail, multi-unit buildings, and commercial properties across the Lehigh Valley and Bucks County, PA — including turnover and maintenance work for property and facility managers. Professional results, on your schedule. Licensed, insured, free estimates.</p>
+            <p>We also work directly with architects, interior designers, and general contractors — as a reliable painting and skim coating partner on specified commercial projects and facility management contracts.</p>
         </div>
     </section>
 
