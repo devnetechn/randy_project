@@ -723,7 +723,7 @@ button.kpi:hover { box-shadow: var(--shadow-md); }
 /* Single article */
 .blog-article { max-width: 760px; }
 .blog-article__img { border-radius: 16px; overflow: hidden; margin-bottom: 2rem; }
-.blog-article__img img { width: 100%; height: auto; display: block; }
+.blog-article__img img { width: 100%; max-height: 480px; object-fit: cover; display: block; }
 .project-figure { max-width: 1040px; margin-inline: auto; border-radius: 16px; overflow: hidden; background: var(--plaster-2); box-shadow: var(--shadow-sm); }
 .project-figure img { width: 100%; height: auto; display: block; }
 .project-body { padding-top: 1.5rem; }
