@@ -4,7 +4,7 @@
 /** Latest published posts, newest first. Pass a limit for the teaser. */
 function blog_published(?int $limit = null): array
 {
-    $sql = 'SELECT id, title, excerpt, body, image, status, created_at
+    $sql = 'SELECT id, title, excerpt, body, image, faqs, status, created_at
             FROM blog_posts WHERE status = \'published\'
             ORDER BY created_at DESC';
     if ($limit !== null) {
@@ -14,7 +14,7 @@ function blog_published(?int $limit = null): array
     } else {
         $st = db()->query($sql);
     }
-    return $st->fetchAll();
+    return array_map('blog_decode_faqs', $st->fetchAll());
 }
 
 /** A single published post, or null. */
@@ -23,7 +23,14 @@ function blog_find_published(int $id): ?array
     $st = db()->prepare('SELECT * FROM blog_posts WHERE id = ? AND status = \'published\'');
     $st->execute([$id]);
     $row = $st->fetch();
-    return $row ?: null;
+    return $row ? blog_decode_faqs($row) : null;
+}
+
+/** Decode a post row's `faqs` JSON column into an array of ['q' => ..., 'a' => ...] (empty array if none). */
+function blog_decode_faqs(array $post): array
+{
+    $post['faqs'] = !empty($post['faqs']) ? (json_decode($post['faqs'], true) ?: []) : [];
+    return $post;
 }
 
 /** Public URL for a post's featured image, or null when there's none. */
