@@ -54,6 +54,10 @@ require __DIR__ . '/includes/header.php';
         </div>
     </section>
 
+    <?php if (!empty($post['faqs'])): ?>
+        <?php mkt_faq_custom(array_map(fn($pair) => [$pair['q'], $pair['a']], $post['faqs']), 'Frequently asked questions'); ?>
+    <?php endif; ?>
+
     <?php mkt_cta_band("Let's talk", 'Ready to start your project?', 'Free estimates across the Lehigh Valley and Bucks County, PA.'); ?>
 </div>
 <?php require __DIR__ . '/includes/footer.php'; ?>
