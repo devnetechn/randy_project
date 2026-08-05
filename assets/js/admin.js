@@ -440,7 +440,8 @@
       '<label class="field"><span>URL slug</span><input type="text" name="slug" maxlength="220" placeholder="auto-generated-from-title"></label>' +
       '<p style="margin:-.5rem 0 .5rem;color:var(--muted);font-size:.85rem" data-blog-slug-preview></p>' +
       '<label class="field"><span>Excerpt (short blurb for cards, optional)</span><input type="text" name="excerpt" maxlength="300"></label>' +
-      '<label class="field"><span>Body</span><textarea name="body" rows="8" required></textarea></label>' +
+      '<label class="field"><span>Body</span><textarea name="body" rows="8" required></textarea>' +
+      '<span style="display:block;margin-top:.35rem;color:var(--muted);font-size:.85rem">Links: [Link text](/level-5-drywall) or [Link text](https://example.com)</span></label>' +
       '<label class="field"><span>Status</span><select name="status"><option value="draft">Draft</option><option value="published">Published</option></select></label>' +
       '<label class="field"><span>Featured image (JPEG/PNG/WebP, ≤5MB — optional)</span><input type="file" name="image" accept="image/jpeg,image/png,image/webp"></label>' +
       '<input type="hidden" name="faqs" data-blog-faqs-input value="">' +

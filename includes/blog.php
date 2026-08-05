@@ -96,12 +96,43 @@ function blog_render_body(string $body): string
             continue;
         }
         if (str_starts_with($block, '## ')) {
-            $html .= '<h3>' . e(trim(substr($block, 3))) . '</h3>';
+            $html .= '<h3>' . blog_render_inline_links(trim(substr($block, 3))) . '</h3>';
             continue;
         }
-        $html .= '<p>' . nl2br(e($block)) . '</p>';
+        $html .= '<p>' . nl2br(blog_render_inline_links($block)) . '</p>';
     }
     return $html;
+}
+
+/** Convert "[text](url)" spans into safe <a> tags; everything else is HTML-escaped. */
+function blog_render_inline_links(string $text): string
+{
+    $parts = preg_split('/(\[[^\]]+\]\([^)\s]+\))/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
+    $html = '';
+    foreach ($parts as $part) {
+        if (preg_match('/^\[([^\]]+)\]\(([^)\s]+)\)$/', $part, $m)) {
+            $href = blog_safe_link_href($m[2]);
+            if ($href === null) {
+                $html .= e($part); // unrecognized/unsafe URL — keep the literal text
+                continue;
+            }
+            $external = !str_starts_with($href, '/');
+            $html .= '<a href="' . e($href) . '"' . ($external ? ' target="_blank" rel="noopener"' : '') . '>' . e($m[1]) . '</a>';
+        } else {
+            $html .= e($part);
+        }
+    }
+    return $html;
+}
+
+/** Internal relative path ("/…") or an external "https://…" URL — anything else
+ *  (javascript:, data:, bare http://, protocol-relative "//") is rejected. */
+function blog_safe_link_href(string $href): ?string
+{
+    if (str_starts_with($href, '/') && !str_starts_with($href, '//')) {
+        return $href;
+    }
+    return preg_match('#^https://#i', $href) ? $href : null;
 }
 
 /** Format a stored DATETIME as a human date, e.g. "June 3, 2026". */
