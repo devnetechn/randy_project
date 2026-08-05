@@ -5,6 +5,7 @@
  * (where the DB is created in the control panel first). Safe to re-run.
  */
 require_once __DIR__ . '/includes/app.php';
+require_once __DIR__ . '/includes/blog.php';
 
 $steps = [];
 $error = null;
@@ -105,6 +106,24 @@ try {
         $steps[] = 'Upgraded blog_posts table for post FAQs.';
     } else {
         $steps[] = 'Blog post FAQs already present.';
+    }
+
+    // 2f) Blog post slugs for clean /blog/{slug} URLs (SEO-friendly, replaces
+    //     the old ?id= links). Backfill runs before the unique index is added,
+    //     so every existing row gets a distinct slug derived from its title.
+    if (!$colExists('blog_posts', 'slug')) {
+        $pdo->exec("ALTER TABLE blog_posts ADD COLUMN slug VARCHAR(220) NOT NULL DEFAULT '' AFTER title");
+
+        $posts = $pdo->query('SELECT id, title FROM blog_posts ORDER BY id ASC')->fetchAll();
+        foreach ($posts as $post) {
+            $slug = blog_unique_slug($post['title'], (int) $post['id']);
+            $pdo->prepare('UPDATE blog_posts SET slug = ? WHERE id = ?')->execute([$slug, $post['id']]);
+        }
+
+        $pdo->exec('ALTER TABLE blog_posts ADD UNIQUE INDEX idx_blog_slug (slug)');
+        $steps[] = 'Upgraded blog_posts table with unique slugs for ' . count($posts) . ' post(s).';
+    } else {
+        $steps[] = 'Blog post slugs already present.';
     }
 
     // 3) Seed the admin account.
