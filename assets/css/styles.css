@@ -381,6 +381,11 @@ body.no-scroll { overflow: hidden; }
   z-index: 300;
 }
 .nav__drop-wrap:hover .nav__dropdown { display: flex; flex-direction: column; }
+/* Invisible hover bridge: without it, the mouse crosses a gap that belongs to
+   no element between the trigger and the dropdown (see `top: calc(100% + .9rem)`
+   above), dropping :hover and closing the menu before the cursor arrives. */
+.nav__drop-wrap::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); width: 215px; height: .9rem; display: none; }
+.nav__drop-wrap:hover::after { display: block; }
 .nav__dropdown a {
   padding: .55rem 1rem;
   border-radius: 9px;
