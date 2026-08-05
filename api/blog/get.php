@@ -14,6 +14,7 @@ if (!$post || ($post['status'] === 'draft' && !is_admin())) {
 json_out(['post' => [
     'id'      => (int) $post['id'],
     'title'   => $post['title'],
+    'slug'    => $post['slug'],
     'excerpt' => $post['excerpt'],
     'body'    => $post['body'],
     'image'   => $post['image'] ? url('uploads/blog/' . $post['image']) : null,

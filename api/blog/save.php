@@ -1,6 +1,7 @@
 <?php
 /** Admin create/update a blog post (multipart). Fields: id?, title, excerpt, body, status, image?. */
 require_once __DIR__ . '/../../includes/app.php';
+require_once __DIR__ . '/../../includes/blog.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     json_error('Method not allowed', 405);
@@ -19,6 +20,7 @@ if ($body === '')  { json_error('Body is required', 400); }
 if (!in_array($status, ['draft', 'published'], true)) { $status = 'draft'; }
 $title   = mb_substr($title, 0, 200);
 $excerpt = $excerpt !== '' ? mb_substr($excerpt, 0, 300) : null;
+$slugInput = trim($_POST['slug'] ?? '');
 
 // FAQs: JSON array of {q, a} pairs from the admin form. Drop blank pairs, cap at 20.
 $faqsJson = null;
@@ -58,6 +60,7 @@ if (!empty($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 }
 
 $isNew = ($id === 0);
+$slug  = blog_unique_slug($slugInput !== '' ? $slugInput : $title, $id > 0 ? $id : null);
 
 if ($id > 0) {
     // Update existing post.
@@ -74,12 +77,12 @@ if ($id > 0) {
     } else {
         $image = $existing['image'];
     }
-    db()->prepare('UPDATE blog_posts SET title = ?, excerpt = ?, body = ?, image = ?, status = ?, faqs = ? WHERE id = ?')
-        ->execute([$title, $excerpt, $body, $image, $status, $faqsJson, $id]);
+    db()->prepare('UPDATE blog_posts SET title = ?, slug = ?, excerpt = ?, body = ?, image = ?, status = ?, faqs = ? WHERE id = ?')
+        ->execute([$title, $slug, $excerpt, $body, $image, $status, $faqsJson, $id]);
 } else {
     // Create new post.
-    db()->prepare('INSERT INTO blog_posts (title, excerpt, body, image, status, faqs) VALUES (?, ?, ?, ?, ?, ?)')
-        ->execute([$title, $excerpt, $body, $newFilename, $status, $faqsJson]);
+    db()->prepare('INSERT INTO blog_posts (title, slug, excerpt, body, image, status, faqs) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        ->execute([$title, $slug, $excerpt, $body, $newFilename, $status, $faqsJson]);
     $id = (int) db()->lastInsertId();
 }
 
@@ -90,6 +93,7 @@ $post = $row->fetch();
 json_out(['post' => [
     'id'      => (int) $post['id'],
     'title'   => $post['title'],
+    'slug'    => $post['slug'],
     'excerpt' => $post['excerpt'],
     'body'    => $post['body'],
     'image'   => $post['image'] ? url('uploads/blog/' . $post['image']) : null,
