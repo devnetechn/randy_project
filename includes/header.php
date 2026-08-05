@@ -122,6 +122,26 @@ $ld = [
     <script>window.BASE_URL = <?= json_encode(url('')) ?>;</script>
 </head>
 <body>
+<?php $banner_text = setting_get('site_banner_text', ''); ?>
+<?php if ($banner_text !== ''): ?>
+<div class="site-banner" data-site-banner data-banner-text="<?= e($banner_text) ?>">
+    <div class="site-banner__inner">
+        <span class="site-banner__text"><?= e($banner_text) ?></span>
+        <a class="site-banner__cta" href="<?= e(url('book.php')) ?>">Free Estimate</a>
+        <button class="site-banner__close" type="button" data-banner-close aria-label="Dismiss">&times;</button>
+    </div>
+</div>
+<script>
+(function () {
+    try {
+        var el = document.currentScript.previousElementSibling;
+        if (localStorage.getItem('dismissedBanner') === el.getAttribute('data-banner-text')) {
+            el.style.display = 'none';
+        }
+    } catch (e) { /* localStorage unavailable — fail open, banner stays visible */ }
+})();
+</script>
+<?php endif; ?>
 <header class="site-header">
     <nav class="nav">
         <a class="nav__logo" href="<?= e(url('index.php')) ?>" aria-label="<?= e($b['name']) ?> — home">
