@@ -3,8 +3,21 @@ require_once __DIR__ . '/includes/app.php';
 require_once __DIR__ . '/includes/marketing.php';
 require_once __DIR__ . '/includes/blog.php';
 
-$id = (int) ($_GET['id'] ?? 0);
-$post = $id ? blog_find_published($id) : null;
+$slug = trim((string) ($_GET['slug'] ?? ''));
+$id   = (int) ($_GET['id'] ?? 0);
+
+$post = $slug !== '' ? blog_find_published_by_slug($slug) : null;
+
+// Old "?id=" link with no slug in the path: if it still resolves to a
+// published post, send the visitor (and any indexed search-engine link
+// equity) to the canonical /blog/{slug} URL instead of rendering here.
+if (!$post && $slug === '' && $id > 0) {
+    $byId = blog_find_published($id);
+    if ($byId) {
+        header('Location: ' . url('blog/' . $byId['slug']), true, 301);
+        exit;
+    }
+}
 
 if (!$post) {
     http_response_code(404);

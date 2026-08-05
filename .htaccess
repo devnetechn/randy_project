@@ -12,6 +12,9 @@ RewriteRule ^sitemap\.xml$ sitemap.php [L]
 RewriteCond %{THE_REQUEST} \s/+(.*?)index\.php[\s?] [NC]
 RewriteRule ^ /%1 [R=301,L]
 
+# --- 1b. Blog post slug URLs: /blog/{slug} -> blog-post.php?slug={slug} ---
+RewriteRule ^blog/([a-z0-9-]+)/?$ blog-post.php?slug=$1 [L,QSA]
+
 # --- 2. Redirect "/page.php" to the clean "/page" (skip the API) ---
 RewriteCond %{REQUEST_URI} !(^|/)api/ [NC]
 RewriteCond %{THE_REQUEST} \s/+([^.\s?]+)\.php[\s?] [NC]
