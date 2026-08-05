@@ -30,7 +30,7 @@ require __DIR__ . '/includes/header.php';
                 </div>
                 <div class="blog-grid" id="blogGrid">
                     <?php foreach ($posts as $post): ?>
-                        <a class="blog-card" href="<?= e(url('blog-post.php?id=' . (int) $post['id'])) ?>" data-search="<?= e(strtolower($post['title'] . ' ' . ($post['excerpt'] ?? '') . ' ' . strip_tags($post['body']))) ?>">
+                        <a class="blog-card" href="<?= e(url('blog/' . $post['slug'])) ?>" data-search="<?= e(strtolower($post['title'] . ' ' . ($post['excerpt'] ?? '') . ' ' . strip_tags($post['body']))) ?>">
                             <div class="blog-card__img">
                                 <?php if ($post['image']): ?>
                                     <img src="<?= e(blog_image_url($post['image'])) ?>" alt="">

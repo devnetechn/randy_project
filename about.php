@@ -61,7 +61,7 @@ require __DIR__ . '/includes/header.php';
             <div class="section-head center"><span class="eyebrow" style="justify-content:center">From our blog</span><h2 style="margin-top:1rem">Tips, updates &amp; project stories</h2></div>
             <div class="blog-grid">
                 <?php foreach ($blog_teasers as $post): ?>
-                    <a class="blog-card" href="<?= e(url('blog-post.php?id=' . (int) $post['id'])) ?>">
+                    <a class="blog-card" href="<?= e(url('blog/' . $post['slug'])) ?>">
                         <div class="blog-card__img">
                             <?php if ($post['image']): ?>
                                 <img src="<?= e(blog_image_url($post['image'])) ?>" alt="">
