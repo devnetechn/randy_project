@@ -685,6 +685,9 @@ button.kpi:hover { box-shadow: var(--shadow-md); }
   color: var(--muted);
   padding: 1.5rem 1rem;
 }
+.blog-list {
+  margin-top: 2rem;
+}
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
