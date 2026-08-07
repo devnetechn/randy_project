@@ -28,24 +28,42 @@ require __DIR__ . '/includes/header.php';
                     </span>
                     <input type="search" id="blogSearch" class="blog-search__input" placeholder="Search posts&hellip; (e.g. drywall, ceiling)" aria-label="Search blog posts" autocomplete="off">
                 </div>
-                <div class="blog-grid" id="blogGrid">
-                    <?php foreach ($posts as $post): ?>
-                        <a class="blog-card" href="<?= e(url('blog-post.php?id=' . (int) $post['id'])) ?>" data-search="<?= e(strtolower($post['title'] . ' ' . ($post['excerpt'] ?? '') . ' ' . strip_tags($post['body']))) ?>">
-                            <div class="blog-card__img">
-                                <?php if ($post['image']): ?>
-                                    <img src="<?= e(blog_image_url($post['image'])) ?>" alt="">
-                                <?php else: ?>
-                                    <div class="ph ph--warm"><span class="ph__tag">Blog</span></div>
-                                <?php endif; ?>
-                            </div>
-                            <div class="blog-card__body">
-                                <div class="blog-card__date"><?= e(blog_date($post['created_at'])) ?></div>
-                                <h2 class="blog-card__title"><?= e($post['title']) ?></h2>
-                                <?php if ($post['excerpt']): ?><p class="blog-card__excerpt"><?= e($post['excerpt']) ?></p><?php endif; ?>
-                                <span class="blog-card__more">Read more<?= svg_arrow() ?></span>
-                            </div>
-                        </a>
-                    <?php endforeach; ?>
+                <div class="blog-list" id="blogList">
+                    <?php $hero = $posts[0]; ?>
+                    <a class="blog-hero" href="<?= e(url('blog-post.php?id=' . (int) $hero['id'])) ?>">
+                        <div class="blog-hero__img">
+                            <?php if ($hero['image']): ?>
+                                <img src="<?= e(blog_image_url($hero['image'])) ?>" alt="">
+                            <?php else: ?>
+                                <div class="ph ph--warm"><span class="ph__tag">Blog</span></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="blog-hero__body">
+                            <div class="blog-hero__date"><?= e(blog_date($hero['created_at'])) ?></div>
+                            <h2 class="blog-hero__title"><?= e($hero['title']) ?></h2>
+                            <?php if ($hero['excerpt']): ?><p class="blog-hero__excerpt"><?= e($hero['excerpt']) ?></p><?php endif; ?>
+                            <span class="blog-hero__more">Read more<?= svg_arrow() ?></span>
+                        </div>
+                    </a>
+                    <div class="blog-grid" id="blogGrid">
+                        <?php foreach ($posts as $i => $post): ?>
+                            <a class="blog-card<?= $i === 0 ? ' blog-card--hero-dup' : '' ?>" href="<?= e(url('blog-post.php?id=' . (int) $post['id'])) ?>" data-search="<?= e(strtolower($post['title'] . ' ' . ($post['excerpt'] ?? '') . ' ' . strip_tags($post['body']))) ?>">
+                                <div class="blog-card__img">
+                                    <?php if ($post['image']): ?>
+                                        <img src="<?= e(blog_image_url($post['image'])) ?>" alt="">
+                                    <?php else: ?>
+                                        <div class="ph ph--warm"><span class="ph__tag">Blog</span></div>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="blog-card__body">
+                                    <div class="blog-card__date"><?= e(blog_date($post['created_at'])) ?></div>
+                                    <h2 class="blog-card__title"><?= e($post['title']) ?></h2>
+                                    <?php if ($post['excerpt']): ?><p class="blog-card__excerpt"><?= e($post['excerpt']) ?></p><?php endif; ?>
+                                    <span class="blog-card__more">Read more<?= svg_arrow() ?></span>
+                                </div>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
                 <div class="blog-noresults" id="blogNoResults" hidden>
                     <p>No posts match <strong id="blogNoResultsTerm"></strong> — try another keyword.</p>
