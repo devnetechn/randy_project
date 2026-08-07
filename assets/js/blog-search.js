@@ -3,6 +3,7 @@
   'use strict';
   document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('blogSearch');
+    const list = document.getElementById('blogList');
     const grid = document.getElementById('blogGrid');
     const noResults = document.getElementById('blogNoResults');
     const noResultsTerm = document.getElementById('blogNoResultsTerm');
@@ -14,6 +15,8 @@
       const query = input.value.trim().toLowerCase();
       const terms = query.split(/\s+/).filter(Boolean);
       let visible = 0;
+
+      if (list) list.classList.toggle('is-searching', terms.length > 0);
 
       cards.forEach(function (card) {
         const haystack = card.getAttribute('data-search') || '';
