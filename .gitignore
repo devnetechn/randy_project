@@ -8,4 +8,5 @@
 
 # Test / tooling artifacts
 /.playwright-mcp/
+/.superpowers/
 
