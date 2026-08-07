@@ -19,6 +19,11 @@
     const MONTH = [['monthBookings', 'Quotes requested'], ['monthLeads', 'New leads'], ['monthSignups', 'New signups']];
     const card = (k, l, badge) => '<div class="kpi"><div class="kpi__label">' + l + ' <span class="kpi__badge kpi__badge--' + badge + '">' + badge + '</span></div><div class="kpi__value" data-kpi="' + k + '">—</div></div>';
     panel.innerHTML =
+      '<form class="app-card" data-banner-form>' +
+      '<label class="field"><span>Sitewide banner (blank = hidden)</span>' +
+      '<input type="text" name="text" maxlength="200" placeholder="e.g. Fall is approaching — book your exterior painting before winter."></label>' +
+      '<button class="btn-primary" type="submit">Save banner</button>' +
+      '</form>' +
       '<div class="kpi-section"><h2>Live now</h2><div class="kpi-grid">' + LIVE.map((c) => card(c[0], c[1], 'live')).join('') + '</div></div>' +
       '<div class="kpi-section"><h2>Today</h2><div class="kpi-grid">' + TODAY.map((c) => card(c[0], c[1], 'today')).join('') + '</div></div>' +
       '<div class="kpi-section"><h2>This month</h2><div class="kpi-grid">' + MONTH.map((c) => card(c[0], c[1], 'month')).join('') + '</div></div>' +
@@ -34,6 +39,23 @@
     const monthEl = panel.querySelector('[data-overview-month]');
 
     monthEl.addEventListener('change', () => { month = monthEl.value; loadChart(); });
+
+    const bannerForm = panel.querySelector('[data-banner-form]');
+    async function loadBanner() {
+      try { bannerForm.querySelector('[name="text"]').value = (await api.get('api/admin/banner.php')).text || ''; }
+      catch (_) { /* ignore */ }
+    }
+    bannerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = bannerForm.querySelector('button');
+      btn.disabled = true;
+      try {
+        await api.post('api/admin/banner.php', { text: bannerForm.querySelector('[name="text"]').value.trim() });
+        toast('Banner saved');
+      } catch (err) { toast(err.message, 'error'); }
+      finally { btn.disabled = false; }
+    });
+    loadBanner();
 
     async function loadChart() {
       const canvas = panel.querySelector('[data-overview-chart]');

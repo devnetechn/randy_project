@@ -53,6 +53,18 @@
   };
 
   document.addEventListener('DOMContentLoaded', function () {
+    // Seasonal banner dismiss
+    const banner = document.querySelector('[data-site-banner]');
+    if (banner) {
+      const closeBtn = banner.querySelector('[data-banner-close]');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          try { localStorage.setItem('dismissedBanner', banner.getAttribute('data-banner-text')); } catch (e) { /* ignore */ }
+          banner.style.display = 'none';
+        });
+      }
+    }
+
     // Mobile nav toggle
     const toggle = document.querySelector('[data-nav-toggle]');
     const panel = document.querySelector('[data-nav-panel]');
