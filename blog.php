@@ -30,7 +30,7 @@ require __DIR__ . '/includes/header.php';
                 </div>
                 <div class="blog-list" id="blogList">
                     <?php $hero = $posts[0]; ?>
-                    <a class="blog-hero" href="<?= e(url('blog-post.php?id=' . (int) $hero['id'])) ?>">
+                    <a class="blog-hero" href="<?= e(url('blog/' . $hero['slug'])) ?>">
                         <div class="blog-hero__img">
                             <?php if ($hero['image']): ?>
                                 <img src="<?= e(blog_image_url($hero['image'])) ?>" alt="">
@@ -47,7 +47,7 @@ require __DIR__ . '/includes/header.php';
                     </a>
                     <div class="blog-grid" id="blogGrid">
                         <?php foreach ($posts as $i => $post): ?>
-                            <a class="blog-card<?= $i === 0 ? ' blog-card--hero-dup' : '' ?>" href="<?= e(url('blog-post.php?id=' . (int) $post['id'])) ?>" data-search="<?= e(strtolower($post['title'] . ' ' . ($post['excerpt'] ?? '') . ' ' . strip_tags($post['body']))) ?>">
+                            <a class="blog-card<?= $i === 0 ? ' blog-card--hero-dup' : '' ?>" href="<?= e(url('blog/' . $post['slug'])) ?>" data-search="<?= e(strtolower($post['title'] . ' ' . ($post['excerpt'] ?? '') . ' ' . strip_tags($post['body']))) ?>">
                                 <div class="blog-card__img">
                                     <?php if ($post['image']): ?>
                                         <img src="<?= e(blog_image_url($post['image'])) ?>" alt="">

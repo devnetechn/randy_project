@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS gallery_images (
 CREATE TABLE IF NOT EXISTS blog_posts (
   id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   title        VARCHAR(200) NOT NULL,
+  slug         VARCHAR(220) NOT NULL DEFAULT '',
   excerpt      VARCHAR(300) NULL,
   body         MEDIUMTEXT NOT NULL,
   image        VARCHAR(255) NULL,
@@ -97,7 +98,8 @@ CREATE TABLE IF NOT EXISTS blog_posts (
   status       ENUM('draft','published') NOT NULL DEFAULT 'draft',
   created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  INDEX idx_blog_status (status, created_at)
+  INDEX idx_blog_status (status, created_at),
+  UNIQUE INDEX idx_blog_slug (slug)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS reviews (

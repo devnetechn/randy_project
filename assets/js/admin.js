@@ -459,8 +459,11 @@
       '<form class="app-card" data-blog-form>' +
       '<input type="hidden" name="id" value="">' +
       '<label class="field"><span>Title</span><input type="text" name="title" maxlength="200" required></label>' +
+      '<label class="field"><span>URL slug</span><input type="text" name="slug" maxlength="220" placeholder="auto-generated-from-title"></label>' +
+      '<p style="margin:-.5rem 0 .5rem;color:var(--muted);font-size:.85rem" data-blog-slug-preview></p>' +
       '<label class="field"><span>Excerpt (short blurb for cards, optional)</span><input type="text" name="excerpt" maxlength="300"></label>' +
-      '<label class="field"><span>Body</span><textarea name="body" rows="8" required></textarea></label>' +
+      '<label class="field"><span>Body</span><textarea name="body" rows="8" required></textarea>' +
+      '<span style="display:block;margin-top:.35rem;color:var(--muted);font-size:.85rem">Links: [Link text](/level-5-drywall) or [Link text](https://example.com)</span></label>' +
       '<label class="field"><span>Status</span><select name="status"><option value="draft">Draft</option><option value="published">Published</option></select></label>' +
       '<label class="field"><span>Featured image (JPEG/PNG/WebP, ≤5MB — optional)</span><input type="file" name="image" accept="image/jpeg,image/png,image/webp"></label>' +
       '<input type="hidden" name="faqs" data-blog-faqs-input value="">' +
@@ -477,6 +480,25 @@
     const urlForm = panel.querySelector('[data-blog-url-form]');
     const faqList = panel.querySelector('[data-blog-faq-list]');
     const faqsInput = panel.querySelector('[data-blog-faqs-input]');
+    const slugInput = form.querySelector('[name="slug"]');
+    const titleInput = form.querySelector('[name="title"]');
+    const slugPreview = panel.querySelector('[data-blog-slug-preview]');
+
+    function slugify(s) {
+      return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+    function updateSlugPreview() {
+      slugPreview.textContent = slugInput.value ? '/blog/' + slugInput.value : '';
+    }
+    titleInput.addEventListener('input', () => {
+      if (slugInput.dataset.touched === 'true') return;
+      slugInput.value = slugify(titleInput.value);
+      updateSlugPreview();
+    });
+    slugInput.addEventListener('input', () => {
+      slugInput.dataset.touched = 'true';
+      updateSlugPreview();
+    });
 
     function addFaqRow(q, a) {
       const row = document.createElement('div');
@@ -524,6 +546,8 @@
       form.querySelector('[name="id"]').value = '';
       form.querySelector('[data-blog-submit]').textContent = 'Save post';
       faqList.innerHTML = '';
+      slugInput.dataset.touched = 'false';
+      updateSlugPreview();
     }
 
     form.addEventListener('submit', async (e) => {
@@ -550,6 +574,9 @@
           const p = (await api.get('api/blog/get.php?id=' + edit.dataset.edit)).post;
           form.querySelector('[name="id"]').value = p.id;
           form.querySelector('[name="title"]').value = p.title || '';
+          slugInput.value = p.slug || '';
+          slugInput.dataset.touched = 'true';
+          updateSlugPreview();
           form.querySelector('[name="excerpt"]').value = p.excerpt || '';
           form.querySelector('[name="body"]').value = p.body || '';
           form.querySelector('[name="status"]').value = p.status || 'draft';
@@ -577,7 +604,9 @@
           '<div class="blog-admin__meta">' +
           '<span class="badge badge--' + (p.status === 'published' ? 'confirmed' : 'pending') + '">' + escapeHtml(p.status) + '</span>' +
           '<div class="blog-admin__title">' + escapeHtml(p.title) + '</div>' +
-          '<div class="blog-admin__date">' + fmt(p.date) + '</div></div>' +
+          '<div class="blog-admin__date">' + fmt(p.date) + '</div>' +
+          (p.slug ? '<a href="/blog/' + escapeHtml(p.slug) + '" target="_blank" rel="noopener" style="font-size:.8rem;color:var(--muted)">/blog/' + escapeHtml(p.slug) + '</a>' : '') +
+          '</div>' +
           '<div class="blog-admin__actions"><button class="btn-soft" data-edit="' + p.id + '">Edit</button> ' +
           '<button class="btn-soft" data-del="' + p.id + '">Delete</button></div></div>').join('')
           : '<p style="color:var(--muted)">No posts yet.</p>';

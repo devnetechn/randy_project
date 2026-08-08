@@ -46,7 +46,7 @@ foreach ($pages as [$path, $freq, $priority, $lastmod]) {
 foreach (blog_published() as $post) {
     $ts = strtotime((string) ($post['created_at'] ?? ''));
     $urls[] = [
-        'loc'        => $origin . url('blog-post.php?id=' . (int) $post['id']),
+        'loc'        => $origin . url('blog/' . $post['slug']),
         'lastmod'    => $ts ? date('Y-m-d', $ts) : $today,
         'changefreq' => 'monthly',
         'priority'   => '0.6',
