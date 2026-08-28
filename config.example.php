@@ -32,9 +32,20 @@ return [
         'model'   => 'claude-sonnet-5',
     ],
 
-    // ----- Email notifications (Gmail SMTP) -----
-    // Leave app_password blank to disable (bookings still work; email is skipped).
-  
+    // ----- Email notifications -----
+    // Leave password blank to disable (bookings still work; email is skipped).
+    // smtp_secure: 'ssl' for implicit TLS (e.g. Hostinger, port 465) or
+    // 'tls' for STARTTLS (e.g. Gmail, port 587).
+    'email' => [
+        'user'        => '',
+        'password'    => '',
+        'smtp_host'   => 'smtp.gmail.com',
+        'smtp_port'   => 587,
+        'smtp_secure' => 'tls',
+
+        // All addresses here receive booking/application alerts together.
+        'to' => [],
+    ],
 
     // Base URL path the app is served from (e.g. "/randy" under XAMPP htdocs).
     'base_path' => '/randy',

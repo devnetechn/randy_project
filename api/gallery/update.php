@@ -1,5 +1,5 @@
 <?php
-/** Admin gallery update. Body: { id, caption, category, description } */
+/** Admin gallery update. Body: { id, caption, category, description, featured } */
 require_once __DIR__ . '/../../includes/app.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -32,8 +32,10 @@ $description = $description !== '' ? $description : null;
 $keywords = trim((string) ($payload['keywords'] ?? ''));
 $keywords = $keywords !== '' ? mb_substr($keywords, 0, 300) : null;
 
-db()->prepare('UPDATE gallery_images SET caption = ?, description = ?, keywords = ?, category = ? WHERE id = ?')
-    ->execute([$caption, $description, $keywords, $category, $id]);
+$featured = !empty($payload['featured']) ? 1 : 0;
+
+db()->prepare('UPDATE gallery_images SET caption = ?, description = ?, keywords = ?, category = ?, featured = ? WHERE id = ?')
+    ->execute([$caption, $description, $keywords, $category, $featured, $id]);
 
 json_out(['image' => [
     'id'          => $id,
@@ -43,4 +45,5 @@ json_out(['image' => [
     'description' => $description,
     'keywords'    => $keywords,
     'category'    => $category,
+    'featured'    => (bool) $featured,
 ]]);

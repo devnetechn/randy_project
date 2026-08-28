@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS gallery_images (
   keywords   VARCHAR(300) NULL,
   category   ENUM('interior','exterior','drywall','commercial','other') NOT NULL DEFAULT 'other',
   sort_order INT NOT NULL DEFAULT 0,
+  featured   TINYINT(1) NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_gallery_category (category)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

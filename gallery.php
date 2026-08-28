@@ -32,6 +32,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="gallery-grid" data-gallery-grid></div>
             <p class="center" data-gallery-empty style="color:var(--muted);display:none">No photos yet. Check back soon for our latest projects.</p>
+            <p class="center" style="margin-top:1.5rem"><a href="<?= e(url('updates.php')) ?>" class="textlink">See our latest project updates<?= svg_arrow() ?></a></p>
         </div>
     </section>
 

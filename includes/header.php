@@ -162,6 +162,7 @@ $ld = [
                     <a href="<?= e(url('level-5-drywall.php')) ?>">Level 5 Drywall Finish</a>
                     <a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a>
                     <a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a>
+                    <a href="<?= e(url('stucco-removal.php')) ?>">Stucco Removal</a>
                     <div class="nav__dropdown-divider"></div>
                     <a href="<?= e(url('locations/index.php')) ?>">Service Areas</a>
                     <div class="nav__dropdown-divider"></div>
@@ -181,6 +182,7 @@ $ld = [
             </div>
 
             <a href="<?= e(url('gallery.php')) ?>"<?= active('gallery.php') ?>>Gallery</a>
+            <a href="<?= e(url('portfolio.php')) ?>"<?= active('portfolio.php') ?>>Portfolio</a>
             <a href="<?= e(url('about.php')) ?>"<?= active('about.php') ?>>About</a>
             <a href="<?= e(url('contact.php')) ?>"<?= active('contact.php') ?>>Contact</a>
         </div>
@@ -222,6 +224,7 @@ $ld = [
                     <a href="<?= e(url('level-5-drywall.php')) ?>">Level 5 Drywall Finish</a>
                     <a href="<?= e(url('skim-coating.php')) ?>">Skim Coating</a>
                     <a href="<?= e(url('wall-restoration.php')) ?>">Wall Restoration</a>
+                    <a href="<?= e(url('stucco-removal.php')) ?>">Stucco Removal</a>
                     <a href="<?= e(url('locations/index.php')) ?>">Service Areas</a>
                     <a class="nav__panel-cta" href="<?= e(url('services.php')) ?>">All Services &rarr;</a>
                 </div>
@@ -241,6 +244,7 @@ $ld = [
             </div>
 
             <a href="<?= e(url('gallery.php')) ?>">Gallery</a>
+            <a href="<?= e(url('portfolio.php')) ?>">Portfolio</a>
             <a href="<?= e(url('about.php')) ?>">About</a>
             <a href="<?= e(url('contact.php')) ?>">Contact</a>
             <?php if ($u && $u['role'] === 'admin'): ?>

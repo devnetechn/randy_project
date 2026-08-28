@@ -9,21 +9,30 @@ require_once __DIR__ . '/business.php';
 function email_is_configured(): bool
 {
     $c = config('email');
-    return !empty($c['user']) && !empty($c['app_password']);
+    return !empty($c['user']) && !empty($c['password']);
 }
 
 /**
- * Minimal SMTP-over-STARTTLS client for Gmail (smtp.gmail.com:587).
+ * Minimal SMTP client (SSL or STARTTLS, per $cfg['smtp_secure']).
+ * $to may be a single address or an array — every address gets the same
+ * message in one send so recipients land together, not as separate emails.
  * Throws RuntimeException on any protocol error; callers should catch.
  */
-function smtp_send_mail(array $cfg, string $to, string $subject, string $body): void
+function smtp_send_mail(array $cfg, $to, string $subject, string $body): void
 {
-    $host = 'smtp.gmail.com';
-    $port = 587;
-    $user = $cfg['user'];
-    $pass = $cfg['app_password'];
+    $host   = $cfg['smtp_host'] ?? 'smtp.gmail.com';
+    $port   = (int) ($cfg['smtp_port'] ?? 587);
+    $secure = strtolower($cfg['smtp_secure'] ?? 'tls'); // 'ssl' (implicit TLS) or 'tls' (STARTTLS)
+    $user   = $cfg['user'];
+    $pass   = $cfg['password'];
 
-    $fp = @stream_socket_client("tcp://{$host}:{$port}", $errno, $errstr, 15);
+    $recipients = array_values(array_filter(is_array($to) ? $to : [$to]));
+    if (!$recipients) {
+        throw new RuntimeException('SMTP send: no recipients');
+    }
+
+    $transport = $secure === 'ssl' ? 'ssl://' : 'tcp://';
+    $fp = @stream_socket_client("{$transport}{$host}:{$port}", $errno, $errstr, 15);
     if (!$fp) {
         throw new RuntimeException("SMTP connect failed: {$errstr} ({$errno})");
     }
@@ -51,24 +60,28 @@ function smtp_send_mail(array $cfg, string $to, string $subject, string $body): 
 
     $expect($read(), '220');
     $send('EHLO localhost'); $expect($read(), '250');
-    $send('STARTTLS');       $expect($read(), '220');
 
-    if (!stream_socket_enable_crypto($fp, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
-        fclose($fp);
-        throw new RuntimeException('SMTP TLS negotiation failed');
+    if ($secure === 'tls') {
+        $send('STARTTLS'); $expect($read(), '220');
+        if (!stream_socket_enable_crypto($fp, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+            fclose($fp);
+            throw new RuntimeException('SMTP TLS negotiation failed');
+        }
+        $send('EHLO localhost'); $expect($read(), '250');
     }
 
-    $send('EHLO localhost');           $expect($read(), '250');
     $send('AUTH LOGIN');               $expect($read(), '334');
     $send(base64_encode($user));       $expect($read(), '334');
     $send(base64_encode($pass));       $expect($read(), '235');
     $send('MAIL FROM:<' . $user . '>'); $expect($read(), '250');
-    $send('RCPT TO:<' . $to . '>');     $expect($read(), '250');
+    foreach ($recipients as $rcpt) {
+        $send('RCPT TO:<' . $rcpt . '>'); $expect($read(), '250');
+    }
     $send('DATA');                      $expect($read(), '354');
 
     $headers =
         'From: ' . business_info()['name'] . ' <' . $user . ">\r\n" .
-        'To: <' . $to . ">\r\n" .
+        'To: <' . implode('>, <', $recipients) . ">\r\n" .
         'Subject: ' . $subject . "\r\n" .
         "MIME-Version: 1.0\r\n" .
         "Content-Type: text/plain; charset=UTF-8\r\n";

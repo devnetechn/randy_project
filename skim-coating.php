@@ -59,6 +59,7 @@ require __DIR__ . '/includes/header.php';
             <div class="center" style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
                 <a href="<?= e(url('level-5-drywall.php')) ?>" class="btn btn--outline">Level 5 Drywall</a>
                 <a href="<?= e(url('wall-restoration.php')) ?>" class="btn btn--outline">Wall Restoration</a>
+                <a href="<?= e(url('stucco-removal.php')) ?>" class="btn btn--outline">Stucco Removal</a>
                 <a href="<?= e(url('services.php')) ?>" class="btn btn--outline">All Services</a>
             </div>
         </div>

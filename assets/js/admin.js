@@ -372,6 +372,7 @@
       '<label class="field"><span>Description (optional)</span><textarea name="description" rows="3"></textarea></label>' +
       '<label class="field"><span>Keywords (optional, comma-separated — for SEO)</span><input type="text" name="keywords" maxlength="300" placeholder="e.g. Easton drywall repair, Level 5 finish, Lehigh Valley"></label>' +
       '<label class="field"><span>Category</span><select name="category">' + CATS.map((c) => '<option value="' + c + '">' + cap(c) + '</option>').join('') + '</select></label>' +
+      '<label class="field field--checkbox"><input type="checkbox" name="featured"> <span>Feature this in the portfolio</span></label>' +
       '<button class="btn-primary" type="submit">Upload photo</button></form>' +
       '<div class="gallery-admin__grid" data-ga-grid></div>';
     const grid = panel.querySelector('[data-ga-grid]');
@@ -415,6 +416,7 @@
         category: f.category.value,
         description: f.description.value.trim(),
         keywords: f.keywords.value.trim(),
+        featured: f.featured.checked,
       };
       const btn = f.querySelector('button[type="submit"]');
       btn.disabled = true;
@@ -428,7 +430,7 @@
         grid.innerHTML = imgs.length ? imgs.map((img) =>
           '<div class="gallery-admin__item" data-id="' + img.id + '">' +
             '<img src="' + escapeHtml(img.url) + '" alt="">' +
-            '<div class="gallery-admin__meta"><div class="cat">' + escapeHtml(img.category) + '</div>' + escapeHtml(img.caption || '') + '</div>' +
+            '<div class="gallery-admin__meta"><div class="cat">' + escapeHtml(img.category) + (img.featured ? ' &middot; ★ Featured' : '') + '</div>' + escapeHtml(img.caption || '') + '</div>' +
             '<div class="gallery-admin__actions">' +
               '<button class="gallery-admin__edit" data-edit="' + img.id + '">Edit</button>' +
               '<button class="gallery-admin__del" data-del="' + img.id + '">Delete</button>' +
@@ -438,6 +440,7 @@
               '<label class="field"><span>Category</span><select name="category">' + CATS.map((c) => '<option value="' + c + '"' + (c === img.category ? ' selected' : '') + '>' + cap(c) + '</option>').join('') + '</select></label>' +
               '<label class="field"><span>Description</span><textarea name="description" rows="3">' + escapeHtml(img.description || '') + '</textarea></label>' +
               '<label class="field"><span>Keywords (comma-separated — for SEO)</span><input type="text" name="keywords" maxlength="300" value="' + escapeHtml(img.keywords || '') + '"></label>' +
+              '<label class="field field--checkbox"><input type="checkbox" name="featured"' + (img.featured ? ' checked' : '') + '> <span>Feature this in the portfolio</span></label>' +
               '<div><button class="btn-primary" type="submit">Save</button> <button type="button" class="gallery-admin__cancel">Cancel</button></div>' +
             '</form>' +
           '</div>').join('')

@@ -1,5 +1,5 @@
 <?php
-/** Admin gallery upload (multipart): fields `image`, `caption`, `category`. */
+/** Admin gallery upload (multipart): fields `image`, `caption`, `category`, `featured`. */
 require_once __DIR__ . '/../../includes/app.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -36,6 +36,8 @@ $description = $description !== '' ? $description : null;
 $keywords = trim($_POST['keywords'] ?? '');
 $keywords = $keywords !== '' ? mb_substr($keywords, 0, 300) : null;
 
+$featured = !empty($_POST['featured']) ? 1 : 0;
+
 $dir = __DIR__ . '/../../uploads/gallery';
 if (!is_dir($dir)) {
     @mkdir($dir, 0775, true);
@@ -45,8 +47,8 @@ if (!move_uploaded_file($file['tmp_name'], $dir . '/' . $filename)) {
     json_error('Could not save the uploaded file', 500);
 }
 
-db()->prepare('INSERT INTO gallery_images (filename, caption, description, keywords, category) VALUES (?, ?, ?, ?, ?)')
-    ->execute([$filename, $caption, $description, $keywords, $category]);
+db()->prepare('INSERT INTO gallery_images (filename, caption, description, keywords, category, featured) VALUES (?, ?, ?, ?, ?, ?)')
+    ->execute([$filename, $caption, $description, $keywords, $category, $featured]);
 $id = (int) db()->lastInsertId();
 
 json_out([
@@ -58,5 +60,6 @@ json_out([
         'description' => $description,
         'keywords'    => $keywords,
         'category'    => $category,
+        'featured'    => (bool) $featured,
     ],
 ], 201);

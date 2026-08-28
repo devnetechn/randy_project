@@ -39,7 +39,7 @@ $LOCATIONS = [
         'gallery_categories'   => ['interior', 'exterior'],
         'related_service_slug' => 'services.php',
         'related_service_label'=> 'All Painting Services',
-        'related_slugs'        => ['college-hill-painting', 'bethlehem-painting', 'allentown-painting'],
+        'related_slugs'        => ['college-hill-painting', 'bethlehem-painting', 'allentown-painting', 'nazareth-painting'],
     ],
 
     'bethlehem-painting' => [
@@ -72,7 +72,7 @@ $LOCATIONS = [
         'gallery_categories'   => ['interior', 'exterior'],
         'related_service_slug' => 'services.php',
         'related_service_label'=> 'All Painting Services',
-        'related_slugs'        => ['easton-painting', 'allentown-painting'],
+        'related_slugs'        => ['easton-painting', 'allentown-painting', 'nazareth-painting'],
     ],
 
     'allentown-painting' => [
@@ -105,7 +105,7 @@ $LOCATIONS = [
         'gallery_categories'   => ['interior', 'exterior'],
         'related_service_slug' => 'services.php',
         'related_service_label'=> 'All Painting Services',
-        'related_slugs'        => ['easton-painting', 'bethlehem-painting'],
+        'related_slugs'        => ['easton-painting', 'bethlehem-painting', 'allentown-drywall-repair'],
     ],
 
     'easton-drywall-repair' => [
@@ -138,7 +138,7 @@ $LOCATIONS = [
         'gallery_categories'   => ['drywall'],
         'related_service_slug' => 'wall-restoration.php',
         'related_service_label'=> 'Wall Restoration & Plaster Repair',
-        'related_slugs'        => ['bethlehem-drywall-repair', 'easton-painting'],
+        'related_slugs'        => ['bethlehem-drywall-repair', 'nazareth-drywall-repair', 'allentown-drywall-repair'],
     ],
 
     'bethlehem-drywall-repair' => [
@@ -171,7 +171,40 @@ $LOCATIONS = [
         'gallery_categories'   => ['drywall'],
         'related_service_slug' => 'wall-restoration.php',
         'related_service_label'=> 'Wall Restoration & Plaster Repair',
-        'related_slugs'        => ['easton-drywall-repair', 'bethlehem-painting'],
+        'related_slugs'        => ['easton-drywall-repair', 'nazareth-drywall-repair', 'allentown-drywall-repair'],
+    ],
+
+    'allentown-drywall-repair' => [
+        'title'                => 'Drywall Repair in Allentown, PA',
+        'meta_description'     => 'Drywall repair and commercial drywall installation for Allentown, PA — twins, rowhomes, rentals, and downtown commercial buildouts. Licensed, insured, free estimates.',
+        'meta_keywords'        => 'drywall repair Allentown PA, commercial drywall service Allentown PA, commercial drywall installation Allentown PA, drywall patch Allentown PA, water damage repair Allentown PA',
+        'city'                 => 'Allentown',
+        'service_label'        => 'Drywall Repair',
+        'service_name'         => 'Drywall Repair',
+        'hero_heading'         => "Allentown drywall repair, built to <span class=\"ul-brush\">disappear</span>.",
+        'hero_intro'           => "From plaster cracks in a West End twin to a full commercial drywall installation downtown, we patch, install, and finish so the repair is invisible once it's painted. Free, no-pressure estimates.",
+        'intro_heading'        => 'Repairs and installs for every kind of Allentown property',
+        'intro_body'           => "Allentown's mix of century-old twins, rental turnovers, and a growing downtown means drywall work here rarely looks the same twice. We repair cracked and settling plaster in older twins, patch and repaint rental units between tenants, and install and finish new drywall for commercial buildouts downtown — all matched to the surface and the timeline the job actually needs.",
+        'feature_cards'        => [
+            ['West End twin & plaster repair', 'Older twins carry original plaster prone to cracking along seams and corners. We patch and blend it to match the surrounding wall.'],
+            ['Rental turnover patching', 'Landlords and property managers count on us for fast, clean drywall patching between tenants, on schedule every time.'],
+            ['Commercial drywall installation', 'New office and retail buildouts downtown get full drywall installation, taping, and coating finished to a smooth, paint-ready surface.'],
+        ],
+        'faq'                  => [
+            ['Do you install drywall for commercial buildouts in Allentown?', 'Yes — we handle full commercial drywall installation, taping, and coating for downtown office and retail buildouts, finished to a smooth, paint-ready surface.'],
+            ['Do you repair plaster in older Allentown twins and rowhomes?', 'Yes. Original plaster cracks and settles differently than drywall, and we match our repair technique and texture to what\'s actually on your walls.'],
+            ['Can you patch a rental unit between tenants?', 'Yes — we work regularly with landlords and property managers on fast turnover patching and repairs, scheduled around move-in/move-out dates.'],
+            ['How much does drywall repair cost in Allentown, PA?', 'It depends on the size and cause of the damage — a small patch costs far less than a water-damaged section or a full commercial installation. A free on-site estimate gets you an exact number.'],
+        ],
+        'cta_eyebrow'          => 'Serving all of Allentown',
+        'cta_title'            => 'Get a drywall estimate in Allentown',
+        'cta_text'             => 'Free, no-pressure quotes for drywall repair and installation throughout Allentown, PA. Most returned within 24 hours.',
+        'hero_image'           => 'assets/img/service-drywall.webp',
+        'hero_image_alt'       => 'Commercial drywall installation in an Allentown, PA office buildout',
+        'gallery_categories'   => ['drywall'],
+        'related_service_slug' => 'wall-restoration.php',
+        'related_service_label'=> 'Wall Restoration & Plaster Repair',
+        'related_slugs'        => ['easton-drywall-repair', 'bethlehem-drywall-repair', 'nazareth-drywall-repair'],
     ],
 
     'upper-makefield-painting' => [
@@ -207,6 +240,72 @@ $LOCATIONS = [
         'related_service_slug' => 'level-5-drywall.php',
         'related_service_label'=> 'Level 5 Drywall Finish',
         'related_slugs'        => ['college-hill-painting', 'easton-painting'],
+    ],
+
+    'nazareth-painting' => [
+        'title'                => 'Painting Contractor in Nazareth, PA',
+        'meta_description'     => 'Whole house and commercial painting for Nazareth, PA — historic downtown storefronts to Colonial-era homes and new construction. Licensed, insured, free estimates.',
+        'meta_keywords'        => 'painting contractor Nazareth PA, house painter Nazareth PA, whole house painting Nazareth PA, commercial painting contractor Nazareth PA, interior painting Nazareth PA, exterior painting Nazareth PA',
+        'city'                 => 'Nazareth',
+        'service_label'        => 'Painting Contractor',
+        'service_name'         => 'Interior & Exterior Painting',
+        'hero_heading'         => 'Nazareth painting, done <span class="ul-brush">whole-house</span> right.',
+        'hero_intro'           => "From Colonial and Victorian homes near Historic Downtown Nazareth to storefronts along Main Street and newer construction on the edges of town, we bring the same careful prep and premium paint to every Nazareth project — interior, exterior, or a full whole-house repaint. Free, no-pressure estimates.",
+        'intro_heading'        => "Painting built for Nazareth's mix of old and new",
+        'intro_body'           => "Nazareth's housing stock runs from centuries-old Moravian-founded downtown buildings to mid-century and newer homes further out, and each needs a different approach to prep and finish. We've handled whole-house interior repaints, exterior refreshes on older trim and siding, and commercial storefront work downtown — matching the prep, primer, and coating to what the surface actually needs rather than a one-size-fits-all process.",
+        'feature_cards'        => [
+            ['Whole-house repaints', 'Every room, hallway, and ceiling done on one schedule with consistent color-matching and clean lines throughout — not room-by-room guesswork.'],
+            ['Historic downtown experience', 'Older trim, brick, and plaster near Downtown Nazareth get the careful prep they need so the finish holds and the character stays intact.'],
+            ['Commercial & storefront painting', 'Retail and office spaces along Main Street get scheduling that avoids disrupting business hours or foot traffic.'],
+        ],
+        'faq'                  => [
+            ['Do you handle whole house painting in Nazareth?', 'Yes — whole-house interior and exterior repaints are some of our most common Nazareth projects. We schedule the full job at once so color, sheen, and finish stay consistent room to room.'],
+            ['Do you paint commercial buildings in Nazareth?', 'Yes. We paint offices, retail, and storefronts around downtown Nazareth, with after-hours and weekend scheduling available so your business doesn\'t have to close for it.'],
+            ['How much does interior painting cost in Nazareth, PA?', 'It depends on square footage, ceiling height, and how much prep the walls need. Most single rooms start in the low hundreds; a free on-site estimate gets you an exact number.'],
+            ['Do you offer free estimates in Nazareth?', 'Always, with no obligation. We serve all of Nazareth Borough and the surrounding township, with most quotes returned within 24 hours.'],
+        ],
+        'cta_eyebrow'          => 'Serving Nazareth Borough',
+        'cta_title'            => 'Get a painting estimate in Nazareth',
+        'cta_text'             => 'Free, no-pressure quotes for homes and businesses throughout Nazareth, PA. Most returned within 24 hours.',
+        'hero_image'           => 'assets/img/service-painting.webp',
+        'hero_image_alt'       => 'Whole house painting project in a Nazareth, PA home',
+        'gallery_categories'   => ['interior', 'exterior'],
+        'related_service_slug' => 'services.php',
+        'related_service_label'=> 'All Painting Services',
+        'related_slugs'        => ['easton-painting', 'bethlehem-painting'],
+    ],
+
+    'nazareth-drywall-repair' => [
+        'title'                => 'Drywall Repair in Nazareth, PA',
+        'meta_description'     => 'Drywall repair for Nazareth, PA homes and businesses — water stain removal, commercial drywall installation, and seamless coating and finishing. Licensed, insured, free estimates.',
+        'meta_keywords'        => 'drywall repair Nazareth PA, water stain removal Nazareth PA, commercial drywall service Nazareth PA, commercial drywall installation Nazareth PA, drywall coating contractor Nazareth PA',
+        'city'                 => 'Nazareth',
+        'service_label'        => 'Drywall Repair',
+        'service_name'         => 'Drywall Repair',
+        'hero_heading'         => 'Nazareth drywall repair, <span class="ul-brush">seamlessly</span> finished.',
+        'hero_intro'           => "Water stains, cracked plaster in an older downtown building, or a full commercial drywall installation — we patch, coat, and finish so the repair disappears once it's painted, whether it's a single room or a full storefront buildout.",
+        'intro_heading'        => 'From a water stain to a full commercial installation',
+        'intro_body'           => "Nazareth's older homes and downtown buildings often show water stains and settling cracks in original plaster, while newer commercial buildouts need clean drywall installation and coating from the start. We handle both: tracing and repairing water-damaged sections so the stain doesn't bleed back through paint, and installing and finishing new drywall to a smooth, paint-ready coat for commercial spaces.",
+        'feature_cards'        => [
+            ['Water stain removal', 'Stained ceilings and walls from old or fixed leaks are sealed, patched, and finished so the discoloration doesn\'t bleed through new paint.'],
+            ['Commercial drywall installation', 'New office and retail buildouts get full drywall installation, taping, and coating finished to a smooth, paint-ready surface.'],
+            ['Drywall coating & finishing', 'Compound, sanding, and texture matching are handled to the same finish level whether it\'s one patch or an entire commercial space.'],
+        ],
+        'faq'                  => [
+            ['Can you remove water stains from drywall or plaster?', 'Yes. We seal the stain first so it doesn\'t bleed through, then patch, coat, and finish the area to match the surrounding surface.'],
+            ['Do you install drywall for commercial buildouts in Nazareth?', 'Yes — we handle full commercial drywall installation, taping, and coating for office and retail buildouts, finished to a smooth, paint-ready surface.'],
+            ['How much does drywall repair cost in Nazareth, PA?', 'It depends on the size and cause of the damage — a small patch costs far less than a water-damaged section or a full commercial installation. A free on-site estimate gets you an exact number.'],
+            ['How long does a commercial drywall installation take?', 'It depends on the size of the space and number of coats needed for a smooth finish, but most single-room or small-suite buildouts finish within a week, including dry time between coats.'],
+        ],
+        'cta_eyebrow'          => 'Repairs that disappear',
+        'cta_title'            => 'Get a drywall estimate in Nazareth',
+        'cta_text'             => 'Free, no-pressure quotes for drywall repair and installation throughout Nazareth, PA. Most returned within 24 hours.',
+        'hero_image'           => 'assets/img/service-drywall.webp',
+        'hero_image_alt'       => 'Commercial drywall installation in a Nazareth, PA storefront',
+        'gallery_categories'   => ['drywall'],
+        'related_service_slug' => 'wall-restoration.php',
+        'related_service_label'=> 'Wall Restoration & Plaster Repair',
+        'related_slugs'        => ['easton-drywall-repair', 'bethlehem-drywall-repair'],
     ],
 
     'college-hill-painting' => [

@@ -22,6 +22,7 @@ $images = array_map(function ($img) {
         'keywords'    => $img['keywords'] ?? null,
         'category'    => $img['category'],
         'sortOrder'   => (int) $img['sort_order'],
+        'featured'    => (bool) $img['featured'],
     ];
 }, $st->fetchAll());
 

@@ -17,3 +17,9 @@ function gallery_all(): array
 {
     return db()->query('SELECT * FROM gallery_images ORDER BY sort_order ASC, created_at DESC')->fetchAll();
 }
+
+/** Every gallery photo, newest first — for the project-updates feed (ignores the curated grid's manual sort_order). */
+function gallery_recent(): array
+{
+    return db()->query('SELECT * FROM gallery_images ORDER BY created_at DESC')->fetchAll();
+}
