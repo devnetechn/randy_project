@@ -111,8 +111,14 @@ $show_widget = !($cu && $cu['role'] === 'admin');
 
 <script>
     window.CURRENT_USER = <?= json_encode($cu ? ['id' => $cu['id'], 'email' => $cu['email'], 'role' => $cu['role']] : null) ?>;
+    <?php $an = config('analytics') ?: []; ?>
+    window.ANALYTICS_CONFIG = <?= json_encode([
+        'googleAdsConversionId'    => $an['google_ads_conversion_id'] ?? '',
+        'googleAdsConversionLabel' => $an['google_ads_conversion_label'] ?? '',
+    ]) ?>;
 </script>
 <script src="<?= e(url('assets/js/app.js')) ?>?v=<?= (int) @filemtime(__DIR__ . '/../assets/js/app.js') ?>"></script>
 <script src="<?= e(url('assets/js/chat.js')) ?>"></script>
+<script src="<?= e(url('assets/js/analytics.js')) ?>?v=<?= (int) @filemtime(__DIR__ . '/../assets/js/analytics.js') ?>"></script>
 </body>
 </html>

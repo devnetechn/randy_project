@@ -144,6 +144,7 @@
         '<p class="booking-item__meta">Preferred: ' + fmt(b.preferred_at) + (b.scheduled_at ? ' · Scheduled: ' + fmt(b.scheduled_at) : '') + '</p>' +
         '<p class="booking-item__meta">' + escapeHtml(b.address) + (b.phone ? ' · ' + escapeHtml(b.phone) : '') + '</p>' +
         (b.notes ? '<p class="booking-item__meta">' + escapeHtml(b.notes) + '</p>' : '') +
+        (b.source ? '<p class="booking-item__meta">via ' + escapeHtml(b.source) + '</p>' : '') +
         (actions ? '<div class="booking-actions">' + actions + '</div>' : '') + '</li>';
     }
     function render() {
@@ -872,6 +873,7 @@
         (contactLinks ? '<p class="booking-item__meta">' + contactLinks + '</p>' : '') +
         '<p class="booking-item__meta">Preferred: ' + fmt(l.preferred_at) + (l.scheduled_at ? ' · Scheduled: ' + fmt(l.scheduled_at) : '') + '</p>' +
         '<p class="booking-item__meta">' + escapeHtml(l.address || '') + '</p>' +
+        (l.source ? '<p class="booking-item__meta">via ' + escapeHtml(l.source) + '</p>' : '') +
         '<div class="booking-actions" style="align-items:center;gap:.5rem"><span style="color:var(--muted)">Stage:</span> ' + stageSel + '</div>' +
         '<label class="field" style="margin-top:.5rem"><span>Notes</span>' +
         '<textarea data-notes rows="2">' + escapeHtml(l.crm_notes || '') + '</textarea></label>' +

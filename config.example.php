@@ -47,6 +47,19 @@ return [
         'to' => [],
     ],
 
+    // ----- Marketing analytics / ad conversion tracking -----
+    // Leave any field blank to disable it — nothing loads or fires until an
+    // ID is set here. Used to measure geofenced/local ad campaigns: phone
+    // clicks and quote-request submissions fire as conversions, and the
+    // campaign that sent the visitor (utm_*, gclid, fbclid) is stored on
+    // their booking so you can see which geofence produced the lead.
+    'analytics' => [
+        'ga4_id'                      => '',   // GA4 Measurement ID, e.g. "G-XXXXXXX"
+        'google_ads_conversion_id'    => '',   // Google Ads tag ID, e.g. "AW-XXXXXXX"
+        'google_ads_conversion_label' => '',   // Conversion action label from Google Ads
+        'meta_pixel_id'               => '',   // Meta (Facebook) Pixel ID
+    ],
+
     // Base URL path the app is served from (e.g. "/randy" under XAMPP htdocs).
     'base_path' => '/randy',
 ];

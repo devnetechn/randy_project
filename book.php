@@ -50,17 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strlen($preferred) === 16) {
             $preferred .= ':00';
         }
+        $source = isset($_COOKIE['lead_src']) ? substr((string) $_COOKIE['lead_src'], 0, 255) : null;
         db()->prepare(
             'INSERT INTO appointments
-                (customer_id, guest_name, guest_email, guest_phone, service_type, preferred_at, address, phone, notes)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                (customer_id, guest_name, guest_email, guest_phone, service_type, preferred_at, address, phone, notes, source)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         )->execute([
             $is_guest ? null : $u['id'],
             $is_guest ? $form['name'] : null,
             $is_guest ? $form['email'] : null,
             $is_guest ? $form['phone'] : null,
             $form['serviceType'], $preferred, $form['address'],
-            $form['phone'] ?: null, $form['notes'] ?: null,
+            $form['phone'] ?: null, $form['notes'] ?: null, $source,
         ]);
 
         // Best-effort notifications — none of these can block or fail the booking.
@@ -86,13 +87,26 @@ $page_title = 'Book an appointment';
 require __DIR__ . '/includes/header.php';
 ?>
 <div class="app-wrap">
-    <?php if ($sent): $b = business_info(); ?>
+    <?php if ($sent): $b = business_info(); $an = config('analytics') ?: []; ?>
         <h1 class="app-title">Thanks — request received!</h1>
         <p class="app-sub">We've got your details and will reach out shortly to confirm your free estimate. Want to talk sooner? Call us about your free estimate.</p>
         <p style="margin:1.25rem 0">
             <a class="btn-primary" href="tel:<?= e($b['phoneTel']) ?>">📞 Call us now — <?= e($b['phone']) ?></a>
         </p>
         <a href="<?= e(url('index.php')) ?>">← Back to home</a>
+        <script>
+        (function () {
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead');
+                <?php if (!empty($an['google_ads_conversion_id']) && !empty($an['google_ads_conversion_label'])): ?>
+                gtag('event', 'conversion', { send_to: '<?= e($an['google_ads_conversion_id']) ?>/<?= e($an['google_ads_conversion_label']) ?>' });
+                <?php endif; ?>
+            }
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead');
+            }
+        })();
+        </script>
     <?php else: ?>
     <h1 class="app-title">Request a free estimate</h1>
     <p class="app-sub">Tell us what you need and your preferred time — we'll confirm shortly. No account required; estimates are free.</p>

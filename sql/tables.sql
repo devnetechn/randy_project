@@ -57,6 +57,9 @@ CREATE TABLE IF NOT EXISTS appointments (
   address         VARCHAR(300) NOT NULL,
   phone           VARCHAR(64) NULL,
   notes           TEXT NULL,
+  -- First-touch ad-campaign attribution (utm_*/gclid/fbclid), captured via
+  -- the `lead_src` cookie set in includes/lead_source.php.
+  source          VARCHAR(255) NULL,
   status          ENUM('pending','confirmed','declined','cancelled','completed') NOT NULL DEFAULT 'pending',
   decline_reason  VARCHAR(500) NULL,
   -- CRM sales pipeline (separate from the operational `status` above).

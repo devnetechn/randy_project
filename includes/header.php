@@ -111,6 +111,44 @@ $ld = [
     <!-- LocalBusiness structured data -->
     <script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 
+    <?php
+    // Marketing analytics — inert until IDs are set in config.php (see
+    // config.example.php's `analytics` block). Powers ad-campaign / geofence
+    // conversion tracking for phone clicks (assets/js/analytics.js) and quote
+    // requests (book.php).
+    $an     = config('analytics') ?: [];
+    $ga4Id  = $an['ga4_id'] ?? '';
+    $adsId  = $an['google_ads_conversion_id'] ?? '';
+    $gtagId = $ga4Id ?: $adsId;
+    $pixelId = $an['meta_pixel_id'] ?? '';
+    ?>
+    <?php if ($gtagId): ?>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?= e($gtagId) ?>"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        <?php if ($ga4Id): ?>gtag('config', '<?= e($ga4Id) ?>');<?php endif; ?>
+        <?php if ($adsId): ?>gtag('config', '<?= e($adsId) ?>');<?php endif; ?>
+    </script>
+    <?php endif; ?>
+    <?php if ($pixelId): ?>
+    <!-- Meta Pixel -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '<?= e($pixelId) ?>');
+        fbq('track', 'PageView');
+    </script>
+    <?php endif; ?>
+
     <link rel="icon" type="image/png" sizes="32x32" href="<?= e(url('assets/img/favicon-32.png')) ?>">
     <link rel="icon" href="<?= e(url('assets/img/favicon.ico')) ?>" sizes="any">
     <link rel="apple-touch-icon" href="<?= e(url('assets/img/apple-touch-icon.png')) ?>">
